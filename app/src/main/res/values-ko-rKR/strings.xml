@@ -1,0 +1,69 @@
+<resources>
+    <string name="app_name">iJoonWeatherStation</string>
+
+
+    <string name="action_settings">Settings</string>
+
+
+    <string name = "Wind">고요</string>
+    <string name = "Explanation">연기가 똑바로 올라간다</string>
+    <string name = "Wind1">실바람</string>
+    <string name = "Explanation1">풍향계에는 기록되지 않지만 연기가 날리는 모양으로 보아 알 수 있다.</string>Although it is not recorded in the weather vane, it can be seen from the appearance of smoke.
+    <string name = "Wind2">남실바람</string>
+    <string name = "Explanation2">얼굴에 바람을 느낄 수 있고 나뭇잎이 살랑인다.</string>You can feel the wind on your face and the leaves are soft.
+
+    <string name = "Wind3">산들바람</string>
+    <string name = "Explanation3">나뭇잎과 가느다란 가지가 흔들리고 깃발이 가볍게 날린다.</string>The leaves and thin branches shake and the flag flies lightly.
+    <string name = "Wind4">건들바람</string>
+    <string name = "Explanation4">먼지가 일고 작은 가지가 흔들린다.</string>There is dust and the twigs shake.
+
+    <string name = "Wind5">흔들바람</string>
+    <string name = "Explanation5">잎이 무성한 작은 나무 전체가 흔들리고, 강이나 호수에 잔물결이 일어난다.</string>The entire leafy little tree shakes and ripples occur in rivers and lakes.
+    <string name = "Wind6">된바람</string>
+    <string name = "Explanation6">큰가지가 흔들리고 전깃줄이 울리며 우산 받기가 힘들다.</string>
+    <string name = "Wind7">센바람</string>
+    <string name = "Explanation7">나무전체가 흔들리고 바람을 향하여 걸어갈 수 없다.</string>
+    <string name = "Wind8">큰바람</string>
+    <string name = "Explanation8">가느다란 가지가 부러지고 바람을 향하여 걸어갈 수 없다.</string>
+    <string name = "Wind9">큰센바람</string>
+    <string name = "Explanation9">굴뚝이 넘어지고 기와가 벗겨진다.</string>
+    <string name = "Wind10">노대바람</string>
+    <string name = "Explanation10">나무가 뿌리채 뽑히고 주택에 큰 피해를 입힌다.</string>
+    <string name = "Wind11">왕바람</string>
+    <string name = "Explanation11">경험하기 매우 힘들며 광범위하게 파괴된다.</string>
+    <string name = "Wind12">싹슬바람</string>
+    <string name = "Explanation12">육지에서 관측된 예는 없다.</string>
+
+    <string name = "midle_title">아침저녁으로 매우 쌀쌀하니\n옷차림에 신경 써주세요</string>Even in the middle of the day\n it's hard to see a sunny day
+    <string name = "midle_title1">아침저녁으로 매우 쌀쌀하니\n옷차림에 신경 써주세요</string>//
+    <string name = "midle_title2">바람이 많이 불어요\n외출은 삼가해주세요</string>//
+    <string name = "midle_title3">가벼운 산책을 즐겨도 좋지만\n감기 걸리지 않게 조심하세요</string>
+    <string name = "midle_title4">외출하기 매우 좋은 날씨입니다</string>//
+    <string name = "midle_title5">야외 스포츠하기 좋은 날씨입니다</string>
+    <string name = "midle_title6">비가 내려요 \n출퇴근길 꼭 우산을 준비 하세요</string>//
+    <string name = "midle_title7">빨래는 미루고 차 한잔의 여유를 즐기세요</string>//
+    <string name = "midle_title8">바닥이 꽝꽝 얼정도의 날씨 \n빙판길 조심하세요</string>//
+    <string name = "midle_title9">불쾌지수가 높은 하루 \n쾌적한 환경을 유지하세요</string>//
+
+
+
+
+    <string name = "textWorkingOn">준비중인 기능입니다.</string>It\'s a function we\'re working on.
+
+
+    <string name = "textHum">습도</string>
+    <string name = "text_wind_direction">풍향</string>
+    <string name = "text_wind_atom">기압</string>
+    <string name = "text_Wind_velocity">풍속</string>
+    <string name = "text_wind_east">동풍</string>
+    <string name = "text_wind_west">서풍</string>
+    <string name = "text_wind_south">남풍</string>
+    <string name = "text_wind_north">북풍</string>
+    <string name = "text_wind_east_north">동북풍</string>
+    <string name = "text_wind_south_east">남동풍</string>
+    <string name = "text_wind_south_west">남서풍</string>
+    <string name = "text_wind_north_west">북서풍</string>
+
+
+
+</resources>

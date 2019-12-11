@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootView"
+    android:background="@drawable/blue_skies"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="net.ijoon.weathermoniter.ScrollingActivity"
+    tools:showIn="@layout/activity_scrolling"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rlRoot"
+            android:clipChildren="false">
+
+            <com.skyfishjy.library.RippleBackground
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/content"
+                app:rb_color="#99999999"
+                app:rb_type="fillRipple"
+                app:rb_radius="180dp"
+                app:rb_rippleAmount="3"
+                app:rb_duration="20000"
+                app:rb_scale="6">
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:id="@+id/centerImage" />
+            </com.skyfishjy.library.RippleBackground>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:id="@+id/rlWind">
+
+                <RelativeLayout
+                    android:id="@+id/rlWeather"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true">
+
+                    <ImageView
+                        android:id="@+id/ivWeather"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/ic_sun_cloud" />
+
+                    <TextView
+                        android:id="@+id/tvTemp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/ivWeather"
+                        android:text="0℃"
+                        android:textColor="@color/white"
+                        android:textSize="50dp" />
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rlWeather"
+                    android:text="@string/midle_title"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/tvWeather"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded"
+                android:id="@+id/rlBottom"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_below="@id/rlWind">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/llmid"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="30dp"
+                        android:layout_weight="1"
+                        android:paddingRight="30dp"
+                        android:id="@+id/rlAtmosphere"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/rlHumidity"
+                            android:layout_weight="1"
+                            android:layout_marginTop="15dp">
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:id="@+id/rlH">
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:src="@drawable/ic_humidity_half"
+                                    android:id="@+id/ivHumidity"/>
+
+                                <TextView
+                                    android:id="@+id/tvHumidity"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toRightOf="@+id/ivHumidity"
+                                    android:text="@string/textHum"
+                                    android:textColor="@color/white" />
+                            </RelativeLayout>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/rlH"
+                                android:id="@+id/tvHumidityValue"
+                                android:layout_centerHorizontal="true"
+                                android:textColor="@color/white"
+                                android:textSize="20dp"
+                                android:text="0 %"/>
+                        </RelativeLayout>
+
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:id="@+id/rlAtm"
+                            android:layout_weight="1"
+                            android:layout_toRightOf="@+id/tvCenter">
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:id="@+id/rlA">
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:src="@drawable/ic_atmosphere"
+                                    android:id="@+id/ivAtm"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/text_wind_atom"
+
+                                    android:layout_centerVertical="true"
+                                    android:textColor="@color/white"
+                                    android:layout_toRightOf="@+id/ivAtm"
+                                    android:id="@+id/tvAtm"/>
+                            </RelativeLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/rlA"
+                                android:id="@+id/tvAtmValue"
+                                android:layout_centerHorizontal="true"
+                                android:textColor="@color/white"
+                                android:textSize="20dp"
+                                android:text="0 hPa "
+                                android:layout_marginBottom="20dp"/>
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rlMidWindDirection"
+                        android:layout_weight="1">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true">
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:id="@+id/ivWindDirection"
+                                android:src="@drawable/ic_wind_direction"
+                                android:layout_marginTop="10dp"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/text_wind_direction"
+                                android:layout_marginTop="10dp"
+                                android:layout_toRightOf="@+id/ivWindDirection"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:id="@+id/tvWindDirection" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/rlWindDirection"
+                            android:layout_centerHorizontal="true">
+
+
+                            <net.ijoon.weathermoniter.ChaosCompassView
+                                android:id="@+id/ccv"
+                                android:layout_width="111dp"
+                                android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="20dp"
+                                android:background="#00ffffff" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/llmid"
+                    android:background="@color/white"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="270dp"
+                    android:id="@+id/rlWindVelocity"
+                    android:layout_below="@id/llmid">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/horizontal_recycler_view"
+                        android:layout_width="50dp"
+                        android:layout_height="220dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_centerVertical="true"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/horizontal_recycler_view">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/mid"
+                            android:layout_marginTop="50dp">
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:id="@+id/ivWindVelocity1"
+                                android:src="@drawable/ic_wind_velocity"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/text_Wind_velocity"
+                                android:textColor="@color/textGray"
+                                android:textSize="20dp"
+                                android:textStyle="bold"
+                                android:layout_toRightOf="@+id/ivWindVelocity1"
+                                android:id="@+id/tvWindVelocity1" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:layout_marginLeft="10dp"
+                                android:text="0"
+                                android:id="@+id/tvWindVelocityValue"
+                                android:layout_toRightOf="@+id/tvWindVelocity1"
+                                android:textSize="20dp"/>
+
+                        </RelativeLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/mid"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/Wind"
+                            android:textStyle="bold"
+                            android:id="@+id/tvWindTitle"
+                            android:textColor="@color/white"
+                            android:textSize="25dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18dp"
+                            android:text="@string/Explanation"
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/tvWindSubTitle"
+                            android:layout_below="@+id/tvWindTitle"
+                            android:textColor="@color/white"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginTop="10dp" />
+                    </RelativeLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+
+
+
+
+        </RelativeLayout>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            android:text="ver 0.1.5"
+            android:id="@+id/tvVersion"
+            android:layout_below="@+id/rlRoot"
+            android:layout_marginTop="10dp"/>
+
+    </RelativeLayout>
+
+
+
+
+</androidx.core.widget.NestedScrollView>

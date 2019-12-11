@@ -1,0 +1,2 @@
+include ':app', ':scnet-android'
+project(':scnet-android').projectDir = new File('scnet-android')

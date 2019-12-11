@@ -1,0 +1,171 @@
+package net.ijoon.ijoonweatherstation;
+
+import android.app.Activity;
+import android.app.Application;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+
+import com.google.protobuf.MessageLite;
+
+import net.ijoon.envsensor;
+import net.ijoon.scnet_android.Connection;
+import net.ijoon.scnet_android.GlobalApplication;
+import net.ijoon.scnet_android.Registry;
+import net.ijoon.scnet_android.RendezvousSession;
+import net.ijoon.scnet_android.SCNetClientCallback;
+import net.ijoon.scnet_android.ServerSession;
+
+import java.util.Stack;
+
+public class CustomApplication extends GlobalApplication implements SCNetClientCallback {
+
+    private final static String mServerIp = "1.246.219.189";
+//private final static String mServerIp = "123.142.5.134";
+    private final static int mServerPort = 19192;
+    MyActivityLifecycleCallbacks mMyActivityLifecycleCallbacks;
+    ServerSession mServerSession;
+    private envsensor.Sensor mEnvSensor;
+
+    public envsensor.Sensor getEnvSensor() {
+        return mEnvSensor;
+    }
+    public void setEnvSensor(envsensor.Sensor sensor) {
+        mEnvSensor = sensor;
+    }
+
+    @Override
+    public void onCreate() {
+        Registry.registMessage("StreamingStartRequest", 0);
+        Registry.registMessage("StreamingStartResponse", 1);
+        Registry.registMessage("StreamingStopRequest", 2);
+        Registry.registMessage("StreamingStopResponse", 3);
+        Registry.registMessage("EnvSensorData", 4);
+        Registry.registMessage("GetSensorListRequest", 5);
+        Registry.registMessage("GetSensorListResponse", 6);
+        Registry.registMessage("SetSensorPositionRequest", 7);
+        Registry.registMessage("SetSensorPositionResponse", 8);
+        Registry.registMessage("RegisterSensor", 9);
+
+//        Registry.registMessage("packet_2", 1);
+//        Registry.registMessage("packet_3", 2);
+//        Registry.registMessage("packet_4", 3);
+        this.mMyActivityLifecycleCallbacks = new MyActivityLifecycleCallbacks();
+        registerActivityLifecycleCallbacks(mMyActivityLifecycleCallbacks);
+
+//        setMainServerInfo("192.168.100.1", 9190, 1000); // 반드시 super.onCreate(); 이전에 호출해야 함
+
+        super.onCreate();
+    }
+
+    public void startServer() {
+        mServerSession = new ServerSession(mServerIp, mServerPort, 1000, CustomApplication.this);
+        Log.d("yot132","server session start called");
+        mServerSession.start();
+    }
+
+    public void stopServer() {
+
+        mServerSession.interrupt();
+        mServerSession = null;
+
+        Log.d("yot132","onActivityDestroyed called");
+    }
+
+    public class MyActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
+
+        // running activity count
+        private int running = 0;
+        private Stack<Activity> mApplicationStack = new Stack<>();
+
+        @Override
+        public void onActivityCreated(Activity activity, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onActivityStarted(Activity activity) {
+            mApplicationStack.push(activity);
+
+            Log.d("yot132","onActivityStarted called");
+
+            if (++running == 1) {
+                // running activity is 1,
+                // app must be returned from background just now (or first launch)
+                mServerSession = new ServerSession(mServerIp, mServerPort, 1000, CustomApplication.this);
+                Log.d("yot132","server session start called1");
+                mServerSession.start();
+            } else if (running > 1) {
+                // 2 or more running activities,
+                // should be foreground already.
+            }
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity) {
+        }
+
+        @Override
+        public void onActivityPaused(Activity activity) {
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.DONUT)
+        @Override
+        public void onActivityStopped(Activity activity) {
+            mApplicationStack.pop();
+            if (--running == 0) {
+                // no active activity
+                // app goes to background
+                mServerSession.interrupt();
+            }
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity) {
+        }
+
+
+    }
+
+    @Override
+    public void onAttaching() {
+        Log.d("yot132","onAttaching called");
+        super.onAttaching();
+    }
+
+    @Override
+    public void onAttached() {
+        Log.d("yot132","onAttached called");
+        super.onAttached();
+    }
+
+    @Override
+    public void onAttachFailed() {
+        Log.d("yot132","onAttachFailed called");
+        super.onAttachFailed();
+    }
+
+    @Override
+    public void onDetach() {
+        Log.d("yot132","onDetach called");
+        super.onDetach();
+    }
+
+
+    @Override
+    public void onConnected(RendezvousSession rendezvousSession, Connection connection) {
+        super.onConnected(rendezvousSession, connection);
+    }
+
+    public void request(MessageLite message) {
+            throw new RuntimeException("call setUseAutoServerSession(true) if you want to use this method");
+
+    }
+
+}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/blue_skies">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rlMidWindDirection"
+        android:layout_weight="1">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/ivWindDirection"
+            android:src="@drawable/ic_wind_direction"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" 풍향"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/ivWindDirection"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:id="@+id/tvWindDirection" />
+
+        <RelativeLayout
+            android:id="@+id/rlWindDirection"
+            android:layout_width="391dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/rounded">
+
+
+            <net.ijoon.weathermoniter.FocusChaosCompassView
+                android:id="@+id/ccv"
+                android:layout_width="306dp"
+                android:layout_height="430dp"
+                android:layout_centerInParent="true"
+                android:background="#00ffffff" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

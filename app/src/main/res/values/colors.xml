@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#56CBF2</color>
+    <color name="colorPrimaryDark">#56CBF2</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="black">#000</color>
+    <color name="darkRed">#702216</color>
+    <color name="lightGray">#323232</color>
+    <color name="deepGray">#8B8B8B</color>
+
+    <color name="textGray">#237EAD</color>
+
+    <color name="white">#fff</color>
+    <color name="red">#f00</color>
+    <color name="ocbg">#237EAD</color>
+
+    <color name="blueSkiestop">#56CBF2</color>
+    <color name="blueSkiesBottom">#56CBF2</color>
+
+    <color name="lv0">#0099CC</color>
+
+
+    <color name="lv3top">#FF0B45</color>
+    <color name="lv3bottom">#FFAE98</color>
+
+
+    <color name="lv2top">#F7C0EA</color>
+    <color name="lv2bottom">#A990D3</color>
+
+    <color name="lv1top">#F4D101</color>
+    <color name="lv1bottom">#52CC7D</color>
+
+
+</resources>

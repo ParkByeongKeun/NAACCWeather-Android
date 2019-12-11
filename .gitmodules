@@ -1,0 +1,3 @@
+[submodule "scnet-android"]
+	path = scnet-android
+	url = http://works.ijoon.net/Developer/SCNet-Android

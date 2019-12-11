@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">EnvMonitor</string>
+
+
+    <string name="action_settings">Settings</string>
+
+
+    <string name = "Wind">calm</string>
+    <string name = "Explanation">The smoke goes straight up</string>
+    <string name = "Wind1">light air</string>
+    <string name = "Explanation1">Although it is not recorded in the weather vane, it can be seen from the appearance of smoke.</string>
+    <string name = "Wind2">slight breeze</string>
+    <string name = "Explanation2">You can feel the wind on your face and the leaves are soft.</string>
+
+    <string name = "Wind3">gentle breezn</string>
+    <string name = "Explanation3">The leaves and thin branches shake and the flag flies lightly.</string>
+    <string name = "Wind4">moderate breeze</string>
+    <string name = "Explanation4">There is dust and the twigs shake.</string>
+
+    <string name = "Wind5">fresh breeze</string>
+    <string name = "Explanation5">The entire leafy little tree shakes and ripples occur in rivers and lakes.</string>
+    <string name = "Wind6">strong breeze</string>
+    <string name = "Explanation6">The branches are shaking, the wires are ringing, and it is hard to get an umbrella.</string>
+    <string name = "Wind7">near gale</string>
+    <string name = "Explanation7">The whole tree is shaken and cannot walk towards the wind.</string>
+    <string name = "Wind8">gale</string>
+    <string name = "Explanation8">A thin branch breaks and cannot walk toward the wind.</string>
+    <string name = "Wind9">strong gale</string>
+    <string name = "Explanation9">The chimney falls and the tiles are peeled off.</string>
+    <string name = "Wind10">storm</string>
+    <string name = "Explanation10">The trees are uprooted and cause great damage to the houses.</string>
+    <string name = "Wind11">violent storm</string>
+    <string name = "Explanation11">Very difficult to experience and extensively destroyed.</string>
+    <string name = "Wind12">hurricane</string>
+    <string name = "Explanation12">No examples have been observed on land.</string>
+
+    <string name = "midle_title">It\'s very chilly in the morning and evening \nso be careful with your dress</string>
+    <string name = "midle_title1">It\'s very chilly in the morning and evening \nso be careful with your dress</string>
+    <string name = "midle_title2">The wind is blowing a lot\n Please refrain from going out.</string>
+    <string name = "midle_title3">Enjoy a light walk, but be careful\n not to catch a cold</string>
+    <string name = "midle_title4">It\'s very nice weather to go out</string>
+    <string name = "midle_title5">Good weather for outdoor sports</string>
+    <string name = "midle_title6">It\'s raining \nMake sure you have an umbrella</string>
+    <string name = "midle_title7">Put off the laundry and enjoy a cup of tea</string>
+    <string name = "midle_title8">Watch out for the ice on the bottom of the ice</string>
+    <string name = "midle_title9">Maintain a pleasant environment with a high level of discomfort</string>
+
+    <string name = "textWorkingOn">It\'s a function we\'re working on.</string>
+
+
+    <string name = "textHum">Humidity</string>
+    <string name = "text_wind_direction">wind direction</string>
+    <string name = "text_wind_atom">Air pressure</string>
+    <string name = "text_Wind_velocity">velocity</string>
+    <string name = "text_wind_east">east</string>
+    <string name = "text_wind_west">west</string>
+    <string name = "text_wind_south">south</string>
+    <string name = "text_wind_north">north</string>
+    <string name = "text_wind_east_north">Northeast</string>
+    <string name = "text_wind_south_east">Eastsouth</string>
+    <string name = "text_wind_south_west">Westsouth</string>
+    <string name = "text_wind_north_west">Westnorth</string>
+
+</resources>

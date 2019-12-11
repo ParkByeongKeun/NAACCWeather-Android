@@ -1,0 +1,115 @@
+syntax = "proto3";
+
+package envsensor;
+option java_package = "net.ijoon";
+option java_outer_classname = "envsensor";
+
+enum PacketType {
+  streamingStartReq = 0;
+  streamingStartRes = 1;
+  streamingStopReq = 2;
+  streamingStopRes = 3;
+  envSensorData = 4;
+  getSensorListReq = 5;
+  getSensorListRes = 6;
+  setSensorPositionReq = 7;
+  setSensorPositionRes = 8;
+  registerSensor = 9;
+  setSensorNameReq = 10;
+  setSensorNameRes = 11;
+
+}
+
+message StreamingStartRequest {
+  uint32 id = 1;
+}
+
+message StreamingStartResponse {
+  enum Result {
+    success = 0;
+    failed = 1;
+  }
+
+  Result result = 1;
+  uint32 id = 2;
+}
+
+message StreamingStopRequest {
+  uint32 id = 1;
+}
+
+message StreamingStopResponse {
+  enum Result {
+    success = 0;
+    failed = 1;
+  }
+
+  Result result = 1;
+  uint32 id = 2;
+}
+
+message EnvSensorData {
+  float velocity = 1;
+  float direction = 2;
+  float temperature = 3;
+  float humidity = 4;
+  float pressure = 5;
+  float accX = 6;
+  float accY = 7;
+  float accZ = 8;
+  float rain = 9;
+  float luminosity = 10;
+  uint32 id = 11;
+}
+
+message Sensor {
+  uint32 id = 1;
+  float latitude = 2;
+  float longitude = 3;
+  string name = 4;
+}
+
+message GetSensorListRequest {
+}
+
+message GetSensorListResponse {
+  repeated Sensor sensor = 1;
+}
+
+message SetSensorPositionRequest {
+  uint32 id = 1;
+  float latitude = 2;
+  float longitude = 3;
+}
+
+message SetSensorPositionResponse {
+  enum Result {
+    success = 0;
+    failed = 1;
+  }
+
+  Result result = 1;
+  uint32 id = 2;
+  float latitude = 3;
+  float longitude = 4;
+}
+
+message RegisterSensor {
+  uint32 id = 1;
+}
+
+message SetSensorNameRequest {
+  uint32 id = 1;
+  string name = 2;
+}
+
+message SetSensorNameResponse {
+  enum Result {
+    success = 0;
+    failed = 1;
+  }
+
+  Result result = 1;
+  uint32 id = 2;
+  string name = 3;
+}

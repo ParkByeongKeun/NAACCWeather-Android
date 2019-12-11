@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="센서"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        android:layout_marginLeft="20dp"
+        android:textColor="#000000"
+        android:id="@+id/tvTop"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc"
+        android:id="@+id/tvLine"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tvTop"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tvLine"
+        android:id="@+id/rlMid"
+        android:layout_marginTop="15dp">
+        <TextView
+            android:id="@+id/tvSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="앱을 시작하자마자 현재 위치 환경을 \n 모니터링하고 싶습니까 ?"
+            android:layout_marginBottom="20dp"/>
+
+        <Switch
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvSwitch"
+            android:layout_marginLeft="30dp"/>
+    </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc"
+        android:id="@+id/tvLine2"
+        android:layout_below="@+id/rlMid"/>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rlBottom"
+    android:layout_below="@+id/tvLine2">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/iv"
+            android:src="@drawable/logo_weather" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvBottomTitle"
+            android:text="현재 위치 환경으로 이동"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="#000000"
+            android:layout_toRightOf="@+id/iv"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textColor="#cccccc"
+            android:layout_below="@+id/tvBottomTitle"
+            android:layout_toRightOf="@+id/iv"
+            android:id="@+id/tvName"
+            android:layout_marginLeft="20dp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/play_btn"
+            android:layout_toRightOf="@+id/tvBottomTitle"
+            android:layout_marginLeft="30dp"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc"
+        android:id="@+id/tvLine3"
+        android:layout_below="@+id/rlBottom"/>
+</RelativeLayout>
