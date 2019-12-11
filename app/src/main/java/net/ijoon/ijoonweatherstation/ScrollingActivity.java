@@ -327,14 +327,13 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                             mIvWeather.setImageResource(R.drawable.ic_moon);
                                         }
                                     }else {
-                                        Log.d("yot132","1? = " + response.getLuminosity());
-                                        if(response.getLuminosity() >= 1800 ) {
+                                        if(response.getLuminosity() >= 30000 ) {
                                             //sun
                                             mIvWeather.setImageResource(R.drawable.ic_sun);
-                                        }else if(response.getLuminosity() < 300 ) {
+                                        }else if(response.getLuminosity() < 15000 ) {
                                             //cloud
                                             mIvWeather.setImageResource(R.drawable.ic_cloud);
-                                        }else if(response.getLuminosity() < 1800 && 301 < response.getLuminosity())  {
+                                        }else if(response.getLuminosity() < 30000 && 15000 < response.getLuminosity())  {
                                             //sun_cloud
                                             mIvWeather.setImageResource(R.drawable.ic_sun_cloud);
                                         }
