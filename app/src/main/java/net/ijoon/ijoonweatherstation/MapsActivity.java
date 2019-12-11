@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -53,6 +56,25 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         rl = findViewById(R.id.rl);
 
         mSweetSheet = new SweetSheet(rl);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_refresh,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action_refresh: {
+                envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().build();
+                mCustomApplication.mServerSession.request(request);
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
