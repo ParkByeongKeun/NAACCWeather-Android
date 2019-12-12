@@ -49,11 +49,13 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     String sensorLng;
     String sensorLong;
     ActionBar actionBar;
+    private BackPressCloseHandler mBackPressCloseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        mBackPressCloseHandler = new BackPressCloseHandler(this);
         mArrMarkerOptions = new ArrayList<>();
         mCustomApplication = (CustomApplication) getApplicationContext();
         actionBar = getSupportActionBar();
@@ -268,13 +270,19 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBackPressed() {
         if(mSweetSheet.isShow()){
             mSweetSheet.dismiss();
-        }
-        else{
-            super.onBackPressed();
+        } else if(isSetGPS) {
+            getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+            getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
+            actionBar.setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
+            actionBar.setTitle("iJoonWeatherStation");
+            isSetGPS = false;
+        } else{
+            mBackPressCloseHandler.onBackPressed();
         }
     }
 
