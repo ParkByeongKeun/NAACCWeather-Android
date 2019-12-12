@@ -47,7 +47,12 @@ public class CustomApplication extends GlobalApplication implements SCNetClientC
         Registry.registMessage("GetSensorListResponse", 6);
         Registry.registMessage("SetSensorPositionRequest", 7);
         Registry.registMessage("SetSensorPositionResponse", 8);
+
         Registry.registMessage("RegisterSensor", 9);
+
+        Registry.registMessage("SetSensorNameRequest", 10);
+
+        Registry.registMessage("SetSensorNameResponse", 11);
 
 //        Registry.registMessage("packet_2", 1);
 //        Registry.registMessage("packet_3", 2);

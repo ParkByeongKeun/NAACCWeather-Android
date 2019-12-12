@@ -106,4 +106,53 @@
         android:background="#cccccc"
         android:id="@+id/tvLine3"
         android:layout_below="@+id/rlBottom"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLine3"
+        android:id="@+id/rlGPSSetting">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_changing_sensor_gps"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
+            android:textStyle="bold"
+            android:textColor="#1178ff"/>
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc"
+        android:id="@+id/tvLine4"
+        android:layout_below="@+id/rlGPSSetting"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLine4"
+        android:id="@+id/rlSetName">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_set_sensor_name"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
+            android:textStyle="bold"
+            android:textColor="#1178ff"/>
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc"
+        android:id="@+id/tvLine5"
+        android:layout_below="@+id/rlSetName"/>
+
 </RelativeLayout>

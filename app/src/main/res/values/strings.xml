@@ -60,5 +60,17 @@
     <string name = "text_wind_south_east">Eastsouth</string>
     <string name = "text_wind_south_west">Westsouth</string>
     <string name = "text_wind_north_west">Westnorth</string>
-
+    <string name = "text_changing_information">Changing information</string>
+    <string name = "text_changing_sensor_gps">Changing Sensor GPS</string>
+    <string name = "text_set_sensor_name">New sensor name</string>
+    <string name = "text_ok">ok</string>
+    <string name = "text_new_sensor_name">New sensor name</string>
+    <string name = "text_changing_sensor_name">Change sensor name</string>
+    <string name = "text_subtitle_changing_sensor_name">Please enter a nickname to change</string>
+    <string name = "text_notifycation">Notifycation</string>
+    <string name = "text_changed_sensor_name_success">Changed sensor name Success</string>
+    <string name = "text_changed_sensor_position_success">We have made changes to sensor GPS information.</string>
+    <string name = "text_select_location_on_the_map">Please select a location on the map to change.</string>
+    <string name = "text_current_location">To current location </string>
+    <string name = "text_move_sensor"> Do you want to move the sensor?</string>
 </resources>
