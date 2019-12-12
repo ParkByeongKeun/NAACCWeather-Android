@@ -99,7 +99,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 if(isSetGPS) {
                     sensorLng =  String.valueOf(latLng.latitude);
                     sensorLong = String.valueOf(latLng.longitude);
-
                     showPositionAlertDialog(getResources().getString(R.string.text_notifycation),(getResources().getString(R.string.text_current_location) + mSensor.get(mPosition).getId() + getResources().getString(R.string.text_move_sensor)) ,getResources().getString(R.string.text_ok),"");
                 }
             }
@@ -109,7 +108,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     @Override
     public void onResponse(MessageHeader messageHeader, final byte[] bodyBuf) {
         super.onResponse(messageHeader, bodyBuf);
-
         if (messageHeader == null) {
             Log.d("yot132", "packetType is null");
             return;
@@ -118,10 +116,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             case 0: {
                 break;
             }
-
             case 6: {
                 //getSensorListResponse
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -298,9 +294,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         alertDialog.setPositiveButton(R.string.text_ok,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.d("yot132","mCustomApplication.getEnvSensor().getId() = " + mCustomApplication.getEnvSensor().getId());
-                        Log.d("yot132","et.getText().toString() = " + et.getText().toString());
-
                         envsensor.SetSensorNameRequest request = envsensor.SetSensorNameRequest.newBuilder().setId(mCustomApplication.getEnvSensor().getId()).setName(et.getText().toString()).build();
                         mCustomApplication.mServerSession.request(request);
                     }
