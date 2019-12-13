@@ -76,4 +76,7 @@
     <string name = "text_select_location_on_the_map">변경할 위치를 지도에서 선택해 주세요.</string>
     <string name = "text_current_location">현재 위치로 </string>
     <string name = "text_move_sensor"> 센서를 이동하시겠습니까?</string>
+    <string name = "text_sensor">센서</string>
+    <string name = "text_after_launching_the_app">앱을 시작하자마자 현재 위치 환경을 모니터링하고 싶습니까?</string>
+    <string name = "text_go_to_current_location">현재 위치 환경으로 이동</string>
 </resources>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EnvMonitor</string>
+    <string name="app_name">iJoonWeatherStation</string>
 
 
     <string name="action_settings">Settings</string>
@@ -49,8 +49,8 @@
 
 
     <string name = "textHum">Humidity</string>
-    <string name = "text_wind_direction">wind direction</string>
-    <string name = "text_wind_atom">Air pressure</string>
+    <string name = "text_wind_direction">Direction</string>
+    <string name = "text_wind_atom">Pressure</string>
     <string name = "text_Wind_velocity">velocity</string>
     <string name = "text_wind_east">east</string>
     <string name = "text_wind_west">west</string>
@@ -73,4 +73,7 @@
     <string name = "text_select_location_on_the_map">Please select a location on the map to change.</string>
     <string name = "text_current_location">To current location </string>
     <string name = "text_move_sensor"> Do you want to move the sensor?</string>
+    <string name = "text_sensor">Sensor</string>
+    <string name = "text_after_launching_the_app">Want to monitor your location experience right after launching the app?</string>
+    <string name = "text_go_to_current_location">Go to current location environment</string>
 </resources>

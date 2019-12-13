@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="센서"
+        android:text="@string/text_sensor"
         android:textSize="17dp"
         android:textStyle="bold"
         android:layout_marginLeft="20dp"
@@ -29,12 +29,13 @@
         android:layout_below="@+id/tvLine"
         android:id="@+id/rlMid"
         android:layout_marginTop="15dp">
+
         <TextView
             android:id="@+id/tvSwitch"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="앱을 시작하자마자 현재 위치 환경을 \n 모니터링하고 싶습니까 ?"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:text="@string/text_after_launching_the_app" />
 
         <Switch
             android:id="@+id/checkBox"
@@ -72,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tvBottomTitle"
-            android:text="현재 위치 환경으로 이동"
+            android:text="@string/text_go_to_current_location"
             android:textStyle="bold"
             android:textSize="15dp"
             android:layout_marginLeft="20dp"
