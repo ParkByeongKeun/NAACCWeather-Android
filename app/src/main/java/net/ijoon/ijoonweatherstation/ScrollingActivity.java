@@ -244,48 +244,62 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                             if(mSwipeRefreshLayout.isRefreshing()) {
                                 mSwipeRefreshLayout.setRefreshing(false);
                             }
-                                if (response.getDirection()<=15||response.getDirection()>=345){
-                                    //북
-                                    rippleBackground.setX(screenWidth/2);
-                                    rippleBackground.setY(screenHeight);
-                                    rippleBackground.startRippleAnimation();
+                            if (response.getDirection()<=15||response.getDirection()>=345){
+                                //북
+                                rippleBackground.setX(screenWidth/2);
+                                rippleBackground.setY(screenHeight);
+                                rippleBackground.startRippleAnimation();
                             }else if (response.getDirection()>15&&response.getDirection()<=75){
-                                    //북동
-                                    rippleBackground.setX(-screenWidth);
-                                    rippleBackground.setY(screenHeight);
-                                    rippleBackground.startRippleAnimation();
+                                //북동
+                                rippleBackground.setX(-screenWidth);
+                                rippleBackground.setY(screenHeight);
+                                rippleBackground.startRippleAnimation();
                             }else if (response.getDirection()>75&&response.getDirection()<=105){
-                                    //동
-                                    rippleBackground.setX(-screenWidth);
-                                    rippleBackground.setY(screenHeight/2);
-                                    rippleBackground.startRippleAnimation();
+                                //동
+                                rippleBackground.setX(-screenWidth);
+                                rippleBackground.setY(screenHeight/2);
+                                rippleBackground.startRippleAnimation();
                             }else if (response.getDirection()>105&&response.getDirection()<=165){
-                                    //남동
-                                    rippleBackground.setX(-screenWidth);
-                                    rippleBackground.setY(-rippleBackground.getHeight());
-                                    rippleBackground.startRippleAnimation();
+                                //남동
+                                rippleBackground.setX(-screenWidth);
+                                rippleBackground.setY(-rippleBackground.getHeight());
+                                rippleBackground.startRippleAnimation();
                             }else if (response.getDirection()>165&&response.getDirection()<=195){
-                                    //남
-                                    rippleBackground.setX(screenWidth/2);
-                                    rippleBackground.setY(-rippleBackground.getHeight());
-                                    rippleBackground.startRippleAnimation();
+                                //남
+                                rippleBackground.setX(screenWidth/2);
+                                rippleBackground.setY(-rippleBackground.getHeight());
+                                rippleBackground.startRippleAnimation();
                             }else if (response.getDirection()>195&&response.getDirection()<=255){
-                                    //남서
-                                    rippleBackground.setX(screenWidth);
-                                    rippleBackground.setY(-rippleBackground.getHeight());
-                                    rippleBackground.startRippleAnimation();
+                                //남서
+                                rippleBackground.setX(screenWidth);
+                                rippleBackground.setY(-rippleBackground.getHeight());
+                                rippleBackground.startRippleAnimation();
                             }else if (response.getDirection()>255&&response.getDirection()<=285){
-                                    //서
-                                    rippleBackground.setX(screenWidth);
-                                    rippleBackground.setY(screenHeight/2);
-                                    rippleBackground.startRippleAnimation();
+                                //서
+                                rippleBackground.setX(screenWidth);
+                                rippleBackground.setY(screenHeight/2);
+                                rippleBackground.startRippleAnimation();
                             }else if (response.getDirection()>285&&response.getDirection()<345){
-                                    //북서
-                                    rippleBackground.setX(screenWidth);
-                                    rippleBackground.setY(screenHeight);
-                                    rippleBackground.startRippleAnimation();
+                                //북서
+                                rippleBackground.setX(screenWidth);
+                                rippleBackground.setY(screenHeight);
+                                rippleBackground.startRippleAnimation();
                             }
-                            chaosCompassView.setVal(response.getDirection());
+                            if(response.getDirection() >75 && response.getDirection() <= 105) {
+                                chaosCompassView.setVal(response.getDirection() + 180);
+                            }else if(response.getDirection() > 255 && response.getDirection() <= 285) {
+                                chaosCompassView.setVal(response.getDirection() - 180);
+                            } else if(response.getDirection() >15 && response.getDirection() <= 75) {
+                                chaosCompassView.setVal(response.getDirection() + 270);
+                            }else if(response.getDirection() > 285 && response.getDirection() < 345) {
+                                chaosCompassView.setVal(response.getDirection() - 270);
+                            } else if(response.getDirection() >105 && response.getDirection() <= 165) {
+                                chaosCompassView.setVal(response.getDirection() + 90);
+                            }else if(response.getDirection() > 195 && response.getDirection() <= 255) {
+                                chaosCompassView.setVal(response.getDirection() - 90);
+                            }else {
+                                chaosCompassView.setVal(response.getDirection());
+                            }
                             mTvTemperature.setText(String.valueOf(String.format("%.2f",response.getTemperature()))+"℃");
                             mTvHumidity.setText(String.valueOf(response.getHumidity())+" %");//습기
                             mTvPressure.setText(String.valueOf(response.getPressure())+" hPa");//압력

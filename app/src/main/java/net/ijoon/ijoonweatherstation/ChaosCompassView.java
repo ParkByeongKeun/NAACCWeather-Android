@@ -400,19 +400,19 @@ public class ChaosCompassView extends View {
         if (val<=15||val>=345){
             text = getResources().getString(R.string.text_wind_north);
         }else if (val>15&&val<=75){
-            text= getResources().getString(R.string.text_wind_east_north);
+            text= getResources().getString(R.string.text_wind_north_west);
         }else if (val>75&&val<=105){
-            text= getResources().getString(R.string.text_wind_east);
+            text= getResources().getString(R.string.text_wind_west);
         }else if (val>105&&val<=165){
-            text= getResources().getString(R.string.text_wind_south_east);
+            text= getResources().getString(R.string.text_wind_south_west);
         }else if (val>165&&val<=195){
             text = getResources().getString(R.string.text_wind_south);
         }else if (val>195&&val<=255){
-            text = getResources().getString(R.string.text_wind_south_west);
+            text = getResources().getString(R.string.text_wind_south_east);
         }else if (val>255&&val<=285){
-            text = getResources().getString(R.string.text_wind_west);
+            text = getResources().getString(R.string.text_wind_east);
         }else if (val>285&&val<345){
-            text= getResources().getString(R.string.text_wind_north_west);
+            text= getResources().getString(R.string.text_wind_east_north);
         }
 
         mTextPaint.getTextBounds(text,0,text.length(),mTextRect);
