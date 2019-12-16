@@ -79,6 +79,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
     int screenHeight;
     ComputableDate computableDate;
     envsensor.Sensor mEnvSensor;
+    float mWindDirection;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -244,62 +245,73 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                             if(mSwipeRefreshLayout.isRefreshing()) {
                                 mSwipeRefreshLayout.setRefreshing(false);
                             }
-                            if (response.getDirection()<=15||response.getDirection()>=345){
+
+                            float tempWindDirection = 0;
+                            if(response.getDirection() == 0 ) {
+                                tempWindDirection = mWindDirection;
+                            }else {
+                                tempWindDirection = response.getDirection();
+                                mWindDirection = response.getDirection();
+                            }
+                            if(tempWindDirection >75 && tempWindDirection <= 105) {
+                                chaosCompassView.setVal(tempWindDirection + 180);
+                            }else if(tempWindDirection > 255 && tempWindDirection <= 285) {
+                                chaosCompassView.setVal(tempWindDirection - 180);
+                            } else if(tempWindDirection >15 && tempWindDirection <= 75) {
+                                chaosCompassView.setVal(tempWindDirection + 270);
+                            }else if(tempWindDirection > 285 && tempWindDirection < 345) {
+                                chaosCompassView.setVal(tempWindDirection - 270);
+                            } else if(tempWindDirection >105 && tempWindDirection <= 165) {
+                                chaosCompassView.setVal(tempWindDirection + 90);
+                            }else if(tempWindDirection > 195 && tempWindDirection <= 255) {
+                                chaosCompassView.setVal(tempWindDirection - 90);
+                            }else {
+                                chaosCompassView.setVal(tempWindDirection);
+                            }
+
+
+                            if (tempWindDirection <= 15 || tempWindDirection >= 345){
                                 //북
                                 rippleBackground.setX(screenWidth/2);
                                 rippleBackground.setY(screenHeight);
                                 rippleBackground.startRippleAnimation();
-                            }else if (response.getDirection()>15&&response.getDirection()<=75){
+                            }else if (tempWindDirection >15&& tempWindDirection <=75){
                                 //북동
                                 rippleBackground.setX(-screenWidth);
                                 rippleBackground.setY(screenHeight);
                                 rippleBackground.startRippleAnimation();
-                            }else if (response.getDirection()>75&&response.getDirection()<=105){
+                            }else if (tempWindDirection >75 && tempWindDirection <= 105){
                                 //동
                                 rippleBackground.setX(-screenWidth);
                                 rippleBackground.setY(screenHeight/2);
                                 rippleBackground.startRippleAnimation();
-                            }else if (response.getDirection()>105&&response.getDirection()<=165){
+                            }else if (tempWindDirection > 105 && tempWindDirection <= 165){
                                 //남동
                                 rippleBackground.setX(-screenWidth);
                                 rippleBackground.setY(-rippleBackground.getHeight());
                                 rippleBackground.startRippleAnimation();
-                            }else if (response.getDirection()>165&&response.getDirection()<=195){
+                            }else if (tempWindDirection > 165 && tempWindDirection <= 195){
                                 //남
                                 rippleBackground.setX(screenWidth/2);
                                 rippleBackground.setY(-rippleBackground.getHeight());
                                 rippleBackground.startRippleAnimation();
-                            }else if (response.getDirection()>195&&response.getDirection()<=255){
+                            }else if (tempWindDirection > 195 && tempWindDirection <= 255){
                                 //남서
                                 rippleBackground.setX(screenWidth);
                                 rippleBackground.setY(-rippleBackground.getHeight());
                                 rippleBackground.startRippleAnimation();
-                            }else if (response.getDirection()>255&&response.getDirection()<=285){
+                            }else if (tempWindDirection > 255 && tempWindDirection <= 285){
                                 //서
                                 rippleBackground.setX(screenWidth);
                                 rippleBackground.setY(screenHeight/2);
                                 rippleBackground.startRippleAnimation();
-                            }else if (response.getDirection()>285&&response.getDirection()<345){
+                            }else if (tempWindDirection > 285 && tempWindDirection < 345){
                                 //북서
                                 rippleBackground.setX(screenWidth);
                                 rippleBackground.setY(screenHeight);
                                 rippleBackground.startRippleAnimation();
                             }
-                            if(response.getDirection() >75 && response.getDirection() <= 105) {
-                                chaosCompassView.setVal(response.getDirection() + 180);
-                            }else if(response.getDirection() > 255 && response.getDirection() <= 285) {
-                                chaosCompassView.setVal(response.getDirection() - 180);
-                            } else if(response.getDirection() >15 && response.getDirection() <= 75) {
-                                chaosCompassView.setVal(response.getDirection() + 270);
-                            }else if(response.getDirection() > 285 && response.getDirection() < 345) {
-                                chaosCompassView.setVal(response.getDirection() - 270);
-                            } else if(response.getDirection() >105 && response.getDirection() <= 165) {
-                                chaosCompassView.setVal(response.getDirection() + 90);
-                            }else if(response.getDirection() > 195 && response.getDirection() <= 255) {
-                                chaosCompassView.setVal(response.getDirection() - 90);
-                            }else {
-                                chaosCompassView.setVal(response.getDirection());
-                            }
+
                             mTvTemperature.setText(String.valueOf(String.format("%.2f",response.getTemperature()))+"℃");
                             mTvHumidity.setText(String.valueOf(response.getHumidity())+" %");//습기
                             mTvPressure.setText(String.valueOf(response.getPressure())+" hPa");//압력
