@@ -273,42 +273,42 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                             if (tempWindDirection <= 15 || tempWindDirection >= 345){
                                 //북
                                 rippleBackground.setX(screenWidth/2);
-                                rippleBackground.setY(screenHeight);
+                                rippleBackground.setY(-rippleBackground.getHeight());
                                 rippleBackground.startRippleAnimation();
                             }else if (tempWindDirection >15&& tempWindDirection <=75){
                                 //북동
-                                rippleBackground.setX(-screenWidth);
-                                rippleBackground.setY(screenHeight);
+                                rippleBackground.setX(screenWidth);
+                                rippleBackground.setY(-rippleBackground.getHeight());
                                 rippleBackground.startRippleAnimation();
                             }else if (tempWindDirection >75 && tempWindDirection <= 105){
                                 //동
-                                rippleBackground.setX(-screenWidth);
+                                rippleBackground.setX(screenWidth);
                                 rippleBackground.setY(screenHeight/2);
                                 rippleBackground.startRippleAnimation();
                             }else if (tempWindDirection > 105 && tempWindDirection <= 165){
                                 //남동
-                                rippleBackground.setX(-screenWidth);
-                                rippleBackground.setY(-rippleBackground.getHeight());
+                                rippleBackground.setX(screenWidth);
+                                rippleBackground.setY(screenHeight/2);
                                 rippleBackground.startRippleAnimation();
                             }else if (tempWindDirection > 165 && tempWindDirection <= 195){
                                 //남
                                 rippleBackground.setX(screenWidth/2);
-                                rippleBackground.setY(-rippleBackground.getHeight());
+                                rippleBackground.setY(screenHeight);
                                 rippleBackground.startRippleAnimation();
                             }else if (tempWindDirection > 195 && tempWindDirection <= 255){
                                 //남서
-                                rippleBackground.setX(screenWidth);
-                                rippleBackground.setY(-rippleBackground.getHeight());
+                                rippleBackground.setX(-screenWidth);
+                                rippleBackground.setY(screenHeight);
                                 rippleBackground.startRippleAnimation();
                             }else if (tempWindDirection > 255 && tempWindDirection <= 285){
                                 //서
-                                rippleBackground.setX(screenWidth);
+                                rippleBackground.setX(-screenWidth);
                                 rippleBackground.setY(screenHeight/2);
                                 rippleBackground.startRippleAnimation();
                             }else if (tempWindDirection > 285 && tempWindDirection < 345){
                                 //북서
-                                rippleBackground.setX(screenWidth);
-                                rippleBackground.setY(screenHeight);
+                                rippleBackground.setX(-screenWidth);
+                                rippleBackground.setY(-rippleBackground.getHeight());
                                 rippleBackground.startRippleAnimation();
                             }
 
