@@ -31,5 +31,12 @@
     <color name="lv1top">#F4D101</color>
     <color name="lv1bottom">#52CC7D</color>
 
-
+    <color name="colorPlay">#7777ff</color>
+    <color name="colorUnPlay">#ff7777</color>
+    <color name="colorStop">#dddddd</color>
+    <color name="colorHint">#cbcbcb</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBtnBackGround">#3498DB</color>
+    <color name="colorBackground">#EFEFF4</color>
+    <color name="colorBlack">#000000</color>
 </resources>
