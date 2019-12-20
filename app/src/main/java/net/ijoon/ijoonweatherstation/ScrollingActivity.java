@@ -1,6 +1,7 @@
 package net.ijoon.ijoonweatherstation;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -86,7 +87,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
     boolean isRain;
     int value;
     boolean isTimerFinish;
-
+    int mTouchCheck;
 
     CountDownTimer countDownTimer = new CountDownTimer(600000, 1000) {
         public void onTick(long millisUntilFinished) {
@@ -179,6 +180,21 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
         mCustomApplication.mServerSession.request(request);
         envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setId(mEnvSensor.getId()).build();
         mCustomApplication.mServerSession.request(request1);
+
+
+
+
+        mIvWeather.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTouchCheck++;
+                if(mTouchCheck >= 10) {
+                    Intent intent = new Intent(ScrollingActivity.this,DevActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
     }
 
     @Override
