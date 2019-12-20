@@ -7,7 +7,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Message;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -41,6 +43,7 @@ import net.ijoon.scnet_android.SCNetAppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeRefreshLayout.OnRefreshListener {
 
@@ -80,6 +83,23 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
     ComputableDate computableDate;
     envsensor.Sensor mEnvSensor;
     float mWindDirection;
+    boolean isRain;
+    int value;
+    boolean isTimerFinish;
+
+
+    CountDownTimer countDownTimer = new CountDownTimer(600000, 1000) {
+        public void onTick(long millisUntilFinished) {
+            Log.d("yot132",String.format(Locale.getDefault(), "%d sec.", millisUntilFinished / 1000L));
+        }
+
+        public void onFinish() {
+           Log.d("yot132","on finish");
+            isTimerFinish = true;
+            isRain = false;
+        }
+    };
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -90,8 +110,6 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
         //application
         mCustomApplication = (CustomApplication) getApplicationContext();
         mEnvSensor = mCustomApplication.getEnvSensor();
-
-        Log.d("yot132","test = " + mEnvSensor.getId());
         //init view
         mTvWindDirection = findViewById(R.id.tvWindDirection);
         mTvTemperature = findViewById(R.id.tvTemp);
@@ -315,8 +333,14 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                             mTvTemperature.setText(String.valueOf(String.format("%.2f",response.getTemperature()))+"℃");
                             mTvHumidity.setText(String.valueOf(response.getHumidity())+" %");//습기
                             mTvPressure.setText(String.valueOf(response.getPressure())+" hPa");//압력
-                            if(response.getRain() > 5 ) {
+
+
+
+                            if(response.getRain() >= 5) {
                                 //rain
+                                isRain = true;
+                                countDownTimer.cancel();
+                                countDownTimer.start();
                                 mIvWeather.setImageResource(R.drawable.ic_rain);
                                 mTvWeatherComment.setText(getResources().getString(R.string.midle_title6));
                             }else {
@@ -409,6 +433,14 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 }
                                 mTvWeatherComment.setText(getResources().getString(R.string.midle_title));
                             }
+
+                            if(response.getRain()  < 5 && isRain && !isTimerFinish) {
+                                mIvWeather.setImageResource(R.drawable.ic_rain);
+                                mTvWeatherComment.setText(getResources().getString(R.string.midle_title6));
+                            }
+
+
+
                             if(response.getVelocity() <= 0.1) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation));
