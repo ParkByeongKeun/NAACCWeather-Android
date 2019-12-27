@@ -37,6 +37,7 @@ import com.skyfishjy.library.RippleBackground;
 
 import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.util.ComputableDate;
+import net.ijoon.ijoonweatherstation.util.SunSet;
 import net.ijoon.scnet_android.Connection;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.RendezvousSession;
@@ -88,6 +89,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
     int value;
     boolean isTimerFinish;
     int mTouchCheck;
+    SunSet sunSet;
 
     CountDownTimer countDownTimer = new CountDownTimer(600000, 1000) {
         public void onTick(long millisUntilFinished) {
@@ -148,6 +150,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
         setSupportActionBar(toolbar);
         chaosCompassView.setVal(0);
         getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));
+        sunSet = new SunSet();
 
         //progressBar
         horizontal_recycler_view= findViewById(R.id.horizontal_recycler_view);
@@ -350,6 +353,11 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                             mTvHumidity.setText(String.valueOf(response.getHumidity())+" %");//습기
                             mTvPressure.setText(String.valueOf(response.getPressure())+" hPa");//압력
 
+//                            Log.d("yot132","mEnvSensor.getLatitude()= " + mEnvSensor.getLatitude());
+                            sunSet.sunsettest(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
+
+
+
 
 
                             if(response.getRain() >= 5) {
@@ -362,16 +370,13 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                             }else {
                                 if(computableDate.getAMPM() != 1 ) {
                                     //오전
-                                    if(computableDate.getHour() <= 6) {
-                                        //오전 6시 이전
-                                        if(response.getLuminosity() < 2) {
+                                    if(computableDate.getHour() <= 7) {
+                                        //오전 7시 이전
+                                        if(response.getLuminosity() > 100) {
                                             //cloud
-                                            mIvWeather.setImageResource(R.drawable.ic_cloud);
-                                        }else if (response.getLuminosity() > 2  && response.getLuminosity() < 100) {
-                                            //moonCloud
-                                            mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
-                                        }else {
                                             mIvWeather.setImageResource(R.drawable.ic_moon);
+                                        }else {
+                                            mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
                                         }
                                     }else {
                                         // 오전
