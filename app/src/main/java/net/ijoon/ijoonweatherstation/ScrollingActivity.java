@@ -393,16 +393,28 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                     }
                                 }else {
                                     //오후
-                                    if(computableDate.getHour() >= 18) {
+                                    if(computableDate.getHour() >= sunSet.getSunSetHour()) {
                                         //오후 6시 이후
-                                        if(response.getLuminosity() < 2) {
+                                        if (computableDate.getHour() == sunSet.getSunSetHour()) {
+                                            if (computableDate.getMinute() <= sunSet.getSunSetMinute()) {
+                                                if(response.getLuminosity() >= 30000 ) {
+                                                    //sun
+                                                    mIvWeather.setImageResource(R.drawable.ic_sun);
+                                                }else if(response.getLuminosity() < 30000 && response.getLuminosity() > 15000 ) {
+                                                    //sun_cloud
+                                                    mIvWeather.setImageResource(R.drawable.ic_sun_cloud);
+                                                }else  {
+                                                    //cloud
+                                                    mIvWeather.setImageResource(R.drawable.ic_cloud);
+                                                }
+                                                return;
+                                            }
+                                        }
+                                        if(response.getLuminosity() > 100) {
                                             //cloud
-                                            mIvWeather.setImageResource(R.drawable.ic_cloud);
-                                        }else if (response.getLuminosity() > 2  && response.getLuminosity() < 100) {
-                                            //moonCloud
-                                            mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
-                                        }else {
                                             mIvWeather.setImageResource(R.drawable.ic_moon);
+                                        }else {
+                                            mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
                                         }
                                     }else {
                                         if(response.getLuminosity() >= 30000 ) {
