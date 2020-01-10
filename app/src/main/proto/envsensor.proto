@@ -60,6 +60,17 @@ message EnvSensorData {
   float rain = 9;
   float luminosity = 10;
   uint32 id = 11;
+
+  float cvelocity = 12;
+  float cdirection = 13;
+  float ctemperature = 14;
+  float chumidity = 15;
+  float cpressure = 16;
+  float caccX = 17;
+  float caccY = 18;
+  float caccZ = 19;
+  float crain = 20;
+  float cluminosity = 21;
 }
 
 message Sensor {
