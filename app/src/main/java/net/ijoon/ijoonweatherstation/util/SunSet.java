@@ -165,11 +165,19 @@ public class SunSet {
         return timeLST;
     }
 
-    public void sunsettest(int year, int month, int day, double latitude, double longitude) {
+    public void getSunset(int year, int month, int day, double latitude, double longitude) {
         double lst;
         Log.d("yot132","lat = "+latitude+"lng = " + longitude);
 
         lst = GetSunsetTime(year, month, day, latitude, -longitude, -9, 0);
+        GetTimeString(lst);
+    }
+
+    public void getSunrise(int year, int month, int day, double latitude, double longitude) {
+        double lst;
+        Log.d("yot132","lat = "+latitude+"lng = " + longitude);
+
+        lst = GetSunriseTime(year, month, day, latitude, -longitude, -9, 0);
         GetTimeString(lst);
     }
 }

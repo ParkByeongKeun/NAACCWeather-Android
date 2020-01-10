@@ -1,6 +1,5 @@
 package net.ijoon.ijoonweatherstation;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -10,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.Message;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -26,8 +24,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -90,7 +86,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
     boolean isTimerFinish;
     int mTouchCheck;
     SunSet sunSet;
-
+    SunSet sunRise;
     CountDownTimer countDownTimer = new CountDownTimer(600000, 1000) {
         public void onTick(long millisUntilFinished) {
             Log.d("yot132",String.format(Locale.getDefault(), "%d sec.", millisUntilFinished / 1000L));
@@ -151,6 +147,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
         chaosCompassView.setVal(0);
         getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));
         sunSet = new SunSet();
+        sunRise = new SunSet();
 
         //progressBar
         horizontal_recycler_view= findViewById(R.id.horizontal_recycler_view);
@@ -354,10 +351,8 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                             mTvPressure.setText(String.valueOf(String.format("%.2f",response.getCpressure())+" hPa"));//압력
 
 //                            Log.d("yot132","mEnvSensor.getLatitude()= " + mEnvSensor.getLatitude());
-                            sunSet.sunsettest(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
-
-
-
+                            sunSet.getSunset(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
+                            sunRise.getSunrise(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
 
 
                             if(response.getCrain() >= 5) {
@@ -370,13 +365,26 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                             }else {
                                 if(computableDate.getAMPM() != 1 ) {
                                     //오전
-                                    if(computableDate.getHour() <= 7) {
+                                    if(computableDate.getHour() <= sunRise.getSunSetHour()) {
                                         //오전 7시 이전
-                                        if(response.getCluminosity() > 100) {
-                                            //cloud
-                                            mIvWeather.setImageResource(R.drawable.ic_moon);
+                                        if(computableDate.getMinute() < sunRise.getSunSetMinute()) {
+                                            if(response.getCluminosity() > 100) {
+                                                //cloud
+                                                mIvWeather.setImageResource(R.drawable.ic_moon);
+                                            }else {
+                                                mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
+                                            }
                                         }else {
-                                            mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
+                                            if(response.getCluminosity() >= 30000 ) {
+                                                //sun
+                                                mIvWeather.setImageResource(R.drawable.ic_sun);
+                                            }else if(response.getCluminosity() < 30000 && response.getCluminosity() > 15000 ) {
+                                                //sun_cloud
+                                                mIvWeather.setImageResource(R.drawable.ic_sun_cloud);
+                                            }else  {
+                                                //cloud
+                                                mIvWeather.setImageResource(R.drawable.ic_cloud);
+                                            }
                                         }
                                     }else {
                                         // 오전
