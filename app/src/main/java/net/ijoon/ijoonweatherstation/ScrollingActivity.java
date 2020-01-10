@@ -284,11 +284,11 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                             }
 
                             float tempWindDirection = 0;
-                            if(response.getDirection() == 0 ) {
+                            if(response.getCdirection() == 0 ) {
                                 tempWindDirection = mWindDirection;
                             }else {
-                                tempWindDirection = response.getDirection();
-                                mWindDirection = response.getDirection();
+                                tempWindDirection = response.getCdirection();
+                                mWindDirection = response.getCdirection();
                             }
                             if(tempWindDirection >75 && tempWindDirection <= 105) {
                                 chaosCompassView.setVal(tempWindDirection + 180);
@@ -349,9 +349,9 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 rippleBackground.startRippleAnimation();
                             }
 
-                            mTvTemperature.setText(String.valueOf(String.format("%.2f",response.getTemperature()))+"℃");
-                            mTvHumidity.setText(String.valueOf(response.getHumidity())+" %");//습기
-                            mTvPressure.setText(String.valueOf(response.getPressure())+" hPa");//압력
+                            mTvTemperature.setText(String.valueOf(String.format("%.2f",response.getCtemperature()))+"℃");
+                            mTvHumidity.setText(String.valueOf(String.format("%.2f",response.getChumidity()))+" %");//습기
+                            mTvPressure.setText(String.valueOf(String.format("%.2f",response.getCpressure())+" hPa"));//압력
 
 //                            Log.d("yot132","mEnvSensor.getLatitude()= " + mEnvSensor.getLatitude());
                             sunSet.sunsettest(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
@@ -360,7 +360,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
 
 
 
-                            if(response.getRain() >= 5) {
+                            if(response.getCrain() >= 5) {
                                 //rain
                                 isRain = true;
                                 countDownTimer.cancel();
@@ -372,7 +372,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                     //오전
                                     if(computableDate.getHour() <= 7) {
                                         //오전 7시 이전
-                                        if(response.getLuminosity() > 100) {
+                                        if(response.getCluminosity() > 100) {
                                             //cloud
                                             mIvWeather.setImageResource(R.drawable.ic_moon);
                                         }else {
@@ -380,10 +380,10 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                         }
                                     }else {
                                         // 오전
-                                        if(response.getLuminosity() >= 30000 ) {
+                                        if(response.getCluminosity() >= 30000 ) {
                                             //sun
                                             mIvWeather.setImageResource(R.drawable.ic_sun);
-                                        }else if(response.getLuminosity() < 30000 && response.getLuminosity() > 15000 ) {
+                                        }else if(response.getCluminosity() < 30000 && response.getCluminosity() > 15000 ) {
                                             //sun_cloud
                                             mIvWeather.setImageResource(R.drawable.ic_sun_cloud);
                                         }else  {
@@ -397,10 +397,10 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                         //오후 6시 이후
                                         if (computableDate.getHour() == sunSet.getSunSetHour()) {
                                             if (computableDate.getMinute() <= sunSet.getSunSetMinute()) {
-                                                if(response.getLuminosity() >= 30000 ) {
+                                                if(response.getCluminosity() >= 30000 ) {
                                                     //sun
                                                     mIvWeather.setImageResource(R.drawable.ic_sun);
-                                                }else if(response.getLuminosity() < 30000 && response.getLuminosity() > 15000 ) {
+                                                }else if(response.getCluminosity() < 30000 && response.getCluminosity() > 15000 ) {
                                                     //sun_cloud
                                                     mIvWeather.setImageResource(R.drawable.ic_sun_cloud);
                                                 }else  {
@@ -410,17 +410,17 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                                 return;
                                             }
                                         }
-                                        if(response.getLuminosity() > 100) {
+                                        if(response.getCluminosity() > 100) {
                                             //cloud
                                             mIvWeather.setImageResource(R.drawable.ic_moon);
                                         }else {
                                             mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
                                         }
                                     }else {
-                                        if(response.getLuminosity() >= 30000 ) {
+                                        if(response.getCluminosity() >= 30000 ) {
                                             //sun
                                             mIvWeather.setImageResource(R.drawable.ic_sun);
-                                        }else if(response.getLuminosity() < 30000 && response.getLuminosity() > 15000 ) {
+                                        }else if(response.getCluminosity() < 30000 && response.getCluminosity() > 15000 ) {
                                             //sun_cloud
                                             mIvWeather.setImageResource(R.drawable.ic_sun_cloud);
                                         }else  {
@@ -431,7 +431,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 }
                                 if(computableDate.getMonth() <=4 || computableDate.getMonth() >=11) {
                                     //겨울
-                                    if(response.getTemperature() < 0 ) {
+                                    if(response.getCtemperature() < 0 ) {
                                         //영하
                                         mTvWeatherComment.setText(getResources().getString(R.string.midle_title8));
                                     }else {
@@ -440,17 +440,17 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                     }
                                 }else if(computableDate.getMonth() < 6 || computableDate.getMonth() > 4 ) {
                                     //봄
-                                    if(response.getTemperature() < 15 ) {
+                                    if(response.getCtemperature() < 15 ) {
                                         mTvWeatherComment.setText(getResources().getString(R.string.midle_title1));
                                     }else {
                                         mTvWeatherComment.setText(getResources().getString(R.string.midle_title4));
                                     }
                                 }else if (computableDate.getMonth() >= 6 || computableDate.getMonth() <= 9) {
                                     //여름
-                                    if(response.getTemperature() < 30 ) {
+                                    if(response.getCtemperature() < 30 ) {
                                         mTvWeatherComment.setText(getResources().getString(R.string.midle_title5));
                                     }else {
-                                        if(response.getHumidity() > 80 ) {
+                                        if(response.getChumidity() > 80 ) {
                                             mTvWeatherComment.setText(getResources().getString(R.string.midle_title7));
                                         }else {
                                             mTvWeatherComment.setText(getResources().getString(R.string.midle_title9));
@@ -458,7 +458,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                     }
                                 }else {
                                     //가을
-                                    if(response.getTemperature() < 10) {
+                                    if(response.getCtemperature() < 10) {
                                         mTvWeatherComment.setText(getResources().getString(R.string.midle_title1));
                                     }else {
                                         mTvWeatherComment.setText(getResources().getString(R.string.midle_title3));
@@ -467,14 +467,14 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 mTvWeatherComment.setText(getResources().getString(R.string.midle_title));
                             }
 
-                            if(response.getRain()  < 5 && isRain && !isTimerFinish) {
+                            if(response.getCrain()  < 5 && isRain && !isTimerFinish) {
                                 mIvWeather.setImageResource(R.drawable.ic_rain);
                                 mTvWeatherComment.setText(getResources().getString(R.string.midle_title6));
                             }
 
 
 
-                            if(response.getVelocity() <= 0.1) {
+                            if(response.getCvelocity() <= 0.1) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation));
                                 mRootView.setBackgroundResource(R.drawable.blue_skies);
@@ -482,7 +482,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
 //                                mAppBar.setBackgroundColor(Color.parseColor("#56CBF2"));
-                            }else if(response.getVelocity() >= 0.11 && response.getVelocity() <= 1.5 ){
+                            }else if(response.getCvelocity() >= 0.11 && response.getCvelocity() <= 1.5 ){
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind1));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation1));
                                 mRootView.setBackgroundResource(R.drawable.blue_skies);
@@ -490,7 +490,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
 //                                mAppBar.setBackgroundColor(Color.parseColor("#56CBF2"));
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
-                            } else if(response.getVelocity() >= 1.6 && response.getVelocity() <=3.3 ) {
+                            } else if(response.getCvelocity() >= 1.6 && response.getCvelocity() <=3.3 ) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind2));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation2));
                                 mRootView.setBackgroundResource(R.drawable.blue_skies);
@@ -498,7 +498,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
 //                                mAppBar.setBackgroundColor(Color.parseColor("#56CBF2"));
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
-                            }else if(response.getVelocity() >= 3.4  && response.getVelocity() <= 5.4 ) {
+                            }else if(response.getCvelocity() >= 3.4  && response.getCvelocity() <= 5.4 ) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind3));
                                 mRootView.setBackgroundResource(R.drawable.bg_lv1);
                                 getWindow().setNavigationBarColor(Color.parseColor("#52CC7D"));//bottom
@@ -507,7 +507,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 mTvWeatherComment.setText(getResources().getString(R.string.midle_title2));
 //                                mAppBar.setBackgroundColor(Color.parseColor("#F4D101"));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation3));
-                            }else if(response.getVelocity() >= 5.5  && response.getVelocity() <= 7.9 ) {
+                            }else if(response.getCvelocity() >= 5.5  && response.getCvelocity() <= 7.9 ) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind4));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation4));
                                 mRootView.setBackgroundResource(R.drawable.bg_lv1);
@@ -516,7 +516,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 getWindow().setNavigationBarColor(Color.parseColor("#52CC7D"));//bottom
                                 getWindow().setStatusBarColor(Color.parseColor("#F4D101"));//statusBar
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFF4D101));
-                            }else if(response.getVelocity() >= 8.0  && response.getVelocity() <= 10.7 ) {
+                            }else if(response.getCvelocity() >= 8.0  && response.getCvelocity() <= 10.7 ) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind5));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation5));
                                 mRootView.setBackgroundResource(R.drawable.bg_lv2);
@@ -525,7 +525,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 getWindow().setStatusBarColor(Color.parseColor("#F7C0EA"));//statusBar
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFF7C0EA));//title
 //                                mAppBar.setBackgroundColor(Color.parseColor("#F7C0EA"));
-                            }else if(response.getVelocity() >= 10.8  && response.getVelocity() <= 13.8 ) {
+                            }else if(response.getCvelocity() >= 10.8  && response.getCvelocity() <= 13.8 ) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind6));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation6));
                                 mRootView.setBackgroundResource(R.drawable.bg_lv2);
@@ -534,7 +534,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 getWindow().setNavigationBarColor(Color.parseColor("#A990D3"));//bottom
                                 getWindow().setStatusBarColor(Color.parseColor("#F7C0EA"));//statusBar
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFF7C0EA));//title
-                            }else if(response.getVelocity() >= 13.9  && response.getVelocity() <= 17.1 ) {
+                            }else if(response.getCvelocity() >= 13.9  && response.getCvelocity() <= 17.1 ) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind7));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation7));
                                 mRootView.setBackgroundResource(R.drawable.bg_lv2);
@@ -543,7 +543,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 getWindow().setNavigationBarColor(Color.parseColor("#A990D3"));//bottom
                                 getWindow().setStatusBarColor(Color.parseColor("#F7C0EA"));//statusBar
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFF7C0EA));//title
-                            }else if(response.getVelocity() >= 17.2  && response.getVelocity() <= 20.7) {
+                            }else if(response.getCvelocity() >= 17.2  && response.getCvelocity() <= 20.7) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind8));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation8));
                                 mRootView.setBackgroundResource(R.drawable.bg_lv3);
@@ -552,7 +552,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 getWindow().setNavigationBarColor(Color.parseColor("#FFAE98"));//bottom
                                 getWindow().setStatusBarColor(Color.parseColor("#FF0B45"));//statusBar
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFF0B45));//title
-                            }else if(response.getVelocity() >= 20.8  && response.getVelocity() <= 24.4) {
+                            }else if(response.getCvelocity() >= 20.8  && response.getCvelocity() <= 24.4) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind9));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation9));
                                 mRootView.setBackgroundResource(R.drawable.bg_lv3);
@@ -561,7 +561,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 getWindow().setNavigationBarColor(Color.parseColor("#FFAE98"));//bottom
                                 getWindow().setStatusBarColor(Color.parseColor("#FF0B45"));//statusBar
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFF0B45));//title
-                            }else if(response.getVelocity() >= 24.5 && response.getVelocity() <= 28.4) {
+                            }else if(response.getCvelocity() >= 24.5 && response.getCvelocity() <= 28.4) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind10));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation10));
                                 mRootView.setBackgroundResource(R.drawable.bg_lv3);
@@ -570,7 +570,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 getWindow().setNavigationBarColor(Color.parseColor("#FFAE98"));//bottom
                                 getWindow().setStatusBarColor(Color.parseColor("#FF0B45"));//statusBar
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFF0B45));//title
-                            }else if(response.getVelocity() >= 28.5 && response.getVelocity() <= 32.6) {
+                            }else if(response.getCvelocity() >= 28.5 && response.getCvelocity() <= 32.6) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind11));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation11));
                                 mRootView.setBackgroundResource(R.drawable.bg_lv3);
@@ -579,7 +579,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 getWindow().setNavigationBarColor(Color.parseColor("#FFAE98"));//bottom
                                 getWindow().setStatusBarColor(Color.parseColor("#FF0B45"));//statusBar
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFF0B45));//title
-                            }else if(response.getVelocity() >= 32.7){
+                            }else if(response.getCvelocity() >= 32.7){
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind12));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation12));
                                 mRootView.setBackgroundResource(R.drawable.bg_lv3);
@@ -589,9 +589,9 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 getWindow().setStatusBarColor(Color.parseColor("#FF0B45"));//statusBar
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFF0B45));//title
                             }
-                            mTvWindVelocityValue.setText(String.valueOf(response.getVelocity()+"m/s"));
-                            dataProgrssBar.setProgress((int)response.getVelocity());
-                            dataProgrssBar.setDate(String.valueOf(response.getVelocity()));
+                            mTvWindVelocityValue.setText(String.valueOf(String.format("%.2f",response.getCvelocity()) + "m/s"));
+                            dataProgrssBar.setProgress((int)response.getCvelocity());
+                            dataProgrssBar.setDate(String.valueOf(String.format("%.2f",response.getCvelocity())));
                             horizontalList.set(0,dataProgrssBar);
                             horizontalAdapter=new HorizontalAdapter(horizontalList);
                             horizontal_recycler_view.setAdapter(horizontalAdapter);
