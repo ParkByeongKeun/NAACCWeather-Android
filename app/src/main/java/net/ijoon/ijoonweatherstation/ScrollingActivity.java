@@ -188,14 +188,16 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
         envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setId(mEnvSensor.getId()).build();
         mCustomApplication.mServerSession.request(request1);
 
-
-
-
-        mIvWeather.setOnClickListener(new View.OnClickListener() {
+        mSweetSheet = new SweetSheet(rl);
+        mRootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mSweetSheet.isShow()){
+                    mSweetSheet.dismiss();
+                }
+
                 mTouchCheck++;
-                if(mTouchCheck >= 10) {
+                if(mTouchCheck == 10) {
                     Intent intent = new Intent(ScrollingActivity.this,DevActivity.class);
                     startActivity(intent);
                     finish();
