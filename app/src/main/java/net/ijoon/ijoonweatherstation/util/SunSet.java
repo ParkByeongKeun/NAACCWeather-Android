@@ -42,8 +42,6 @@ public class SunSet {
             iJulDay += GetLastDay(uiYear, i);
         }
         iJulDay += ucDay;
-        Log.d("yot132","iJulDa = " + iJulDay);
-
         return iJulDay;
     }
 
@@ -136,11 +134,8 @@ public class SunSet {
         double floatSec = 60.0 * (floatMinute - Math.floor(floatMinute));
         double secondD = Math.floor(floatSec);
 
-//        second = Integer.
-
         hour = hourD;
         minute = minuteD;
-        Log.d("yot132", " 일몰시간 : " + hourD + "시 " + minuteD + "분 " + secondD + "초");
     }
 
     public Double getSunSetHour() {
@@ -167,7 +162,6 @@ public class SunSet {
 
     public void getSunset(int year, int month, int day, double latitude, double longitude) {
         double lst;
-        Log.d("yot132","lat = "+latitude+"lng = " + longitude);
 
         lst = GetSunsetTime(year, month, day, latitude, -longitude, -9, 0);
         GetTimeString(lst);
@@ -175,7 +169,6 @@ public class SunSet {
 
     public void getSunrise(int year, int month, int day, double latitude, double longitude) {
         double lst;
-        Log.d("yot132","lat = "+latitude+"lng = " + longitude);
 
         lst = GetSunriseTime(year, month, day, latitude, -longitude, -9, 0);
         GetTimeString(lst);
