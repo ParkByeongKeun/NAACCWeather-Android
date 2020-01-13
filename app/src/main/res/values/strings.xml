@@ -76,4 +76,10 @@
     <string name = "text_sensor">Sensor</string>
     <string name = "text_after_launching_the_app">Want to monitor your location experience right after launching the app?</string>
     <string name = "text_go_to_current_location">Go to current location environment</string>
+
+    <string name = "more_information">More information</string>
+    <string name = "sunrise">Sunrise</string>
+    <string name = "sunset">Sunset</string>
+    <string name = "am">AM</string>
+    <string name = "pm">PM</string>
 </resources>
