@@ -357,7 +357,6 @@
             </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -368,11 +367,14 @@
         android:layout_below="@id/rlBottom"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"/>
-
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rl"
+            android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
     </RelativeLayout>
     </ScrollView>
-
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

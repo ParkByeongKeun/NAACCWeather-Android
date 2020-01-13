@@ -14,6 +14,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -29,6 +30,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.mingle.sweetpick.CustomDelegate;
+import com.mingle.sweetpick.SweetSheet;
 import com.skyfishjy.library.RippleBackground;
 
 import net.ijoon.envsensor;
@@ -55,6 +58,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
     SwipeRefreshLayout mSwipeRefreshLayout;
     private boolean isSensorAvailable = false;
     private boolean isMenuItemClick = false;
+    SweetSheet mSweetSheet;
 
     private int mCurrentPosition;
     CustomApplication mCustomApplication;
@@ -87,6 +91,8 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
     int mTouchCheck;
     SunSet sunSet;
     SunSet sunRise;
+    RelativeLayout rl;
+
     CountDownTimer countDownTimer = new CountDownTimer(600000, 1000) {
         public void onTick(long millisUntilFinished) {
             Log.d("yot132",String.format(Locale.getDefault(), "%d sec.", millisUntilFinished / 1000L));
@@ -110,6 +116,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
         mCustomApplication = (CustomApplication) getApplicationContext();
         mEnvSensor = mCustomApplication.getEnvSensor();
         //init view
+        rl = findViewById(R.id.rl);
         mTvWindDirection = findViewById(R.id.tvWindDirection);
         mTvTemperature = findViewById(R.id.tvTemp);
         mTvHumidity = findViewById(R.id.tvHumidityValue);//습기
@@ -193,6 +200,15 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                     startActivity(intent);
                     finish();
                 }
+            }
+        });
+
+        mIvWeather.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                setupCustomView();
+                mSweetSheet.toggle();
             }
         });
     }
@@ -682,5 +698,33 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mSweetSheet.isShow()){
+            mSweetSheet.dismiss();
+        }else {
+                super.onBackPressed();
+        }
+    }
+
+    private void setupCustomView() {
+        CustomDelegate customDelegate = new CustomDelegate(true,
+                CustomDelegate.AnimationType.DuangLayoutAnimation);
+        View view = LayoutInflater.from(this).inflate(R.layout.sunset_sunrise_view, null, false);
+        customDelegate.setCustomView(view);
+        mSweetSheet.setDelegate(customDelegate);
+        final TextView tvTimeSunrise = view.findViewById(R.id.tvTime);
+        final TextView tvTimeSunset = view.findViewById(R.id.tvTimeSunset);
+
+        int tempSunsetHour = 0;
+        if(sunSet.getSunSetHour() >= 13) {
+            tempSunsetHour = sunSet.getSunSetHour().intValue() - 12;
+        }else {
+            tempSunsetHour = sunSet.getSunSetHour().intValue();
+        }
+        tvTimeSunrise.setText(getResources().getString(R.string.am) + " " + sunRise.getSunSetHour().intValue() + " : " + sunRise.getSunSetMinute().intValue());
+        tvTimeSunset.setText(getResources().getString(R.string.pm) + " " + tempSunsetHour + " : " + sunSet.getSunSetMinute().intValue());
     }
 }
