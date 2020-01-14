@@ -383,29 +383,38 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                             }else {
                                 if(computableDate.getAMPM() != 1 ) {
                                     //오전
+                                    if(response.getCluminosity() > 100) {
+                                        //cloud
+                                        mIvWeather.setImageResource(R.drawable.ic_moon);
+                                    }else {
+                                        mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
+                                    }
                                     if(computableDate.getHour() <= sunRise.getSunSetHour()) {
-                                        //오전 7시 이전
-                                        if(computableDate.getMinute() < sunRise.getSunSetMinute()) {
-                                            if(response.getCluminosity() > 100) {
-                                                //cloud
-                                                mIvWeather.setImageResource(R.drawable.ic_moon);
+                                        if(computableDate.getHour() == sunRise.getSunSetHour()) {
+                                            if(computableDate.getMinute() < sunRise.getSunSetMinute()) {
+                                                if(response.getCluminosity() > 100) {
+                                                    //cloud
+                                                    mIvWeather.setImageResource(R.drawable.ic_moon);
+                                                }else {
+                                                    mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
+                                                }
                                             }else {
-                                                mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
-                                            }
-                                        }else {
-                                            if(response.getCluminosity() >= 30000 ) {
-                                                //sun
-                                                mIvWeather.setImageResource(R.drawable.ic_sun);
-                                            }else if(response.getCluminosity() < 30000 && response.getCluminosity() > 15000 ) {
-                                                //sun_cloud
-                                                mIvWeather.setImageResource(R.drawable.ic_sun_cloud);
-                                            }else  {
-                                                //cloud
-                                                mIvWeather.setImageResource(R.drawable.ic_cloud);
+                                                //일출
+                                                if(response.getCluminosity() >= 30000 ) {
+                                                    //sun
+                                                    mIvWeather.setImageResource(R.drawable.ic_sun);
+                                                }else if(response.getCluminosity() < 30000 && response.getCluminosity() > 15000 ) {
+                                                    //sun_cloud
+                                                    mIvWeather.setImageResource(R.drawable.ic_sun_cloud);
+                                                }else  {
+                                                    //cloud
+                                                    mIvWeather.setImageResource(R.drawable.ic_cloud);
+                                                }
                                             }
                                         }
+
                                     }else {
-                                        // 오전
+                                        // 해 뜬 오전
                                         if(response.getCluminosity() >= 30000 ) {
                                             //sun
                                             mIvWeather.setImageResource(R.drawable.ic_sun);
@@ -434,6 +443,13 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                                     mIvWeather.setImageResource(R.drawable.ic_cloud);
                                                 }
                                                 return;
+                                            }else {
+                                                if(response.getCluminosity() > 100) {
+                                                    //cloud
+                                                    mIvWeather.setImageResource(R.drawable.ic_moon);
+                                                }else {
+                                                    mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
+                                                }
                                             }
                                         }
                                         if(response.getCluminosity() > 100) {
