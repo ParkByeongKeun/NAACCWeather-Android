@@ -209,6 +209,12 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
             @Override
             public void onClick(View v) {
 
+                if(mSweetSheet.isShow()) {
+                    return;
+                }
+                if(sunSet.getSunSetHour() == null) {
+                    return;
+                }
                 setupCustomView();
                 mSweetSheet.toggle();
             }
