@@ -175,6 +175,11 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                 return false;
             }
         });
+
+        if(mCustomApplication.mServerSession == null) {
+            mCustomApplication.startServer();
+        }
+
         mSwipeRefreshLayout.setRefreshing(true);
         mTvVersion.setText("ver " + getAppVersionName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

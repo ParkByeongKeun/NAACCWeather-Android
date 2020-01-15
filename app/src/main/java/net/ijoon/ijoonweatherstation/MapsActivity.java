@@ -60,6 +60,11 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         mCustomApplication = (CustomApplication) getApplicationContext();
         actionBar = getSupportActionBar();
         envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().build();
+
+        if(mCustomApplication.mServerSession == null) {
+            mCustomApplication.startServer();
+        }
+        
         mCustomApplication.mServerSession.request(request);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
