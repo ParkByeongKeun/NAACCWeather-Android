@@ -97,14 +97,12 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
         public void onTick(long millisUntilFinished) {
             Log.d("yot132",String.format(Locale.getDefault(), "%d sec.", millisUntilFinished / 1000L));
         }
-
         public void onFinish() {
            Log.d("yot132","on finish");
             isTimerFinish = true;
             isRain = false;
         }
     };
-
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -179,15 +177,12 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
         });
         mSwipeRefreshLayout.setRefreshing(true);
         mTvVersion.setText("ver " + getAppVersionName());
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-
         envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setId(mEnvSensor.getId()).build();
         mCustomApplication.mServerSession.request(request);
         envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setId(mEnvSensor.getId()).build();
         mCustomApplication.mServerSession.request(request1);
-
         mSweetSheet = new SweetSheet(rl);
         mRootView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,7 +190,6 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                 if(mSweetSheet.isShow()){
                     mSweetSheet.dismiss();
                 }
-
                 mTouchCheck++;
                 if(mTouchCheck == 10) {
                     Intent intent = new Intent(ScrollingActivity.this,DevActivity.class);
@@ -204,11 +198,9 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                 }
             }
         });
-
         mIvWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(mSweetSheet.isShow()) {
                     return;
                 }
@@ -303,7 +295,6 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                             if(mSwipeRefreshLayout.isRefreshing()) {
                                 mSwipeRefreshLayout.setRefreshing(false);
                             }
-
                             float tempWindDirection = 0;
                             if(response.getCdirection() == 0 ) {
                                 tempWindDirection = mWindDirection;
@@ -326,8 +317,6 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                             }else {
                                 chaosCompassView.setVal(tempWindDirection);
                             }
-
-
                             if (tempWindDirection <= 15 || tempWindDirection >= 345){
                                 //북
                                 rippleBackground.setX(screenWidth/2);
@@ -369,16 +358,11 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 rippleBackground.setY(-rippleBackground.getHeight());
                                 rippleBackground.startRippleAnimation();
                             }
-
                             mTvTemperature.setText(String.valueOf(String.format("%.2f",response.getCtemperature()))+"℃");
                             mTvHumidity.setText(String.valueOf(String.format("%.2f",response.getChumidity()))+" %");//습기
                             mTvPressure.setText(String.valueOf(String.format("%.2f",response.getCpressure())+" hPa"));//압력
-
-//                            Log.d("yot132","mEnvSensor.getLatitude()= " + mEnvSensor.getLatitude());
                             sunSet.getSunset(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
                             sunRise.getSunrise(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
-
-
                             if(response.getCrain() >= 5) {
                                 //rain
                                 isRain = true;
@@ -418,7 +402,6 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                                 }
                                             }
                                         }
-
                                     }else {
                                         // 해 뜬 오전
                                         if(response.getCluminosity() >= 30000 ) {
@@ -519,9 +502,6 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 mIvWeather.setImageResource(R.drawable.ic_rain);
                                 mTvWeatherComment.setText(getResources().getString(R.string.midle_title6));
                             }
-
-
-
                             if(response.getCvelocity() <= 0.1) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation));
@@ -677,13 +657,8 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        // grantResults[0] 거부 -> -1
-        // grantResults[0] 허용 -> 0 (PackageManager.PERMISSION_GRANTED)
-
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             // ACCESS_FINE_LOCATION 에 대한 권한 획득.
         } else {
@@ -729,7 +704,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
         if(mSweetSheet.isShow()){
             mSweetSheet.dismiss();
         }else {
-                super.onBackPressed();
+            super.onBackPressed();
         }
     }
 
