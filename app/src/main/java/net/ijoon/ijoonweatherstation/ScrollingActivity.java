@@ -436,7 +436,6 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                                     //cloud
                                                     mIvWeather.setImageResource(R.drawable.ic_cloud);
                                                 }
-                                                return;
                                             }else {
                                                 if(response.getCluminosity() > 100) {
                                                     //cloud
