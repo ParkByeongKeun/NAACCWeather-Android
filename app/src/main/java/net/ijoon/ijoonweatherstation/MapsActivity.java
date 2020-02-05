@@ -1,12 +1,17 @@
 package net.ijoon.ijoonweatherstation;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +29,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -31,8 +37,11 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.mingle.sweetpick.CustomDelegate;
 import com.mingle.sweetpick.SweetSheet;
 import net.ijoon.envsensor;
+import net.ijoon.ijoonweatherstation.util.MarkerItem;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
+
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +59,14 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     String sensorLong;
     ActionBar actionBar;
     private BackPressCloseHandler mBackPressCloseHandler;
+    View marker_root_view;
+    TextView tv_marker;
+    RelativeLayout rl_message;
+    private void setCustomMarkerView() {
+        marker_root_view = LayoutInflater.from(this).inflate(R.layout.marker_layout, null);
+        tv_marker = marker_root_view.findViewById(R.id.tv_marker);
+        rl_message = marker_root_view.findViewById(R.id.rlMessage);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +76,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         mArrMarkerOptions = new ArrayList<>();
         mCustomApplication = (CustomApplication) getApplicationContext();
         actionBar = getSupportActionBar();
+        setCustomMarkerView();
         envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().build();
-
         if(mCustomApplication.mServerSession == null) {
             mCustomApplication.startServer();
         }
@@ -80,6 +97,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         inflater.inflate(R.menu.menu_refresh,menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -138,14 +156,36 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                 //Todo : 센서가 없습니다.
                             } else {
                                 MarkerOptions markerOptions = new MarkerOptions();
-                                for(int i = 0 ; i < response.getSensorCount() ; i ++) {
-                                    LatLng position = new LatLng(response.getSensor(i).getLatitude(),response.getSensor(i).getLongitude());
+
+
+                                    for(int i = 0 ; i < response.getSensorCount() ; i ++) {
+
+
+
+                                        if(i == 2) {
+                                            rl_message.setBackgroundResource(R.drawable.ic_message_danger);
+                                            tv_marker.setText("11.6\nm/s");
+                                            Log.d("yot132","?@#@");
+                                        }else {
+                                            rl_message.setBackgroundResource(R.drawable.ic_message_default);
+                                            tv_marker.setText("9.8\nm/s");
+                                            Log.d("yot132","?@#@");
+                                        }
+
+                                        LatLng position = new LatLng(response.getSensor(i).getLatitude(),response.getSensor(i).getLongitude());
                                     markerOptions.position(position);
                                     markerOptions.title(response.getSensor(i).getName());
                                     markerOptions.snippet(String.valueOf(response.getSensor(i).getId()));
                                     mArrMarkerOptions.add(markerOptions);
-                                    mMap.addMarker(mArrMarkerOptions.get(i));
+                                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), marker_root_view)));
+
+
+
+                                    Marker marker = mMap.addMarker(mArrMarkerOptions.get(i));
+                                        marker.setAlpha(1f);
+
                                 }
+
                                 LatLng firstGPS = new LatLng(response.getSensor(0).getLatitude(), response.getSensor(0).getLongitude());
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom((firstGPS),15));
                             }
@@ -355,4 +395,22 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         });
         dialog.show();
     }
+
+    // View를 Bitmap으로 변환
+    private Bitmap createDrawableFromView(Context context, View view) {
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
+        view.buildDrawingCache();
+        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+
+        return bitmap;
+    }
+
 }

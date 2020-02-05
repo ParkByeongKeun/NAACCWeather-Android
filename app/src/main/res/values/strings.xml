@@ -82,4 +82,7 @@
     <string name = "sunset">Sunset</string>
     <string name = "am">AM</string>
     <string name = "pm">PM</string>
+
+    <string name = "text_moment_wind_velocity">velocity</string>
+
 </resources>

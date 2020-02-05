@@ -85,4 +85,7 @@
     <string name = "sunset">일몰</string>
     <string name = "am">오전</string>
     <string name = "pm">오후</string>
+
+    <string name = "text_moment_wind_velocity">순간 풍속</string>
+
 </resources>
