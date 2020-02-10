@@ -1,7 +1,10 @@
 package net.ijoon.ijoonweatherstation;
 
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,8 +12,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
+import androidx.core.app.NotificationCompat;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -37,12 +44,11 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.mingle.sweetpick.CustomDelegate;
 import com.mingle.sweetpick.SweetSheet;
 import net.ijoon.envsensor;
-import net.ijoon.ijoonweatherstation.util.MarkerItem;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
-
-import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -62,11 +68,14 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     View marker_root_view;
     TextView tv_marker;
     RelativeLayout rl_message;
+
     private void setCustomMarkerView() {
         marker_root_view = LayoutInflater.from(this).inflate(R.layout.marker_layout, null);
         tv_marker = marker_root_view.findViewById(R.id.tv_marker);
         rl_message = marker_root_view.findViewById(R.id.rlMessage);
     }
+
+    private Intent serviceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +84,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         mBackPressCloseHandler = new BackPressCloseHandler(this);
         mArrMarkerOptions = new ArrayList<>();
         mCustomApplication = (CustomApplication) getApplicationContext();
+
         actionBar = getSupportActionBar();
         setCustomMarkerView();
         envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().build();
@@ -89,6 +99,60 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         mapFragment.getMapAsync(this);
         rl = findViewById(R.id.rl);
         mSweetSheet = new SweetSheet(rl);
+
+
+        PowerManager pm = (PowerManager) getApplicationContext().getSystemService(POWER_SERVICE);
+        boolean isWhiteListing = false;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            isWhiteListing = pm.isIgnoringBatteryOptimizations(getApplicationContext().getPackageName());
+        }
+        if (!isWhiteListing) {
+            Intent intent = new Intent();
+            intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
+            startActivity(intent);
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+        Date date = new Date();
+        sendNotification(sdf.format(date));
+    }
+
+    private void sendNotification(String messageBody) {
+        Intent intent = new Intent(this, MapsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        String channelId = "fcm_default_channel";//getString(R.string.default_notification_channel_id);
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(R.drawable.logo_weather)//drawable.splash)
+                        .setContentTitle("즉시 작업을 중단하시오")
+                        .setContentText("세종시 행복동 최대 풍속 11.6 m/s")
+                        .setAutoCancel(true)
+                        .setSound(defaultSoundUri)
+                        .setPriority(Notification.PRIORITY_HIGH)
+                        .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId,"Channel human readable title", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (serviceIntent!=null) {
+            stopService(serviceIntent);
+            serviceIntent = null;
+        }
     }
 
     @Override
@@ -164,12 +228,10 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 
                                         if(i == 2) {
                                             rl_message.setBackgroundResource(R.drawable.ic_message_danger);
-                                            tv_marker.setText("11.6\nm/s");
-                                            Log.d("yot132","?@#@");
+                                            tv_marker.setText("11.6m/s");
                                         }else {
                                             rl_message.setBackgroundResource(R.drawable.ic_message_default);
-                                            tv_marker.setText("9.8\nm/s");
-                                            Log.d("yot132","?@#@");
+                                            tv_marker.setText("9.8m/s");
                                         }
 
                                         LatLng position = new LatLng(response.getSensor(i).getLatitude(),response.getSensor(i).getLongitude());
@@ -296,7 +358,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 getWindow().setNavigationBarColor(Color.parseColor("#FFAE98"));//bottom
                 getWindow().setStatusBarColor(Color.parseColor("#FF0B45"));//statusBar
                 if (actionBar != null) {
-                    actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF0B45")));
+                    actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF0B`5")));
                     actionBar.setTitle(R.string.text_select_location_on_the_map);
                 }
                 mSweetSheet.dismiss();
