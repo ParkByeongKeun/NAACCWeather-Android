@@ -26,7 +26,7 @@ public class CustomApplication extends GlobalApplication implements SCNetClientC
 //private final static String mServerIp = "123.142.5.134";
     private final static int mServerPort = 19192;
     MyActivityLifecycleCallbacks mMyActivityLifecycleCallbacks;
-    ServerSession mServerSession;
+    public ServerSession mServerSession;
     private envsensor.Sensor mEnvSensor;
 
     public envsensor.Sensor getEnvSensor() {
