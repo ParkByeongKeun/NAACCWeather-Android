@@ -85,4 +85,34 @@
 
     <string name = "text_moment_wind_velocity">velocity</string>
 
+    <string name="textLogin">login</string>
+    <string name="textJoin">join</string>
+    <string name="textLogout">logout</string>
+    <string name= "textCancel">cancel</string>
+    <string name= "textEmail">email</string>
+    <string name= "textPassword">password</string>
+    <string name= "textConfirmPassword">confirm password</string>
+    <string name= "textNickname">nickname</string>
+    <string name= "textPasswordFormatNotMatch">Password format does not match.</string>
+    <string name= "textPleaseEnterpasswordCharacters">Please enter a password of not less than 7 characters and not more than 20 characters.</string>
+    <string name= "textNotEmailFormat">It is not in email format.</string>
+    <string name= "textExpiredToken">Expired token.</string>
+    <string name= "textAvailableAfterLoggingIn">Available after logging in.</string>
+    <string name= "textCheckIDOrPassword">Please check your ID or password again.</string>
+    <string name= "textCheckInformation">Please check the information you entered.</string>
+    <string name= "textAreYouSureWantToLogout">Are you sure you want to logout?</string>
+    <string name= "textNotification">notification</string>
+    <string name= "textOk">ok</string>
+    <string name="textNicknameEmpty">ickname can not be empty</string>
+    <string name="textPasswordMustSixCharacters">Password must be at least 7 characters long.</string>
+    <string name="textPasswordNotMatch">Passwords do not match \nPlease check your password.</string>
+    <string name="textUsing">Are you already using it?                  Login</string>
+    <string name="textEmailAuthSent">We have sent a verification email to the email you entered. You can log in after verification.</string>
+    <string name="textEmailRetransmission">Email Retransmission</string>
+    <string name="textGoToTheLoginPage">Go to the login page</string>
+    <string name="textSimplySignupEmail">Simply sign up as an email</string>
+    <string name="textEmailAuthentication">EmailAuthentication</string>
+    <string name="textBeNearCompletion">Be near completion</string>
+    <string name="textForgotPassword">Forgot Password?</string>
+    <string name="textEasyLoginWithRegisteredEmail">Easy login with registered email</string>
 </resources>
