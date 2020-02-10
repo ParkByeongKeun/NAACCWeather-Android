@@ -1,4 +1,4 @@
-package net.ijoon.ijoonweatherstation;
+package net.ijoon.ijoonweatherstation.view;
 
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -14,7 +14,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -35,6 +34,10 @@ import com.mingle.sweetpick.SweetSheet;
 import com.skyfishjy.library.RippleBackground;
 
 import net.ijoon.envsensor;
+import net.ijoon.ijoonweatherstation.CustomApplication;
+import net.ijoon.ijoonweatherstation.compass.ChaosCompassView;
+import net.ijoon.ijoonweatherstation.util.DataProgrssBar;
+import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.ijoonweatherstation.util.ComputableDate;
 import net.ijoon.ijoonweatherstation.util.SunSet;
 import net.ijoon.scnet_android.Connection;
@@ -197,7 +200,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                 }
                 mTouchCheck++;
                 if(mTouchCheck == 10) {
-                    Intent intent = new Intent(ScrollingActivity.this,DevActivity.class);
+                    Intent intent = new Intent(ScrollingActivity.this, DevActivity.class);
                     startActivity(intent);
                     finish();
                 }

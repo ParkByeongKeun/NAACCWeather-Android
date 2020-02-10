@@ -1,4 +1,4 @@
-package net.ijoon.ijoonweatherstation;
+package net.ijoon.ijoonweatherstation.util;
 
 import android.app.Activity;
 import android.widget.Toast;

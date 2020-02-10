@@ -1,4 +1,4 @@
-package net.ijoon.ijoonweatherstation;
+package net.ijoon.ijoonweatherstation.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+
+import net.ijoon.ijoonweatherstation.R;
 
 
 public class LoadingActivity extends Activity {
@@ -38,7 +40,7 @@ public class LoadingActivity extends Activity {
                 try {
                     Thread.sleep(2000);
 
-                        Intent intent = new Intent(LoadingActivity.this, MapsActivity.class);
+                        Intent intent = new Intent(LoadingActivity.this, DefaultActivity.class);
                         startActivity(intent);
                         finish();
 

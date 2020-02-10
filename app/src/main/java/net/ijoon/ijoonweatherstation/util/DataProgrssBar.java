@@ -1,4 +1,4 @@
-package net.ijoon.ijoonweatherstation;
+package net.ijoon.ijoonweatherstation.util;
 
 /**
  * Created by himanshusingh on 12/10/17.

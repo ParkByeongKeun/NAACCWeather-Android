@@ -1,4 +1,4 @@
-package net.ijoon.ijoonweatherstation;
+package net.ijoon.ijoonweatherstation.view;
 
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -44,6 +44,9 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.mingle.sweetpick.CustomDelegate;
 import com.mingle.sweetpick.SweetSheet;
 import net.ijoon.envsensor;
+import net.ijoon.ijoonweatherstation.util.BackPressCloseHandler;
+import net.ijoon.ijoonweatherstation.CustomApplication;
+import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
 import java.text.SimpleDateFormat;

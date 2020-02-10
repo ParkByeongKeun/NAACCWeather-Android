@@ -39,4 +39,6 @@
     <color name="colorBtnBackGround">#3498DB</color>
     <color name="colorBackground">#EFEFF4</color>
     <color name="colorBlack">#000000</color>
+    <color name="textInputLayout">#96ffffff</color>
+
 </resources>

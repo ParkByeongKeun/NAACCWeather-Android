@@ -1,4 +1,4 @@
-package net.ijoon.ijoonweatherstation;
+package net.ijoon.ijoonweatherstation.compass;
 
 import android.animation.PropertyValuesHolder;
 import android.animation.TimeInterpolator;
@@ -20,6 +20,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+
+import net.ijoon.ijoonweatherstation.R;
 
 
 /**

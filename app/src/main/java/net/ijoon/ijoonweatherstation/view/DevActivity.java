@@ -1,4 +1,4 @@
-package net.ijoon.ijoonweatherstation;
+package net.ijoon.ijoonweatherstation.view;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,6 +16,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import net.ijoon.envsensor;
+import net.ijoon.ijoonweatherstation.CustomApplication;
+import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.RendezvousClientCallback;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;

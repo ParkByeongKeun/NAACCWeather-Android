@@ -1,4 +1,4 @@
-package net.ijoon.ijoonweatherstation;
+package net.ijoon.ijoonweatherstation.compass;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;

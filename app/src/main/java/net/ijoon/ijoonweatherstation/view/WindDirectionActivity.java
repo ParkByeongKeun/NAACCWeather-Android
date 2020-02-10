@@ -1,4 +1,4 @@
-package net.ijoon.ijoonweatherstation;
+package net.ijoon.ijoonweatherstation.view;
 
 import android.graphics.Color;
 import android.hardware.Sensor;
@@ -11,6 +11,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
 
 

@@ -47,7 +47,7 @@
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <activity
-            android:name=".LoadingActivity"
+            android:name=".view.LoadingActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,16 +56,24 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".WindDirectionActivity"
+        <activity android:name=".view.WindDirectionActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".MoniterActivity"
+        <activity android:name=".view.MoniterActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ScrollingActivity"
+        <activity android:name=".view.ScrollingActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
-        <activity android:name=".MapsActivity"
+        <activity android:name=".view.MapsActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".DevActivity"
+        <activity android:name=".view.DevActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.DefaultActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.JoinActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.JoinEmailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.LoginActivity"
             android:screenOrientation="portrait"/>
 
         <meta-data

@@ -1,4 +1,4 @@
-package net.ijoon.ijoonweatherstation;
+package net.ijoon.ijoonweatherstation.view;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import net.ijoon.ijoonweatherstation.CustomApplication;
+import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.scnet_android.RendezvousClientCallback;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
 
