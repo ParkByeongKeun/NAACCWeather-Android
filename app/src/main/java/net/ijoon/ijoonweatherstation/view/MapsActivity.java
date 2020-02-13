@@ -29,6 +29,9 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.NotificationCompat;
@@ -40,6 +43,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mingle.sweetpick.CustomDelegate;
 import com.mingle.sweetpick.SweetSheet;
@@ -84,6 +92,18 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create channel to show notifications.
+            String channelId  = getString(R.string.default_notification_channel_id);
+            String channelName = getString(R.string.default_notification_channel_name);
+            NotificationManager notificationManager =
+                    getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(new NotificationChannel(channelId,
+                    channelName, NotificationManager.IMPORTANCE_LOW));
+        }
+
+
         mBackPressCloseHandler = new BackPressCloseHandler(this);
         mArrMarkerOptions = new ArrayList<>();
         mCustomApplication = (CustomApplication) getApplicationContext();
@@ -116,9 +136,29 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             startActivity(intent);
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
-        Date date = new Date();
-        sendNotification(sdf.format(date));
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+//        Date date = new Date();
+//        sendNotification(sdf.format(date));
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("yot132", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+//                        // Log and toast
+//                        String msg = getString(R.string., token);
+//                        Log.d("yto132", msg);
+//                        Toast.makeText(MapsActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
     }
 
     private void sendNotification(String messageBody) {
@@ -468,5 +508,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 
         return bitmap;
     }
+
 
 }

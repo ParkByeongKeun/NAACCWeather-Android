@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "683985195158",
+    "firebase_url": "https://ijoonweatherstation.firebaseio.com",
+    "project_id": "ijoonweatherstation",
+    "storage_bucket": "ijoonweatherstation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:683985195158:android:0a098850b9e03b5bde32b7",
+        "android_client_info": {
+          "package_name": "net.ijoon.ijoonweatherstation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "683985195158-kvpillo0f9nv9h7opgd9u07irf1qbmf2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.ijoon.ijoonweatherstation",
+            "certificate_hash": "d99a718d258ef1b498fb88c639cb6e611047b76a"
+          }
+        },
+        {
+          "client_id": "683985195158-ia1lq9i368mq32bgrsba5ijmulpv3j7f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFrhJ-gNBy51ybyIiMrtbV3yUgz70nRoc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "683985195158-ia1lq9i368mq32bgrsba5ijmulpv3j7f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "683985195158-61fkbg4fihevbb8so9dfnl2hkd4h50jo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.ijoon.EnvMonitor",
+                "app_store_id": "1488290602"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
