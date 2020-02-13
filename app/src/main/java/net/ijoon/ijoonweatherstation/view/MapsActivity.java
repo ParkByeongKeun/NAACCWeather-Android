@@ -210,6 +210,41 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_refresh: {
+
+
+                //firebase 토큰 값 가져오기
+
+//                FirebaseMessaging.getInstance().subscribeToTopic("weather")
+//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Void> task) {
+//                                String msg = getString(R.string.msg_subscribed);
+//                                if (!task.isSuccessful()) {
+//                                    msg = getString(R.string.msg_subscribe_failed);
+//                                }
+//                                Log.d("yot132", msg);
+//                                Toast.makeText(MapsActivity.this, msg, Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                FirebaseInstanceId.getInstance().getInstanceId()
+//                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+//                                if (!task.isSuccessful()) {
+//                                    Log.w("yot132", "getInstanceId failed", task.getException());
+//                                    return;
+//                                }
+//
+//                                // Get new Instance ID token
+//                                String token = task.getResult().getToken();
+//
+//                                // Log and toast
+//                                String msg = getString(R.string.msg_token_fmt, token);
+//                                Log.d("yot132", msg);
+//                                Toast.makeText(MapsActivity.this, msg, Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+
                 envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().build();
                 mCustomApplication.mServerSession.request(request);
                 return true;
