@@ -227,12 +227,10 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 
                                         if(mSensor.get(i).getMaxVelocity() >= 10.0) {
                                             rl_message.setBackgroundResource(R.drawable.ic_message_danger);
-                                            tv_marker.setText(mSensor.get(i).getMaxVelocity() + "m/s");
                                         }else {
                                             rl_message.setBackgroundResource(R.drawable.ic_message_default);
-                                            tv_marker.setText(mSensor.get(i).getMaxVelocity() + "m/s");
                                         }
-
+                                        tv_marker.setText(String.format("%.1f", mSensor.get(i).getMaxVelocity()) + "m/s");
                                         LatLng position = new LatLng(response.getSensor(i).getLatitude(),response.getSensor(i).getLongitude());
                                         markerOptions.position(position);
                                         markerOptions.title(response.getSensor(i).getName());
