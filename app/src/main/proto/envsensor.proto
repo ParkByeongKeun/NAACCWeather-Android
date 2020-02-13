@@ -78,6 +78,8 @@ message Sensor {
   float latitude = 2;
   float longitude = 3;
   string name = 4;
+  float maxVelocity = 5;
+  string maxTime = 6;
 }
 
 message GetSensorListRequest {

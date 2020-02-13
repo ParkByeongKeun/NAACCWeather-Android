@@ -326,7 +326,7 @@
                     android:layout_centerHorizontal="true">
 
 
-                    <net.ijoon.ijoonweatherstation.ChaosCompassView
+                    <net.ijoon.ijoonweatherstation.compass.ChaosCompassView
                         android:id="@+id/ccv"
                         android:layout_width="111dp"
                         android:layout_height="match_parent"
