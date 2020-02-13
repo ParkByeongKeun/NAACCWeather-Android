@@ -76,6 +76,8 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
     TextView mTvWindSubTitle;
     TextView mTvWeatherComment;
     TextView mTvVersion;
+    TextView mTvMaxVelocity;
+    TextView mTvMaxVelocityTime;
     RelativeLayout mRlTopTemp;
     ImageView mIvWeather;
     DataProgrssBar dataProgrssBar;
@@ -130,6 +132,8 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
         ImageView imageView = findViewById(R.id.centerImage);
         mRootView = findViewById(R.id.rlRoot);
         mRlTopTemp = findViewById(R.id.rlWind);
+        mTvMaxVelocity = findViewById(R.id.tv_wind_velocity_max);
+        mTvMaxVelocityTime = findViewById(R.id.tv_velocity_max_time);
         rippleBackground = findViewById(R.id.content);
         mRelativeWindDirection = findViewById(R.id.rlMidWindDirection);
         chaosCompassView = (ChaosCompassView) findViewById(R.id.ccv);
@@ -366,9 +370,13 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 rippleBackground.setY(-rippleBackground.getHeight());
                                 rippleBackground.startRippleAnimation();
                             }
-                            mTvTemperature.setText(String.valueOf(String.format("%.2f",response.getCtemperature()))+"℃");
-                            mTvHumidity.setText(String.valueOf(String.format("%.2f",response.getChumidity()))+" %");//습기
-                            mTvPressure.setText(String.valueOf(String.format("%.2f",response.getCpressure())+" hPa"));//압력
+                            mTvMaxVelocity.setText(String.format("%.1f",mCustomApplication.getEnvSensor().getMaxVelocity()) + "m/s");
+                            String[] tempMaxVelocityTime = mCustomApplication.getEnvSensor().getMaxTime().split(" ");
+                            mTvMaxVelocityTime.setText(tempMaxVelocityTime[1]);
+
+                            mTvTemperature.setText(String.format("%.2f",response.getCtemperature())+"℃");
+                            mTvHumidity.setText(String.format("%.2f",response.getChumidity())+" %");//습기
+                            mTvPressure.setText(String.format("%.2f",response.getCpressure())+" hPa");//압력
                             sunSet.getSunset(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
                             sunRise.getSunrise(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
                             if(response.getCrain() >= 5) {

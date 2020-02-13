@@ -118,5 +118,6 @@
     <string name="textBeNearCompletion">거의 완료되었습니다!</string>
     <string name="textForgotPassword">비밀번호를 잊으 셨나요?</string>
     <string name="textEasyLoginWithRegisteredEmail">등록된 이메일로 간편 로그인</string>
+    <string name="textMaxVelocity">최대 풍속</string>
 
 </resources>

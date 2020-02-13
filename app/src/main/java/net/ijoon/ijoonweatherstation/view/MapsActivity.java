@@ -223,30 +223,23 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                 //Todo : 센서가 없습니다.
                             } else {
                                 MarkerOptions markerOptions = new MarkerOptions();
-
-
                                     for(int i = 0 ; i < response.getSensorCount() ; i ++) {
 
-
-
-                                        if(i == 2) {
+                                        if(mSensor.get(i).getMaxVelocity() >= 10.0) {
                                             rl_message.setBackgroundResource(R.drawable.ic_message_danger);
-                                            tv_marker.setText("11.6m/s");
+                                            tv_marker.setText(mSensor.get(i).getMaxVelocity() + "m/s");
                                         }else {
                                             rl_message.setBackgroundResource(R.drawable.ic_message_default);
-                                            tv_marker.setText("9.8m/s");
+                                            tv_marker.setText(mSensor.get(i).getMaxVelocity() + "m/s");
                                         }
 
                                         LatLng position = new LatLng(response.getSensor(i).getLatitude(),response.getSensor(i).getLongitude());
-                                    markerOptions.position(position);
-                                    markerOptions.title(response.getSensor(i).getName());
-                                    markerOptions.snippet(String.valueOf(response.getSensor(i).getId()));
-                                    mArrMarkerOptions.add(markerOptions);
-                                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), marker_root_view)));
-
-
-
-                                    Marker marker = mMap.addMarker(mArrMarkerOptions.get(i));
+                                        markerOptions.position(position);
+                                        markerOptions.title(response.getSensor(i).getName());
+                                        markerOptions.snippet(String.valueOf(response.getSensor(i).getId()));
+                                        mArrMarkerOptions.add(markerOptions);
+                                        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), marker_root_view)));
+                                        Marker marker = mMap.addMarker(mArrMarkerOptions.get(i));
                                         marker.setAlpha(1f);
 
                                 }

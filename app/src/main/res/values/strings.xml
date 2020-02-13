@@ -115,4 +115,5 @@
     <string name="textBeNearCompletion">Be near completion</string>
     <string name="textForgotPassword">Forgot Password?</string>
     <string name="textEasyLoginWithRegisteredEmail">Easy login with registered email</string>
+    <string name="textMaxVelocity">max velocity</string>
 </resources>

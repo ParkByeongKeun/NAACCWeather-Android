@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:id="@+id/swipe_layout"
@@ -14,9 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/rlRoot"
@@ -83,21 +81,29 @@
                     android:background="@color/white"/>
 
                 <TextView
+                    android:id="@+id/tv_max"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_marginLeft="50dp"
-                    android:textSize="18dp"
-                    android:text="최대 풍속 \n12 : 34"
-                    android:id="@+id/tv_max"
-                    android:textColor="@color/white"/>
+                    android:text="@string/textMaxVelocity"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_max"
+                    android:layout_marginLeft="50dp"
+                    android:text="00:00:00.0"
+                    android:id="@+id/tv_velocity_max_time"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="50dp"
-                    android:text="11.6m/s"
+                    android:text="0m/s"
                     android:textSize="30dp"
                     android:textStyle="bold"
                     android:id="@+id/tv_wind_velocity_max"
