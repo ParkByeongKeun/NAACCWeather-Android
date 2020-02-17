@@ -40,7 +40,7 @@ public class LoadingActivity extends Activity {
                 try {
                     Thread.sleep(2000);
 
-                        Intent intent = new Intent(LoadingActivity.this, DefaultActivity.class);
+                        Intent intent = new Intent(LoadingActivity.this, MapsActivity.class);
                         startActivity(intent);
                         finish();
 
