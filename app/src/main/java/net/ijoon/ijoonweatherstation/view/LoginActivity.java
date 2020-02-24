@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,18 +23,36 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.protobuf.InvalidProtocolBufferException;
 
+import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
+import net.ijoon.ijoonweatherstation.login.AuthService;
+import net.ijoon.ijoonweatherstation.login.LoginRequest;
+import net.ijoon.ijoonweatherstation.login.LoginResponse;
 import net.ijoon.scnet_android.Connection;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.RendezvousClientCallback;
 import net.ijoon.scnet_android.RendezvousSession;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
-import retrofit2.Retrofit;
+import net.ijoon.scnet_android.ServerManagerCallback;
 
-public class LoginActivity extends SCNetAppCompatActivity implements RendezvousClientCallback {
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class LoginActivity extends SCNetAppCompatActivity {
 
     Button mBtnLogin;
     EditText mEtId;
@@ -61,7 +80,6 @@ public class LoginActivity extends SCNetAppCompatActivity implements RendezvousC
         getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));
         mCustomApplication = (CustomApplication)getApplication();
         ActionBar actionBar = this.getSupportActionBar();
-
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
@@ -79,12 +97,11 @@ public class LoginActivity extends SCNetAppCompatActivity implements RendezvousC
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStrId = mEtId.getText().toString().trim();
+                mStrId = mEtId.getText().toString().toString();
                 mEtId.setText(mStrId);
                 mStrPassword = mEtPassword.getText().toString();
 
-                Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
-                startActivity(intent);
+                login(mStrId,mStrPassword);
 //                if(android.util.Patterns.EMAIL_ADDRESS.matcher(mStrId).matches()) {
 //                    login(mStrId, mStrPassword);
 //                }else {
@@ -93,17 +110,14 @@ public class LoginActivity extends SCNetAppCompatActivity implements RendezvousC
             }
         });
 
-        mTvForgot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("http://circular.ijoon.net/"));
-                startActivity(intent);
+        mTvForgot.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                return;
             }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://circular.ijoon.net/"));
+            startActivity(intent);
         });
 
         mRlRoot.setOnClickListener(new View.OnClickListener() {
@@ -116,46 +130,43 @@ public class LoginActivity extends SCNetAppCompatActivity implements RendezvousC
     }
 
     void login(String id, String pw) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://1.246.219.189:20217")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        AuthService service = retrofit.create(AuthService.class);
+        final Call<LoginResponse> loginResponseCall = service.login(new LoginRequest(id, pw));
+        loginResponseCall.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                LoginResponse body = response.body();
+                if(body == null) {
+                    // Todo: 로그인인증서버에서 HTTP Status Code에 따라 body가 null이 되는지 확인
+                    showAlertDialog(getResources().getString(R.string.textLoginFailed));
+                    return;
+                }
 
+                if(body.getSuccess()) {
+                    String token = body.getAccessToken();
+                    SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+                    SharedPreferences.Editor editor =  preferences.edit();
+                    editor.putString("token", token);
+                    editor.putString("id", mStrId);
+                    editor.apply();
+                    isLoginSuccess = true;
+                    Log.d("yot132","login success");
+                    envsensor.GetSensorListRequest sensorListRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(token).build();
+                    mCustomApplication.mServerSession.request(sensorListRequest);
 
-
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("http://circular.ijoon.net")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//        AuthService service = retrofit.create(AuthService.class);
-//        final Call<LoginResponse> loginResponseCall = service.login(new LoginRequest(id, pw));
-//        loginResponseCall.enqueue(new Callback<LoginResponse>() {
-//            @Override
-//            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-//
-//                LoginResponse body = response.body();
-//                if(body == null) {
-//                    // Todo: 로그인인증서버에서 HTTP Status Code에 따라 body가 null이 되는지 확인
-//                    showAlertDialog(getResources().getString(R.string.textLoginFailed));
-//                    return;
-//                }
-//
-//                if(body.getSuccess()) {
-//                    String token = body.getAccessToken();
-//                    SharedPreferences.Editor editor = mCustomApplication.getPref().edit();
-//                    editor.putString("token", token);
-//                    editor.putString("id", mStrId);
-//                    editor.apply();
-//                    mCustomApplication.setToken(token);
-//                    mCustomApplication.setId(mStrId);
-//                    isLoginSuccess = true;
-//                    Circular.StationListRequest stationListRequest = Circular.StationListRequest.newBuilder().setAccessToken(token).build();
-//                    mCustomApplication.send(stationListRequest);
-//                }else {
-//                    showAlertDialog(getResources().getString(R.string.textLoginFailed));
-//                }
-//            }
-//            @Override
-//            public void onFailure(Call<LoginResponse> call, Throwable t) {
-//                Log.d("logdinobei", "onFailure" + t.getMessage());
-//            }
-//        });
+                }else {
+                    showAlertDialog(getResources().getString(R.string.textLoginFailed));
+                }
+            }
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Log.d("logdinobei", "onFailure" + t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -164,6 +175,12 @@ public class LoginActivity extends SCNetAppCompatActivity implements RendezvousC
         Intent intent = new Intent(LoginActivity.this,DefaultActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onAttached() {
+        super.onAttached();
+        Log.d("yot132","Login onAttached called");
     }
 
     @Override
@@ -241,57 +258,43 @@ public class LoginActivity extends SCNetAppCompatActivity implements RendezvousC
     }
 
     @Override
-    public void onMessage(MessageHeader messageHeader, byte[] buffer) {
-//
-//        Circular.PacketType packetType = Circular.PacketType.forNumber(messageHeader.mPacketType);
-//        if(packetType == null) {
-//            Log.d("yot132", "packetType is null");
-//            return;
-//        }
-//        switch (packetType) {
-//            case rtsStartRes: {
-//                break;
-//            }
-//            case videoInitFrame: {
-//                break;
-//            }
-//            case videoFrame: {
-//                break;
-//            }
-//            case rtsStopRes: {
-//
-//                break;
-//            }
-//            case rtsStopped: {
-//                break;
-//            }
-//            case cameraListResponse: {
-//
-//                break;
-//            }
-//            case stationListResponse: {
-//                try {
-//                    final Circular.StationListResponse response = Circular.StationListResponse.parseFrom(buffer);
-//                    if(response.getStationListCount() > 0) {
-//                        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-//                        startActivity(intent);
-//                        finish();
-//                    }else {
-//                        if(isLoginSuccess) {
-//                            Intent intent = new Intent(LoginActivity.this,UnKnownStationActivity.class);
-//                            startActivity(intent);
-//                            finish();
-//                        }
-//                    }
-//                } catch (InvalidProtocolBufferException e) {
-//                    e.printStackTrace();
-//                }
-//                break;
-//            }
-//            default: {
-//                Log.d("yot132","[onMessage] Unknown PacketType");
-//                break;
-//            }
-//        }
+    public void onResponse(MessageHeader messageHeader, final byte[] bodyBuf) {
+        super.onResponse(messageHeader, bodyBuf);
+        if (messageHeader == null) {
+            Log.d("yot132", "packetType is null");
+            return;
+        }
+        switch (messageHeader.mPacketType) {
+
+            case 1: {
+            }
+            case 5: {
+            }
+            case 6: {
+                //getSensorListResponse
+                try {
+                    final envsensor.GetSensorListResponse response = envsensor.GetSensorListResponse.parseFrom(bodyBuf);
+                    if(response.getSensorCount() > 0) {
+                        Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                        startActivity(intent);
+                        finish();
+                        Log.d("yot132","count = " + response.getSensorCount());
+                    }else {
+                        if(isLoginSuccess) {
+                            Log.d("yot132","count = 0");
+                            Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                } catch (InvalidProtocolBufferException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }    default: {
+                Log.d("yot132","[onMessage] Unknown PacketType");
+                break;
+            }
+        }
     }
 }
