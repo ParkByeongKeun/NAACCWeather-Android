@@ -19,11 +19,17 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import net.ijoon.ijoonweatherstation.R;
+import net.ijoon.ijoonweatherstation.login.AuthService;
+import net.ijoon.ijoonweatherstation.login.ResendRequest;
+import net.ijoon.ijoonweatherstation.login.ResendResponse;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class JoinEmailActivity extends AppCompatActivity {
-
 
     Button mBtnRetryEmail;
     Button mBtnLoginPage;
@@ -67,26 +73,26 @@ public class JoinEmailActivity extends AppCompatActivity {
     }
 
     void resend(String id) {
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("http://circular.ijoon.net")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//        AuthService service = retrofit.create(AuthService.class);
-//        final Call<ResendResponse> resendResponseCall = service.resend(new ResendRequest(id));
-//        resendResponseCall.enqueue(new Callback<ResendResponse>() {
-//            @Override
-//            public void onResponse(Call<ResendResponse> call, Response<ResendResponse> response) {
-//                    if(response.body().getSuccess()) {
-//                        showAlertDialog(getResources().getString(R.string.textEmailResent));
-//                    }else {
-//                        showAlertDialog(getResources().getString(R.string.textResentFailed));
-//                    }
-//            }
-//            @Override
-//            public void onFailure(Call<ResendResponse> call, Throwable t) {
-//                Log.d("logdinobei", "onFailure" + t.getMessage());
-//            }
-//        });
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://1.246.219.189:20217")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        AuthService service = retrofit.create(AuthService.class);
+        final Call<ResendResponse> resendResponseCall = service.resend(new ResendRequest(id));
+        resendResponseCall.enqueue(new Callback<ResendResponse>() {
+            @Override
+            public void onResponse(Call<ResendResponse> call, Response<ResendResponse> response) {
+                if(response.body().getSuccess()) {
+                    showAlertDialog(getResources().getString(R.string.textEmailResent));
+                }else {
+                    showAlertDialog(getResources().getString(R.string.textResentFailed));
+                }
+            }
+            @Override
+            public void onFailure(Call<ResendResponse> call, Throwable t) {
+                Log.d("logdinobei", "onFailure" + t.getMessage());
+            }
+        });
     }
 
     public void showAlertDialog(String message) {
