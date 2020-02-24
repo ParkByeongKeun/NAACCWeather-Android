@@ -3,7 +3,6 @@ package net.ijoon.ijoonweatherstation.view;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -20,8 +19,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import net.ijoon.ijoonweatherstation.R;
+import net.ijoon.ijoonweatherstation.login.AuthService;
+import net.ijoon.ijoonweatherstation.login.JoinRequest;
+import net.ijoon.ijoonweatherstation.login.JoinResponse;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class JoinActivity extends AppCompatActivity {
 
@@ -44,7 +50,7 @@ public class JoinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));
+
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         ActionBar actionBar = this.getSupportActionBar();
@@ -52,7 +58,7 @@ public class JoinActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textJoin) + "</font>"));
+            actionBar.setTitle(Html.fromHtml("<font color='#000000'>" + getResources().getString(R.string.textJoin) + "</font>"));
 
         }
 
@@ -99,25 +105,25 @@ public class JoinActivity extends AppCompatActivity {
     }
 
     void join(String id, String pw, String rePw, String name) {
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("http://circular.ijoon.net")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//        AuthService service = retrofit.create(AuthService.class);
-//        final Call<JoinResponse> joinResponseCall = service.join(new JoinRequest(id, pw, rePw, name));
-//        joinResponseCall.enqueue(new Callback<JoinResponse>() {
-//            @Override
-//            public void onResponse(Call<JoinResponse> call, Response<JoinResponse> response) {
-//                Intent intent = new Intent(JoinActivity.this,JoinEmailActivity.class);
-//                intent.putExtra("id", mEtId.getText().toString());
-//                startActivity(intent);
-//                finish();
-//            }
-//            @Override
-//            public void onFailure(Call<JoinResponse> call, Throwable t) {
-//                showAlertDialog(getResources().getString(R.string.textJoinFailed));
-//            }
-//        });
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://1.246.219.189:20217")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        AuthService service = retrofit.create(AuthService.class);
+        final Call<JoinResponse> joinResponseCall = service.join(new JoinRequest(id, pw, rePw, name));
+        joinResponseCall.enqueue(new Callback<JoinResponse>() {
+            @Override
+            public void onResponse(Call<JoinResponse> call, Response<JoinResponse> response) {
+                Intent intent = new Intent(JoinActivity.this,JoinEmailActivity.class);
+                intent.putExtra("id", mEtId.getText().toString());
+                startActivity(intent);
+                finish();
+            }
+            @Override
+            public void onFailure(Call<JoinResponse> call, Throwable t) {
+                showAlertDialog(getResources().getString(R.string.textJoinFailed));
+            }
+        });
     }
 
     @Override
