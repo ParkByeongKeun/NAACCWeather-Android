@@ -249,6 +249,7 @@
     <string name="textOnlyStationOwnersViewTheList">스테이션 소유자만 공유된 사용자 리스트를 확일할 수 있습니다.</string>
     <string name="textAlreadyExistUser">이미 공유된 사용자입니다.</string>
     <string name="textUserNotExist">존재하지 않는 사용자입니다.</string>
+    <string name="textFailedLogin">로그인 실패.</string>
 
 
 
