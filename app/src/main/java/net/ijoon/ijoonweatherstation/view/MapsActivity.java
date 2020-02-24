@@ -427,7 +427,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 getWindow().setNavigationBarColor(Color.parseColor("#FFAE98"));//bottom
                 getWindow().setStatusBarColor(Color.parseColor("#FF0B45"));//statusBar
                 if (actionBar != null) {
-                    actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF0B`5")));
+                    actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF0B45")));
                     actionBar.setTitle(R.string.text_select_location_on_the_map);
                 }
                 mSweetSheet.dismiss();
