@@ -22,9 +22,9 @@ import java.util.Stack;
 
 public class CustomApplication extends GlobalApplication implements SCNetClientCallback {
 
-    private final static String mServerIp = "1.246.219.189";
-//private final static String mServerIp = "123.142.5.134";
-    private final static int mServerPort = 19192;
+//    private final static String mServerIp = "1.246.219.189";
+private final static String mServerIp = "192.168.0.30";
+    private final static int mServerPort = 19193;
     MyActivityLifecycleCallbacks mMyActivityLifecycleCallbacks;
     public ServerSession mServerSession;
     private envsensor.Sensor mEnvSensor;
@@ -38,21 +38,22 @@ public class CustomApplication extends GlobalApplication implements SCNetClientC
 
     @Override
     public void onCreate() {
-        Registry.registMessage("StreamingStartRequest", 0);
-        Registry.registMessage("StreamingStartResponse", 1);
-        Registry.registMessage("StreamingStopRequest", 2);
-        Registry.registMessage("StreamingStopResponse", 3);
-        Registry.registMessage("EnvSensorData", 4);
-        Registry.registMessage("GetSensorListRequest", 5);
-        Registry.registMessage("GetSensorListResponse", 6);
-        Registry.registMessage("SetSensorPositionRequest", 7);
-        Registry.registMessage("SetSensorPositionResponse", 8);
 
-        Registry.registMessage("RegisterSensor", 9);
+        Registry.registMessage("StreamingStartRequest", envsensor.PacketType.streamingStartReq.getNumber());
+        Registry.registMessage("StreamingStartResponse", envsensor.PacketType.streamingStartRes.getNumber());
+        Registry.registMessage("StreamingStopRequest", envsensor.PacketType.streamingStopReq.getNumber());
+        Registry.registMessage("StreamingStopResponse", envsensor.PacketType.streamingStopRes.getNumber());
+        Registry.registMessage("EnvSensorData", envsensor.PacketType.envSensorData.getNumber());
+        Registry.registMessage("GetSensorListRequest", envsensor.PacketType.getSensorListReq.getNumber());
+        Registry.registMessage("GetSensorListResponse", envsensor.PacketType.getSensorListRes.getNumber());
+        Registry.registMessage("SetSensorPositionRequest", envsensor.PacketType.setSensorPositionReq.getNumber());
+        Registry.registMessage("SetSensorPositionResponse", envsensor.PacketType.setSensorPositionRes.getNumber());
 
-        Registry.registMessage("SetSensorNameRequest", 10);
+        Registry.registMessage("RegisterSensor", envsensor.PacketType.registerSensor.getNumber());
 
-        Registry.registMessage("SetSensorNameResponse", 11);
+        Registry.registMessage("SetSensorNameRequest", envsensor.PacketType.setSensorNameReq.getNumber());
+
+        Registry.registMessage("SetSensorNameResponse", envsensor.PacketType.setSensorNameRes.getNumber());
 
 //        Registry.registMessage("packet_2", 1);
 //        Registry.registMessage("packet_3", 2);
@@ -61,6 +62,7 @@ public class CustomApplication extends GlobalApplication implements SCNetClientC
         registerActivityLifecycleCallbacks(mMyActivityLifecycleCallbacks);
 
 //        setMainServerInfo("192.168.100.1", 9190, 1000); // 반드시 super.onCreate(); 이전에 호출해야 함
+
 
         super.onCreate();
     }
@@ -169,8 +171,7 @@ public class CustomApplication extends GlobalApplication implements SCNetClientC
     }
 
     public void request(MessageLite message) {
-            throw new RuntimeException("call setUseAutoServerSession(true) if you want to use this method");
-
+        throw new RuntimeException("call setUseAutoServerSession(true) if you want to use this method");
     }
 
 }
