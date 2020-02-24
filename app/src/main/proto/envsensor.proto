@@ -18,10 +18,26 @@ enum PacketType {
   setSensorNameReq = 10;
   setSensorNameRes = 11;
 
+  shareSensorReq = 12;
+  shareSensorRes = 13;
+  shareSensorCancelReq = 14;
+  shareSensorCancelRes = 15;
+  sharedUsersReq = 16;
+  sharedUsersRes = 17;
+  handoverSensorReq = 18;
+  handoverSensorRes = 19;
+  setDisclosureOptionReq = 20;
+  setDisclosureOptionRes = 21;
+  registSensorReq = 22;
+  registSensorRes = 23;
+  unregistSensorReq = 24;
+  unregistSensorRes = 25;
+
 }
 
 message StreamingStartRequest {
-  uint32 id = 1;
+  string serial = 1;
+  string accessToken = 2;
 }
 
 message StreamingStartResponse {
@@ -31,11 +47,12 @@ message StreamingStartResponse {
   }
 
   Result result = 1;
-  uint32 id = 2;
+  string serial = 2;
 }
 
 message StreamingStopRequest {
-  uint32 id = 1;
+  string serial = 1;
+  string accessToken = 2;
 }
 
 message StreamingStopResponse {
@@ -45,7 +62,7 @@ message StreamingStopResponse {
   }
 
   Result result = 1;
-  uint32 id = 2;
+  string serial = 2;
 }
 
 message EnvSensorData {
@@ -71,6 +88,8 @@ message EnvSensorData {
   float caccZ = 19;
   float crain = 20;
   float cluminosity = 21;
+
+  string serial = 22;
 }
 
 message Sensor {
@@ -80,19 +99,35 @@ message Sensor {
   string name = 4;
   float maxVelocity = 5;
   string maxTime = 6;
+  string serial = 7;
+
+  string address = 8;
+  string version = 9;
+  uint32 ping = 10;
+  string owner = 11;
+  bool isPublic = 12;
+  string regDate = 13;
 }
 
 message GetSensorListRequest {
+  string accessToken = 1;
 }
 
 message GetSensorListResponse {
-  repeated Sensor sensor = 1;
+  enum Result {
+    success = 0;
+    failed = 1;
+  }
+
+  Result result = 1;
+  repeated Sensor sensor = 2;
 }
 
 message SetSensorPositionRequest {
-  uint32 id = 1;
-  float latitude = 2;
-  float longitude = 3;
+  string accessToken = 1;
+  string serial = 2;
+  float latitude = 3;
+  float longitude = 4;
 }
 
 message SetSensorPositionResponse {
@@ -102,18 +137,20 @@ message SetSensorPositionResponse {
   }
 
   Result result = 1;
-  uint32 id = 2;
+  string serial = 2;
   float latitude = 3;
   float longitude = 4;
 }
 
 message RegisterSensor {
   uint32 id = 1;
+  string serial = 2;
 }
 
 message SetSensorNameRequest {
-  uint32 id = 1;
-  string name = 2;
+  string accessToken = 1;
+  string serial = 2;
+  string name = 3;
 }
 
 message SetSensorNameResponse {
@@ -123,6 +160,151 @@ message SetSensorNameResponse {
   }
 
   Result result = 1;
-  uint32 id = 2;
+  string serial = 2;
   string name = 3;
 }
+
+message Authority {
+  bool name = 1;
+  bool position = 2;
+  bool sharing = 3;
+  bool update = 4;
+}
+
+message ShareSensorRequest {
+  string accessToken = 1;
+  string serial = 2;
+  string userId = 3;
+  Authority auth = 4;
+}
+
+message ShareSensorResponse {
+  enum Result {
+    success = 0;
+    expiredToken = 1;
+    failed = 2;
+    unauthorized = 3;
+    userNotExist = 4;
+  }
+
+  Result result = 1;
+  string serial = 2;
+  string userId = 3;
+  Authority auth = 4;
+}
+
+message ShareSensorCancelRequest {
+  string accessToken = 1;
+  string serial = 2;
+  string userId = 3;
+}
+
+message ShareSensorCancelResponse {
+  enum Result {
+    success = 0;
+    expiredToken = 1;
+    failed = 2;
+    unauthorized = 3;
+    userNotExist = 4;
+  }
+
+  Result result = 1;
+  string serial = 2;
+  string userId = 3;
+}
+
+message SharedUsersRequest {
+  string accessToken = 1;
+  string serial = 2;
+}
+
+message SharedUsersResponse {
+  enum Result {
+    success = 0;
+    expiredToken = 1;
+    failed = 2;
+    unauthorized = 3;
+  }
+
+  Result result = 1;
+  string serial = 2;
+  repeated string sharedUsers = 3;
+}
+
+message HandoverSensorRequest {
+  string accessToken = 1;
+  string serial = 2;
+  string assigneeId = 3;
+}
+
+message HandoverSensorResponse {
+  enum Result {
+    success = 0;
+    expiredToken = 1;
+    failed = 2;
+    unauthorized = 3;
+    userNotExist = 4;
+  }
+
+  Result result = 1;
+  string serial = 2;
+  string assigneeId = 3;
+}
+
+message SetDisclosureOptionRequest {
+  string accessToken = 1;
+  string serial = 2;
+  bool isPublic = 3;
+}
+
+message SetDisclosureOptionResponse {
+  enum Result {
+    success = 0;
+    expiredToken = 1;
+    failed = 2;
+    unauthorized = 3;
+  }
+
+  Result result = 1;
+  string serial = 2;
+  bool isPublic = 3;
+}
+
+message RegistSensorRequest {
+  string accessToken = 1;
+  string serial = 2;
+  string auth = 3;
+  float latitude = 4;
+  float longitude = 5;
+}
+
+message RegistSensorResponse {
+  enum Result {
+    success = 0;
+    expiredToken = 1;
+    failed = 2;
+    unauthorized = 3;
+    userNotExist = 4;
+  }
+
+  Result result = 1;
+  string serial = 2;
+  float latitude = 3;
+  float longitude = 4;
+}
+
+message UnregistSensorRequest {
+  string accessToken = 1;
+  string serial = 2;
+}
+
+message UnregistSensorResponse {
+  enum Result {
+    success = 0;
+    failed = 1;
+  }
+
+  Result result = 1;
+  string serial = 2;
+}
+
