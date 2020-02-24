@@ -183,17 +183,13 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
             }
         });
 
-        if(mCustomApplication.mServerSession == null) {
-            mCustomApplication.startServer();
-        }
-
         mSwipeRefreshLayout.setRefreshing(true);
         mTvVersion.setText("ver " + getAppVersionName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-        envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setId(mEnvSensor.getId()).build();
+        envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
         mCustomApplication.mServerSession.request(request);
-        envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setId(mEnvSensor.getId()).build();
+        envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
         mCustomApplication.mServerSession.request(request1);
         mSweetSheet = new SweetSheet(rl);
         mRootView.setOnClickListener(new View.OnClickListener() {
@@ -661,7 +657,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
     @Override
     protected void onPause() {
         super.onPause();
-        envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setId(mEnvSensor.getId()).build();
+        envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
         mCustomApplication.mServerSession.request(request);
     }
 
@@ -685,9 +681,9 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
     public void onAttached() {
         //server request
         Log.d("yot132","on Attach called!!");
-        envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setId(mEnvSensor.getId()).build();
+        envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
         mCustomApplication.mServerSession.request(request);
-        envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setId(mEnvSensor.getId()).build();
+        envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
         mCustomApplication.mServerSession.request(request1);
         super.onAttached();
     }

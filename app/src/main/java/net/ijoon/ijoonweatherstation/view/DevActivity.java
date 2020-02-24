@@ -128,22 +128,22 @@ public class DevActivity extends SCNetAppCompatActivity implements RendezvousCli
         @Override
         protected void onResume() {
                 super.onResume();
-                envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setId(mEnvSensor.getId()).build();
+                envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
                 mCustomApplication.mServerSession.request(request1);
         }
 
         @Override
         protected void onPause() {
                 super.onPause();
-                envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setId(mEnvSensor.getId()).build();
+                envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
                 mCustomApplication.mServerSession.request(request);
         }
 
         @Override
         public void onRefresh() {
-                envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setId(mEnvSensor.getId()).build();
+                envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
                 mCustomApplication.mServerSession.request(request);
-                envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setId(mEnvSensor.getId()).build();
+                envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
                 mCustomApplication.mServerSession.request(request1);
         }
 }

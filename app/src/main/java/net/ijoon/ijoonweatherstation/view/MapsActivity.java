@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -79,6 +80,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     View marker_root_view;
     TextView tv_marker;
     RelativeLayout rl_message;
+    String mToken;
 
     private void setCustomMarkerView() {
         marker_root_view = LayoutInflater.from(this).inflate(R.layout.marker_layout, null);
@@ -104,16 +106,16 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         }
 
 
+        SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+        mToken = preferences.getString("token","");
+
         mBackPressCloseHandler = new BackPressCloseHandler(this);
         mArrMarkerOptions = new ArrayList<>();
         mCustomApplication = (CustomApplication) getApplicationContext();
 
         actionBar = getSupportActionBar();
         setCustomMarkerView();
-        envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().build();
-        if(mCustomApplication.mServerSession == null) {
-            mCustomApplication.startServer();
-        }
+        envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
 
         mCustomApplication.mServerSession.request(request);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -470,7 +472,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         alertDialog.setPositiveButton(R.string.text_ok,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        envsensor.SetSensorNameRequest request = envsensor.SetSensorNameRequest.newBuilder().setId(mCustomApplication.getEnvSensor().getId()).setName(et.getText().toString()).build();
+                        envsensor.SetSensorNameRequest request = envsensor.SetSensorNameRequest.newBuilder().setSerial(mCustomApplication.getEnvSensor().getSerial()).setName(et.getText().toString()).build();
                         mCustomApplication.mServerSession.request(request);
                     }
                 });
@@ -512,7 +514,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         builder.setPositiveButton(btnSuccess, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                envsensor.SetSensorPositionRequest request = envsensor.SetSensorPositionRequest.newBuilder().setId(mSensor.get(mPosition).getId()).setLatitude(Float.valueOf(sensorLng)).setLongitude(Float.valueOf(sensorLong)).build();
+                envsensor.SetSensorPositionRequest request = envsensor.SetSensorPositionRequest.newBuilder().setSerial(mSensor.get(mPosition).getSerial()).setLatitude(Float.valueOf(sensorLng)).setLongitude(Float.valueOf(sensorLong)).build();
                 mCustomApplication.mServerSession.request(request);
             }
         });
