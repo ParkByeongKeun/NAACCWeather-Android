@@ -25,4 +25,6 @@ public interface AuthService {
     Call<UserListItem> userList(@Body UserListRequest request);
     @POST("/api/auth/getName")
     Call<NameResponse> getName(@Body NameRequest request);
+    @POST("/api/auth/verifyJoin")
+    Call<VerifyJoinResponse> verifyJoin(@Body VerifyJoinRequest request);
 }

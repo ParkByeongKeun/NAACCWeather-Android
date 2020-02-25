@@ -140,6 +140,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 LoginResponse body = response.body();
+
                 if(body == null) {
                     // Todo: 로그인인증서버에서 HTTP Status Code에 따라 body가 null이 되는지 확인
                     showAlertDialog(getResources().getString(R.string.textLoginFailed));
@@ -160,6 +161,27 @@ public class LoginActivity extends SCNetAppCompatActivity {
 
                 }else {
                     showAlertDialog(getResources().getString(R.string.textLoginFailed));
+                }
+
+                switch (body.getErrNo()) {
+                    case -1 : {
+                        break;
+                    }
+                    case 0 : {
+                        break;
+                    }
+                    case 1 : {
+                        Intent intent = new Intent(LoginActivity.this,JoinEmailActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    }
+                    case 2 : {
+                        break;
+                    }
+                    case 3 : {
+                        break;
+                    }
                 }
             }
             @Override
