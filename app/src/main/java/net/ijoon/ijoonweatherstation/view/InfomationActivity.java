@@ -1,11 +1,13 @@
 package net.ijoon.ijoonweatherstation.view;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,6 +32,7 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
 
         envsensor.Sensor mEnvSensor;
         ActionBar actionBar;
+        Button btnInfo;
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
@@ -39,7 +42,7 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                 mCustomApplication = (CustomApplication)getApplication();
                 mEnvSensor = mCustomApplication.getEnvSensor();
 
-
+                btnInfo = findViewById(R.id.btnInfo);
                 mSwipeRefreshLayout = findViewById(R.id.swipe_layout);
                 mSwipeRefreshLayout.setOnRefreshListener(this);
 
@@ -53,8 +56,10 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
                 actionBar = getSupportActionBar();
 
-//                actionBar.setTitle(mEnvSensor.getName());
-
+                btnInfo.setOnClickListener(v -> {
+                        Intent intent = new Intent(InfomationActivity.this, SettingActivity.class);
+                        startActivity(intent);
+                });
 
         }
 

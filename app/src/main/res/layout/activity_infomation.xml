@@ -56,7 +56,7 @@
                 android:layout_marginLeft="16dp"
                 android:background="@color/blueSkiesBottom"
                 android:text="계정설정"
-                android:id="@+id/btnLogin"
+                android:id="@+id/btnInfo"
                 android:textAllCaps="false"
                 android:layout_weight="0.1"
                 android:textColor="#96ffffff"

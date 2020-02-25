@@ -3,6 +3,7 @@ package net.ijoon.ijoonweatherstation.view;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -87,6 +88,9 @@ public class JoinActivity extends AppCompatActivity {
                     if(mStrPassword.equals(mStrRePassword)) {
                         if (mStrPassword.length() >6) {
                             if(!mEtNickName.equals("")) {
+                                SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+                                preferences.edit().putString("nickname","");
+                                preferences.edit().apply();
                                 join(mStrId,mStrPassword, mStrRePassword, mStrName);
                             }else {
                                 showAlertDialog(getResources().getString(R.string.textNicknameEmpty));
