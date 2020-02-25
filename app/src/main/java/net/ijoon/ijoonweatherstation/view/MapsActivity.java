@@ -101,7 +101,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                     channelName, NotificationManager.IMPORTANCE_LOW));
         }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // ↓툴바의 홈버튼의 이미지를 변경(기본 이미지는 뒤로가기 화살표)
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 좌측튼 상단 버튼
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_person_whit);
 
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
@@ -246,7 +246,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 return true;
             }
             case R.id.action_add: {
-                Intent intent = new Intent(MapsActivity.this, StationAddActivity.class);
+                Intent intent = new Intent(MapsActivity.this, SensorAddActivity.class);
                 startActivity(intent);
                 return true;
             }
@@ -296,6 +296,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                             final envsensor.GetSensorListResponse response = envsensor.GetSensorListResponse.parseFrom(bodyBuf);
                             for (int i = 0; i < response.getSensorCount(); i++) {
                                 mSensor.add(response.getSensor(i));
+
                             }
                             if (response.getSensorCount() == 0) {
                                 //Todo : 센서가 없습니다.

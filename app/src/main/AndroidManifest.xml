@@ -83,8 +83,9 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".view.InfomationActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".view.StationAddActivity"
+        <activity android:name=".view.SensorAddActivity"
             android:screenOrientation="portrait"/>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
