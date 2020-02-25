@@ -246,7 +246,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 return true;
             }
             case R.id.action_add: {
-
+                Intent intent = new Intent(MapsActivity.this, StationAddActivity.class);
+                startActivity(intent);
                 return true;
             }
         }

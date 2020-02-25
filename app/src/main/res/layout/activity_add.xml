@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:id="@+id/rlRoot">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/textRegistStation"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="30dp"
+        android:id="@+id/tv"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textSize="20dp"
+        android:text="@string/textEditSerialToAuth"
+        android:layout_below="@+id/tv"
+        android:id="@+id/tvBottom"/>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:id="@+id/etSerial"
+        android:singleLine="true"
+        android:lines="1"
+        android:hint="@string/textSerialNumber"
+        android:background="@color/colorWhite"
+        android:layout_below="@+id/tvBottom"
+        android:layout_marginTop="70dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etSerial"
+        android:id="@+id/etAuth"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:singleLine="true"
+        android:lines="1"
+        android:background="@color/colorWhite"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:hint="@string/textAuth"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etAuth"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:id="@+id/llBtn">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textRegist"
+            android:textColor="#ffffff"
+            android:id="@+id/btnRegist"
+            android:layout_marginBottom="150dp"
+            android:background="@color/colorBtnBackGround"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+</RelativeLayout>
