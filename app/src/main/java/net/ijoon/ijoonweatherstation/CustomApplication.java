@@ -48,12 +48,25 @@ private final static String mServerIp = "1.246.219.189";
         Registry.registMessage("GetSensorListResponse", envsensor.PacketType.getSensorListRes.getNumber());
         Registry.registMessage("SetSensorPositionRequest", envsensor.PacketType.setSensorPositionReq.getNumber());
         Registry.registMessage("SetSensorPositionResponse", envsensor.PacketType.setSensorPositionRes.getNumber());
-
         Registry.registMessage("RegisterSensor", envsensor.PacketType.registerSensor.getNumber());
-
         Registry.registMessage("SetSensorNameRequest", envsensor.PacketType.setSensorNameReq.getNumber());
-
         Registry.registMessage("SetSensorNameResponse", envsensor.PacketType.setSensorNameRes.getNumber());
+
+        Registry.registMessage("ShareSensorRequest", envsensor.PacketType.shareSensorReq.getNumber());
+        Registry.registMessage("ShareSensorResponse", envsensor.PacketType.shareSensorRes.getNumber());
+        Registry.registMessage("ShareSensorCancelRequest", envsensor.PacketType.shareSensorCancelReq.getNumber());
+        Registry.registMessage("ShareSensorCancelResponse", envsensor.PacketType.shareSensorCancelRes.getNumber());
+        Registry.registMessage("SharedUsersRequest", envsensor.PacketType.sharedUsersReq.getNumber());
+        Registry.registMessage("SharedUsersResponse", envsensor.PacketType.sharedUsersRes.getNumber());
+        Registry.registMessage("HandoverSensorRequest", envsensor.PacketType.handoverSensorReq.getNumber());
+        Registry.registMessage("HandoverSensorResponse", envsensor.PacketType.handoverSensorRes.getNumber());
+        Registry.registMessage("SetDisclosureOptionRequest", envsensor.PacketType.setDisclosureOptionReq.getNumber());
+        Registry.registMessage("SetDisclosureOptionResponse", envsensor.PacketType.setDisclosureOptionRes.getNumber());
+        Registry.registMessage("RegistSensorRequest", envsensor.PacketType.registSensorReq.getNumber());
+        Registry.registMessage("RegistSensorResponse", envsensor.PacketType.registSensorRes.getNumber());
+        Registry.registMessage("UnregistSensorRequest", envsensor.PacketType.unregistSensorReq.getNumber());
+        Registry.registMessage("UnregistSensorResponse", envsensor.PacketType.unregistSensorRes.getNumber());
+
 
 //        Registry.registMessage("packet_2", 1);
 //        Registry.registMessage("packet_3", 2);
