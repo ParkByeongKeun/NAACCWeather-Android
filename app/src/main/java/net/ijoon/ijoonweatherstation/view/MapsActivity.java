@@ -30,8 +30,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
@@ -58,9 +56,7 @@ import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -137,11 +133,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             intent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
             startActivity(intent);
         }
-
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
-//        Date date = new Date();
-//        sendNotification(sdf.format(date));
-
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
@@ -153,11 +144,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
-
-//                        // Log and toast
-//                        String msg = getString(R.string., token);
-//                        Log.d("yto132", msg);
-//                        Toast.makeText(MapsActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
@@ -247,7 +233,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 //                            }
 //                        });
 
-                envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().build();
+                envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
                 mCustomApplication.mServerSession.request(request);
                 return true;
             }
@@ -284,6 +270,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 break;
             }
             case 6: {
+                Log.d("yot132","onresponse called !!! ");
+
                 //getSensorListResponse
                 runOnUiThread(new Runnable() {
                     @Override
@@ -298,7 +286,9 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                             }
                             if (response.getSensorCount() == 0) {
                                 //Todo : 센서가 없습니다.
+                                showDialog("센서가 없습니다.");
                             } else {
+
                                 MarkerOptions markerOptions = new MarkerOptions();
                                     for(int i = 0 ; i < response.getSensorCount() ; i ++) {
 
@@ -343,7 +333,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 //                                mAppBar.setBackgroundColor(Color.parseColor("#56CBF2"));
                                 actionBar.setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
                                 actionBar.setTitle("iJoonWeatherStation");
-                                envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().build();
+                                envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
                                 mCustomApplication.mServerSession.request(request);
                                 showSuccessAlertDialog(getResources().getString(R.string.text_changed_sensor_position_success));
                             }
@@ -363,7 +353,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                         try {
                             final envsensor.SetSensorNameResponse response = envsensor.SetSensorNameResponse.parseFrom(bodyBuf);
                             if(response.getResult() == envsensor.SetSensorNameResponse.Result.success) {
-                                envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().build();
+                                envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
                                 mCustomApplication.mServerSession.request(request);
                                 showSuccessAlertDialog(getResources().getString(R.string.text_changed_sensor_name_success));
                             }
@@ -381,7 +371,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     public void onAttached() {
         //server request
         Log.d("yot132","on Attach called!!");
-        envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().build();
+        envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
         mCustomApplication.mServerSession.request(request);
         super.onAttached();
     }
@@ -472,7 +462,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         alertDialog.setPositiveButton(R.string.text_ok,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        envsensor.SetSensorNameRequest request = envsensor.SetSensorNameRequest.newBuilder().setSerial(mCustomApplication.getEnvSensor().getSerial()).setName(et.getText().toString()).build();
+                        envsensor.SetSensorNameRequest request = envsensor.SetSensorNameRequest.newBuilder().setSerial(mCustomApplication.getEnvSensor().getSerial()).setName(et.getText().toString()).setAccessToken(mToken).build();
                         mCustomApplication.mServerSession.request(request);
                     }
                 });
@@ -514,7 +504,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         builder.setPositiveButton(btnSuccess, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                envsensor.SetSensorPositionRequest request = envsensor.SetSensorPositionRequest.newBuilder().setSerial(mSensor.get(mPosition).getSerial()).setLatitude(Float.valueOf(sensorLng)).setLongitude(Float.valueOf(sensorLong)).build();
+                envsensor.SetSensorPositionRequest request = envsensor.SetSensorPositionRequest.newBuilder().setSerial(mSensor.get(mPosition).getSerial()).setLatitude(Float.valueOf(sensorLng)).setLongitude(Float.valueOf(sensorLong)).setAccessToken(mToken).build();
                 mCustomApplication.mServerSession.request(request);
             }
         });
@@ -531,7 +521,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 
     // View를 Bitmap으로 변환
     private Bitmap createDrawableFromView(Context context, View view) {
-
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -539,12 +528,29 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
         view.buildDrawingCache();
         Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
-
         return bitmap;
     }
 
+    public void showDialog(String message) {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                this);
+        alertDialog.setTitle(getResources().getString(R.string.textNotification));
+        alertDialog.setMessage(message);
+        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
 
+
+                    }
+                });
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                alertDialog.show();
+            }
+        });
+    }
 }
