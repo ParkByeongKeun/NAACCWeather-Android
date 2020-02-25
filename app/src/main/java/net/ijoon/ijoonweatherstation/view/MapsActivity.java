@@ -101,6 +101,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                     channelName, NotificationManager.IMPORTANCE_LOW));
         }
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // ↓툴바의 홈버튼의 이미지를 변경(기본 이미지는 뒤로가기 화살표)
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_person_whit);
 
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
@@ -235,6 +237,16 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 
                 envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
                 mCustomApplication.mServerSession.request(request);
+                return true;
+            }
+            case android.R.id.home:
+            {
+                Intent intent = new Intent(MapsActivity.this, InfomationActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            case R.id.action_add: {
+
                 return true;
             }
         }
