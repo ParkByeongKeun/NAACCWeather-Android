@@ -85,6 +85,9 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".view.SensorAddActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".view.SensorSharingActivity"
+            android:screenOrientation="portrait"/>
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

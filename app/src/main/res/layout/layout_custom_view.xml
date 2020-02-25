@@ -156,4 +156,102 @@
         android:id="@+id/tvLine5"
         android:layout_below="@+id/rlSetName"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLine5"
+        android:id="@+id/rlShare">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textShare"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
+            android:textStyle="bold"
+            android:textColor="#1178ff"/>
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc"
+        android:id="@+id/tvLine6"
+        android:layout_below="@+id/rlShare"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLine6"
+        android:id="@+id/rlHandOver">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textHandOver"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
+            android:textStyle="bold"
+            android:textColor="#1178ff"/>
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc"
+        android:id="@+id/tvLine7"
+        android:layout_below="@+id/rlHandOver"/>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLine7"
+        android:id="@+id/rlSharedUsers">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textSharedUsers"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
+            android:textStyle="bold"
+            android:textColor="#1178ff"/>
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc"
+        android:id="@+id/tvLine8"
+        android:layout_below="@+id/rlSharedUsers"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLine8"
+        android:id="@+id/rlUnRegist">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textUnRegist"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
+            android:textStyle="bold"
+            android:textColor="#1178ff"/>
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc"
+        android:id="@+id/tvLine9"
+        android:layout_below="@+id/rlUnRegist"/>
+
 </RelativeLayout>

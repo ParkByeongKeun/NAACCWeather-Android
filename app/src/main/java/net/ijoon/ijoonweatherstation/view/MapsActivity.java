@@ -446,6 +446,20 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 showNicknameChangeDialog();
             }
         });
+        view.findViewById(R.id.rlShare).setOnClickListener(v -> {
+            Intent intent = new Intent(MapsActivity.this,SensorSharingActivity.class);
+            startActivity(intent);
+        });
+        view.findViewById(R.id.rlHandOver).setOnClickListener(v -> {
+
+        });
+        view.findViewById(R.id.rlSharedUsers).setOnClickListener(v -> {
+
+        });
+        view.findViewById(R.id.rlUnRegist).setOnClickListener(v -> {
+
+        });
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
