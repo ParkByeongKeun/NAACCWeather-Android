@@ -1,6 +1,7 @@
 package net.ijoon.ijoonweatherstation.view;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -62,7 +63,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
     private boolean isSensorAvailable = false;
     private boolean isMenuItemClick = false;
     SweetSheet mSweetSheet;
-
+    String mToken;
     private int mCurrentPosition;
     CustomApplication mCustomApplication;
     //위치 권한 여부
@@ -100,7 +101,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
 
     CountDownTimer countDownTimer = new CountDownTimer(600000, 1000) {
         public void onTick(long millisUntilFinished) {
-            Log.d("yot132",String.format(Locale.getDefault(), "%d sec.", millisUntilFinished / 1000L));
+//            Log.d("yot132",String.format(Locale.getDefault(), "%d sec.", millisUntilFinished / 1000L));
         }
         public void onFinish() {
            Log.d("yot132","on finish");
@@ -160,7 +161,8 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
         getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));
         sunSet = new SunSet();
         sunRise = new SunSet();
-
+        SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+        mToken = preferences.getString("token","");
         //progressBar
         horizontal_recycler_view= findViewById(R.id.horizontal_recycler_view);
         horizontalList=new ArrayList<>();
@@ -187,9 +189,10 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
         mTvVersion.setText("ver " + getAppVersionName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-        envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
+        Log.d("yot132","token  = " + mToken);
+        envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setAccessToken(mToken).setSerial(mEnvSensor.getSerial()).build();
         mCustomApplication.mServerSession.request(request);
-        envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
+        envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setAccessToken(mToken).setSerial(mEnvSensor.getSerial()).build();
         mCustomApplication.mServerSession.request(request1);
         mSweetSheet = new SweetSheet(rl);
         mRootView.setOnClickListener(new View.OnClickListener() {
@@ -657,7 +660,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
     @Override
     protected void onPause() {
         super.onPause();
-        envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
+        envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setAccessToken(mToken).setSerial(mEnvSensor.getSerial()).build();
         mCustomApplication.mServerSession.request(request);
     }
 
@@ -681,9 +684,9 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
     public void onAttached() {
         //server request
         Log.d("yot132","on Attach called!!");
-        envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
+        envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setAccessToken(mToken).setSerial(mEnvSensor.getSerial()).build();
         mCustomApplication.mServerSession.request(request);
-        envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
+        envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setAccessToken(mToken).setSerial(mEnvSensor.getSerial()).build();
         mCustomApplication.mServerSession.request(request1);
         super.onAttached();
     }
