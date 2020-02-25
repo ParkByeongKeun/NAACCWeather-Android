@@ -23,7 +23,7 @@ import java.util.Stack;
 public class CustomApplication extends GlobalApplication implements SCNetClientCallback {
 
 //    private final static String mServerIp = "1.246.219.189";
-private final static String mServerIp = "192.168.0.30";
+private final static String mServerIp = "1.246.219.189";
     private final static int mServerPort = 19193;
     MyActivityLifecycleCallbacks mMyActivityLifecycleCallbacks;
     public ServerSession mServerSession;
