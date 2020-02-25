@@ -378,6 +378,21 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 });
                 break;
             }
+            case 25 : {
+                //unregist
+                try {
+                    final envsensor.UnregistSensorResponse response = envsensor.UnregistSensorResponse.parseFrom(bodyBuf);
+                    if(response.getResult() == envsensor.UnregistSensorResponse.Result.success) {
+                        showDeleteSuccessAlertDialog(getResources().getString(R.string.textDelete));
+                    }else {
+                        showDialog(getResources().getString(R.string.textServerError));
+                    }
+                } catch (InvalidProtocolBufferException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+
         }
     }
 
@@ -457,6 +472,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 
         });
         view.findViewById(R.id.rlUnRegist).setOnClickListener(v -> {
+            showUnRegistDialog(mSensor.get(mPosition).getName() + " 센서를 삭제하시겠습니까?");
 
         });
 
@@ -572,6 +588,50 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                         int which) {
 
 
+                    }
+                });
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                alertDialog.show();
+            }
+        });
+    }
+
+    public void showUnRegistDialog(String message) {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                this);
+        alertDialog.setTitle(getResources().getString(R.string.textNotification));
+        alertDialog.setMessage(message);
+        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        envsensor.UnregistSensorRequest unregisterRequest = envsensor.UnregistSensorRequest.newBuilder().setAccessToken(mToken).setSerial(mSensor.get(mPosition).getSerial()).build();
+                        mCustomApplication.mServerSession.request(unregisterRequest);
+                    }
+                });
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                alertDialog.show();
+            }
+        });
+    }
+
+    public void showDeleteSuccessAlertDialog(String message) {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                this);
+        alertDialog.setTitle(getResources().getString(R.string.textNotification));
+        alertDialog
+                .setMessage(message);
+        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        envsensor.GetSensorListRequest stationRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+                        mCustomApplication.mServerSession.request(stationRequest);
+                        dialog.cancel();
                     }
                 });
         runOnUiThread(new Runnable() {
