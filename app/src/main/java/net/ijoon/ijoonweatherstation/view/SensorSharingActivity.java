@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -104,18 +105,19 @@ public class SensorSharingActivity extends SCNetAppCompatActivity implements Ren
         mUserListAdapter = new UserListAdapter(this,mArrUserList);
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        getWindow().setStatusBarColor(Color.parseColor("#f2f2f2"));
+        getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+        getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
         ActionBar actionBar = this.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-            actionBar.setTitle(Html.fromHtml("<font color='#000000'>" + getResources().getString(R.string.textStationShare) + "</font>"));
+            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textStationShare) + "</font>"));
         }
 
         mBtnSuccess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 envsensor.ShareSensorRequest stationNameRequest = envsensor.ShareSensorRequest.newBuilder().setAccessToken(mToken).setSerial(mSerial).setUserId(mEtName.getText().toString()).build();
                 mCustomApplication.mServerSession.request(stationNameRequest);
             }
@@ -183,7 +185,7 @@ public class SensorSharingActivity extends SCNetAppCompatActivity implements Ren
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://circular.ijoon.net")
+                .baseUrl("http://1.246.219.189:20217")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();

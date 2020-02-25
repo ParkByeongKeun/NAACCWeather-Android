@@ -76,7 +76,6 @@ public class UserListAdapter extends BaseAdapter {
         item.setId(userList.getId());
         item.setName(userList.getName());
           this.InfoArr.add(item);
-          Log.d("yot132","item = " + item.getId());
           notifyDataSetChanged();
     }
 

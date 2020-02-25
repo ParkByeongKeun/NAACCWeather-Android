@@ -59,7 +59,7 @@ public class SensorAddActivity extends SCNetAppCompatActivity implements Rendezv
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(Html.fromHtml("<font color='#000000'>" + getResources().getString(R.string.textNewStationRegistration) + "</font>"));
+            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textNewStationRegistration) + "</font>"));
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         }
