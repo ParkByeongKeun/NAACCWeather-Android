@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:textSize="20dp"
             android:layout_marginTop="20dp"
-            android:text="byeonggeunbag@gmail.com"
+            android:text="-"
             android:layout_toRightOf="@+id/ivProfile"
             android:layout_marginRight="10dp"
             android:id="@+id/tvId"/>
@@ -48,8 +48,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/tvNickname"
                 android:layout_weight="0.8"
-                android:text="nicknameTest" />
+                android:text="-" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"

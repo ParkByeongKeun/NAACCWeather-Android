@@ -1,6 +1,7 @@
 package net.ijoon.ijoonweatherstation.view;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -30,9 +31,14 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
         View view;
         CustomApplication mCustomApplication;
 
+        String mToken;
+        String mId;
+        String mNickname;
         envsensor.Sensor mEnvSensor;
         ActionBar actionBar;
         Button btnInfo;
+        TextView tvId;
+        TextView tvNickname;
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
@@ -41,7 +47,16 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                 setContentView(R.layout.activity_infomation);
                 mCustomApplication = (CustomApplication)getApplication();
                 mEnvSensor = mCustomApplication.getEnvSensor();
+                SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+                mToken = preferences.getString("token","");
+                mId = preferences.getString("id","");
+                mNickname = preferences.getString("nickname","");
 
+                tvId = findViewById(R.id.tvId);
+                tvNickname = findViewById(R.id.tvNickname);
+
+                tvId.setText(mId);
+                tvNickname.setText(mNickname);
                 btnInfo = findViewById(R.id.btnInfo);
                 mSwipeRefreshLayout = findViewById(R.id.swipe_layout);
                 mSwipeRefreshLayout.setOnRefreshListener(this);

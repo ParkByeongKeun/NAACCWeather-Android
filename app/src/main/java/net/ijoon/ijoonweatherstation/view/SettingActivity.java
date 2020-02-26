@@ -150,7 +150,7 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
             }
         });
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://circular.ijoon.net")
+                .baseUrl("http://1.246.219.189:20217")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -316,7 +316,7 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
             }
         });
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://circular.ijoon.net")
+                .baseUrl("http://1.246.219.189:20217")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -332,6 +332,7 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
                     SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
                     SharedPreferences.Editor editor =  preferences.edit();
                     editor.putString("token", accessToken);
+                    editor.putString("nickname", id);
 
                     showAlertDialog(getResources().getString(R.string.textNicknameChangedSuccess)+ "\" " + id + "\"");
                     mTvNickname.setText(id);
@@ -359,7 +360,7 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
             }
         });
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://circular.ijoon.net")
+                .baseUrl("http://1.246.219.189:20217")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
