@@ -122,6 +122,7 @@ public class JoinActivity extends AppCompatActivity {
                 intent.putExtra("id", mEtId.getText().toString());
                 startActivity(intent);
                 finish();
+                overridePendingTransition(0,0);
             }
             @Override
             public void onFailure(Call<JoinResponse> call, Throwable t) {
@@ -136,6 +137,7 @@ public class JoinActivity extends AppCompatActivity {
         Intent intent = new Intent(JoinActivity.this,DefaultActivity.class);
         startActivity(intent);
         finish();
+        overridePendingTransition(0,0);
     }
 
     @Override
@@ -143,6 +145,7 @@ public class JoinActivity extends AppCompatActivity {
         Intent intent = new Intent(JoinActivity.this,DefaultActivity.class);
         startActivity(intent);
         finish();
+        overridePendingTransition(0,0);
         return super.onOptionsItemSelected(item);
     }
 

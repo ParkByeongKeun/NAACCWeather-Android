@@ -81,6 +81,7 @@ public class JoinEmailActivity extends AppCompatActivity {
                 Intent intent = new Intent(JoinEmailActivity.this, DefaultActivity.class);
                 startActivity(intent);
                 finish();
+                overridePendingTransition(0,0);
             }
         });
     }
@@ -172,6 +173,7 @@ public class JoinEmailActivity extends AppCompatActivity {
                         Intent intent = new Intent(JoinEmailActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
+                        overridePendingTransition(0,0);
                         dialog.cancel();
                     }
                 });

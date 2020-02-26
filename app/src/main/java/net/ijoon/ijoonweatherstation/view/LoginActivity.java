@@ -174,6 +174,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
                         Intent intent = new Intent(LoginActivity.this,JoinEmailActivity.class);
                         startActivity(intent);
                         finish();
+                        overridePendingTransition(0,0);
                         break;
                     }
                     case 2 : {
@@ -197,6 +198,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
         Intent intent = new Intent(LoginActivity.this,DefaultActivity.class);
         startActivity(intent);
         finish();
+        overridePendingTransition(0,0);
     }
 
     @Override
@@ -210,6 +212,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
         Intent intent = new Intent(LoginActivity.this,DefaultActivity.class);
         startActivity(intent);
         finish();
+        overridePendingTransition(0,0);
         return super.onOptionsItemSelected(item);
     }
 
@@ -300,6 +303,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
                         Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                         startActivity(intent);
                         finish();
+                        overridePendingTransition(0,0);
                         Log.d("yot132","count = " + response.getSensorCount());
                     }else {
                         if(isLoginSuccess) {
@@ -307,6 +311,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
                             Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
                             startActivity(intent);
                             finish();
+                            overridePendingTransition(0,0);
                         }
                     }
                 } catch (InvalidProtocolBufferException e) {
