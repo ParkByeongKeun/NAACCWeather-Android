@@ -87,20 +87,25 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                 }
                 switch (messageHeader.mPacketType) {
 
-                        case 4: {
-                                runOnUiThread(new Runnable() {
+                        case 6: {
+                                Thread thread = new Thread(new Runnable() {
                                         @Override
                                         public void run() {
+                                                try {
+                                                        Thread.sleep(1400);
 
-                                                mSwipeRefreshLayout.setRefreshing(false);
+                                                } catch (InterruptedException e) {
+                                                        e.printStackTrace();
+                                                }
+                                                runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                                mSwipeRefreshLayout.setRefreshing(false);
+                                                        }
+                                                });
                                         }
                                 });
-                                try {
-                                        final envsensor.EnvSensorData response = envsensor.EnvSensorData.parseFrom(bodyBuf);
-
-                                } catch (InvalidProtocolBufferException e) {
-                                        e.printStackTrace();
-                                }
+                                thread.start();
                                 break;
                         }
                         default: {
@@ -114,22 +119,21 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
         @Override
         protected void onResume() {
                 super.onResume();
-//                envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
-//                mCustomApplication.mServerSession.request(request1);
+                envsensor.GetSensorListRequest request1 = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+                mCustomApplication.mServerSession.request(request1);
         }
 
         @Override
         protected void onPause() {
                 super.onPause();
-//                envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
-//                mCustomApplication.mServerSession.request(request);
         }
 
         @Override
         public void onRefresh() {
-//                envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
-//                mCustomApplication.mServerSession.request(request);
-//                envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setSerial(mEnvSensor.getSerial()).build();
-//                mCustomApplication.mServerSession.request(request1);
+                envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+                mCustomApplication.mServerSession.request(request);
+
         }
+
+
 }
