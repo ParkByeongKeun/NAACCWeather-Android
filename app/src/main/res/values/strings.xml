@@ -245,6 +245,7 @@
     <string name="textHandOver">HandOver</string>
     <string name="textSharedUsers">Shared Users</string>
     <string name="textUnRegist">UnRegist</string>
+    <string name="textInfo">Infomation</string>
 
     <string name="quickstart_message">Click the SUBSCRIBE TO WEATHER button below to subscribe to the
         weather topic. Messages sent to the weather topic will be received. The LOG TOKEN button logs the
