@@ -71,13 +71,13 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         mCustomApplication = (CustomApplication) getApplicationContext();
 
         Intent intent = getIntent();
+        mNickname = intent.getStringExtra("nickname");
         mSwipeRefreshLayout = findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
         mId = preferences.getString("id","");
-        mNickname = preferences.getString("nickname","");
 
         mRlNickname = findViewById(R.id.rlNickname);
         mRlPasswordChange = findViewById(R.id.rlPasswordChange);
@@ -328,16 +328,12 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
             public void onResponse(Call<UpdateDispNameResponse> call, Response<UpdateDispNameResponse> response) {
                 if(response.body().getSuccess()) {
                     String accessToken = response.body().getAccessToken();
-
+                    showAlertDialog(getResources().getString(R.string.textNicknameChangedSuccess)+ "\" " + id + "\"");
+                    mTvNickname.setText(id);
                     SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
                     SharedPreferences.Editor editor =  preferences.edit();
                     editor.putString("token", accessToken);
                     editor.putString("nickname", id);
-
-                    showAlertDialog(getResources().getString(R.string.textNicknameChangedSuccess)+ "\" " + id + "\"");
-                    mTvNickname.setText(id);
-
-                    editor.putString("nickName", String.valueOf(id));
                     editor.apply();
                 }else {
                     showAlertDialog(getResources().getString(R.string.textNicknameChangedFail));
