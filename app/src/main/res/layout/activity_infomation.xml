@@ -71,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/ivProfile"
-            android:background="@color/textGray"/>
+            android:background="@color/colorHint"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -145,7 +145,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="5dp"
                     android:layout_below="@+id/ivProfile"
-                    android:background="@color/textGray"/>
+                    android:background="@color/colorHint"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
