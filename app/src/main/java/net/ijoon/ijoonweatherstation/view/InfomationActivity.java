@@ -6,7 +6,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -72,6 +74,12 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
 //                                mAppBar.setBackgroundColor(Color.parseColor("#56CBF2"));
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
                 actionBar = getSupportActionBar();
+
+                if (actionBar != null) {
+                        actionBar.setDisplayHomeAsUpEnabled(true);
+                        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+                        actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textInfo) + "</font>"));
+                }
 
                 btnInfo.setOnClickListener(v -> {
                         Intent intent = new Intent(InfomationActivity.this, SettingActivity.class);
@@ -156,6 +164,12 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
         }
 
         @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+                finish();
+                return super.onOptionsItemSelected(item);
+        }
+
+        @Override
         protected void onResume() {
                 super.onResume();
                 SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
@@ -165,7 +179,7 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                 getNickname();
                 tvId.setText(mId);
                 tvNickname.setText(mNickname);
-                
+
                 envsensor.GetSensorListRequest request1 = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
                 mCustomApplication.mServerSession.request(request1);
         }
