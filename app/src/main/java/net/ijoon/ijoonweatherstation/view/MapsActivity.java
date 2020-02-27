@@ -81,6 +81,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     RelativeLayout rl_message;
     String mToken;
     MarkerOptions markerOptions = new MarkerOptions();
+    boolean isRefresh;
 
     private void setCustomMarkerView() {
         marker_root_view = LayoutInflater.from(this).inflate(R.layout.marker_layout, null);
@@ -210,41 +211,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_refresh: {
-
-
-                //firebase 토큰 값 가져오기
-
-//                FirebaseMessaging.getInstance().subscribeToTopic("weather")
-//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<Void> task) {
-//                                String msg = getString(R.string.msg_subscribed);
-//                                if (!task.isSuccessful()) {
-//                                    msg = getString(R.string.msg_subscribe_failed);
-//                                }
-//                                Log.d("yot132", msg);
-//                                Toast.makeText(MapsActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                FirebaseInstanceId.getInstance().getInstanceId()
-//                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-//                                if (!task.isSuccessful()) {
-//                                    Log.w("yot132", "getInstanceId failed", task.getException());
-//                                    return;
-//                                }
-//
-//                                // Get new Instance ID token
-//                                String token = task.getResult().getToken();
-//
-//                                // Log and toast
-//                                String msg = getString(R.string.msg_token_fmt, token);
-//                                Log.d("yot132", msg);
-//                                Toast.makeText(MapsActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-
+                isRefresh = true;
                 envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
                 mCustomApplication.mServerSession.request(request);
                 return true;
@@ -312,8 +279,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                 //Todo : 센서가 없습니다.
                                 showDialog("센서가 없습니다.");
                             } else {
-
-
                                     for(int i = 0 ; i < response.getSensorCount() ; i ++) {
 
                                         if(mSensor.get(i).getMaxVelocity() >= 10.0) {
@@ -330,17 +295,20 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), marker_root_view)));
                                         Marker marker = mMap.addMarker(mArrMarkerOptions.get(i));
                                         marker.setAlpha(1f);
-
+                                }
+                                if(!isRefresh) {
+                                    LatLng firstGPS = new LatLng(response.getSensor(0).getLatitude(), response.getSensor(0).getLongitude());
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom((firstGPS),15));
+                                    isRefresh = false;
                                 }
 
-                                LatLng firstGPS = new LatLng(response.getSensor(0).getLatitude(), response.getSensor(0).getLongitude());
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom((firstGPS),15));
                             }
                         } catch (InvalidProtocolBufferException e) {
                             e.printStackTrace();
                         }
                     }
                 });
+
                 break;
             }
             case 8 : {
