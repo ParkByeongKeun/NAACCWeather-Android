@@ -2,12 +2,19 @@ package net.ijoon.ijoonweatherstation;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.protobuf.MessageLite;
 
 import net.ijoon.envsensor;
@@ -19,11 +26,12 @@ import net.ijoon.scnet_android.SCNetClientCallback;
 import net.ijoon.scnet_android.ServerSession;
 
 import java.util.Stack;
+import java.util.UUID;
 
 public class CustomApplication extends GlobalApplication implements SCNetClientCallback {
 
-//    private final static String mServerIp = "1.246.219.189";
-private final static String mServerIp = "1.246.219.189";
+        private final static String mServerIp = "1.246.219.189";
+//    private final static String mServerIp = "192.168.0.30";
     private final static int mServerPort = 19193;
     MyActivityLifecycleCallbacks mMyActivityLifecycleCallbacks;
     public ServerSession mServerSession;
@@ -32,10 +40,16 @@ private final static String mServerIp = "1.246.219.189";
     public envsensor.Sensor getEnvSensor() {
         return mEnvSensor;
     }
+
     public void setEnvSensor(envsensor.Sensor sensor) {
         mEnvSensor = sensor;
     }
+    public String mToken;
+    public String fcmToken;
 
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onCreate() {
 
@@ -67,10 +81,28 @@ private final static String mServerIp = "1.246.219.189";
         Registry.registMessage("UnregistSensorRequest", envsensor.PacketType.unregistSensorReq.getNumber());
         Registry.registMessage("UnregistSensorResponse", envsensor.PacketType.unregistSensorRes.getNumber());
 
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("yot132", "getInstanceId failed", task.getException());
+                            return;
+                        }
 
-//        Registry.registMessage("packet_2", 1);
-//        Registry.registMessage("packet_3", 2);
-//        Registry.registMessage("packet_4", 3);
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        fcmToken = token;
+                    }
+                });
+        SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+        mToken = preferences.getString("token","");
+
+        Log.d("yot132","tokeee = " + mToken);
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+
         this.mMyActivityLifecycleCallbacks = new MyActivityLifecycleCallbacks();
         registerActivityLifecycleCallbacks(mMyActivityLifecycleCallbacks);
 
@@ -186,5 +218,7 @@ private final static String mServerIp = "1.246.219.189";
     public void request(MessageLite message) {
         throw new RuntimeException("call setUseAutoServerSession(true) if you want to use this method");
     }
+
+
 
 }

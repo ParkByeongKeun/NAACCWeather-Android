@@ -3,6 +3,7 @@ package net.ijoon.ijoonweatherstation.login;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.HTTP;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 
@@ -27,4 +28,6 @@ public interface AuthService {
     Call<NameResponse> getName(@Body NameRequest request);
     @POST("/api/auth/verifyJoin")
     Call<VerifyJoinResponse> verifyJoin(@Body VerifyJoinRequest request);
+    @POST("/api/auth/regPushToken")
+    Call<SetRegPushTokenResponse> regPushToken(@Body SetRegPushTokenRequest request);
 }

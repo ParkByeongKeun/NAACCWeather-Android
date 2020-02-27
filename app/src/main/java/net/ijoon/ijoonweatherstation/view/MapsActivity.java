@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,6 +48,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mingle.sweetpick.CustomDelegate;
 import com.mingle.sweetpick.SweetSheet;
@@ -182,6 +184,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
         if (serviceIntent!=null) {
             stopService(serviceIntent);
             serviceIntent = null;
@@ -641,4 +644,14 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             }
         });
     }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String maxVelocity = intent.getStringExtra("maxVelocity");
+            String maxVelocityTime = intent.getStringExtra("maxVelocityTime");
+            String serial = intent.getStringExtra("serial");
+            Log.d("yot132","@@@@@@@@@@@@@@@@@@@@@" + maxVelocity);
+        }
+    };
 }

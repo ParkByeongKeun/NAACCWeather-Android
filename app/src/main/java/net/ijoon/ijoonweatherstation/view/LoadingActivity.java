@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -19,9 +20,14 @@ import androidx.annotation.RequiresApi;
 
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
+import net.ijoon.ijoonweatherstation.RestApi.RegPushTokenRequest;
+import net.ijoon.ijoonweatherstation.RestApi.RegPushTokenResponse;
+import net.ijoon.ijoonweatherstation.RestApi.RetrofitClient;
+import net.ijoon.ijoonweatherstation.RestApi.RetrofitHeader;
 import net.ijoon.ijoonweatherstation.login.AuthService;
 import net.ijoon.ijoonweatherstation.login.CheckRequest;
 import net.ijoon.ijoonweatherstation.login.CheckResponse;
+import net.ijoon.ijoonweatherstation.util.UUIDManager;
 
 import java.io.IOException;
 
@@ -52,6 +58,9 @@ public class LoadingActivity extends Activity {
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
         mTvVersion = findViewById(R.id.tvVersion);
+
+        regPushToken(UUIDManager.getDeviceUUID(this),mCustomApplication.fcmToken);
+
         mTvVersion.setText("ver " + getAppVersionName());
         getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));
         view = getWindow().getDecorView();
@@ -69,7 +78,6 @@ public class LoadingActivity extends Activity {
                         startActivity(intent);
                         finish();
                     }
-
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -86,7 +94,6 @@ public class LoadingActivity extends Activity {
             loadingThread.interrupt();
         }
     }
-
 
     void check(final String token) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -250,5 +257,26 @@ public class LoadingActivity extends Activity {
             return "";
         }
         return packageInfo.versionName;
+    }
+
+
+    void regPushToken(final String UUID, final String pushToken) {
+        new Thread(() -> {
+            Call<RegPushTokenResponse> call = RetrofitClient
+                    .getApiService(RetrofitHeader.getHeader(mToken))
+                    .regPushToken(new RegPushTokenRequest(UUID, pushToken));
+
+            call.enqueue(new Callback<RegPushTokenResponse>() {
+                @Override
+                public void onResponse(Call<RegPushTokenResponse> call, Response<RegPushTokenResponse> response) {
+//                    Log.d("yot132", "onResponse..." + response.body().toString());
+                }
+
+                @Override
+                public void onFailure(Call<RegPushTokenResponse> call, Throwable t) {
+                    Log.d("yot132", "onFailure...");
+                }
+            });
+        }).start();
     }
 }

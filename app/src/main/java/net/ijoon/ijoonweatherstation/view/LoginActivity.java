@@ -37,6 +37,7 @@ import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.ijoonweatherstation.login.AuthService;
 import net.ijoon.ijoonweatherstation.login.LoginRequest;
 import net.ijoon.ijoonweatherstation.login.LoginResponse;
+import net.ijoon.ijoonweatherstation.util.UUIDManager;
 import net.ijoon.scnet_android.Connection;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.RendezvousClientCallback;
@@ -74,6 +75,8 @@ public class LoginActivity extends SCNetAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+        UUIDManager.getDeviceUUID(this);
 
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
