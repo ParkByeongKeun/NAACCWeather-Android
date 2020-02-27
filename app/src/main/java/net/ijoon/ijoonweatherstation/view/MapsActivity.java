@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -79,6 +80,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     TextView tv_marker;
     RelativeLayout rl_message;
     String mToken;
+    MarkerOptions markerOptions = new MarkerOptions();
 
     private void setCustomMarkerView() {
         marker_root_view = LayoutInflater.from(this).inflate(R.layout.marker_layout, null);
@@ -92,6 +94,10 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("maxVelocityData");
+        registerReceiver(mBroadcastReceiver, filter);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create channel to show notifications.
@@ -306,7 +312,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                 showDialog("센서가 없습니다.");
                             } else {
 
-                                MarkerOptions markerOptions = new MarkerOptions();
+
                                     for(int i = 0 ; i < response.getSensorCount() ; i ++) {
 
                                         if(mSensor.get(i).getMaxVelocity() >= 10.0) {
@@ -651,7 +657,18 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             String maxVelocity = intent.getStringExtra("maxVelocity");
             String maxVelocityTime = intent.getStringExtra("maxVelocityTime");
             String serial = intent.getStringExtra("serial");
-            Log.d("yot132","@@@@@@@@@@@@@@@@@@@@@" + maxVelocity);
+
+            for(int i = 0 ; i < mSensor.size() ; i ++) {
+
+                if(mSensor.get(i).getSerial() == serial) {
+                    if(Integer.valueOf(maxVelocity) >= 10) {
+                        rl_message.setBackgroundResource(R.drawable.ic_message_danger);
+                    }else {
+                        rl_message.setBackgroundResource(R.drawable.ic_message_default);
+                    }
+                    tv_marker.setText(maxVelocity + "m/s");
+                }
+            }
         }
     };
 }

@@ -1,6 +1,9 @@
 package net.ijoon.ijoonweatherstation.view;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -121,6 +124,9 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
         mEnvSensor = mCustomApplication.getEnvSensor();
         //init view
         rl = findViewById(R.id.rl);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("maxVelocityData");
+        registerReceiver(mBroadcastReceiver, filter);
         mTvWindDirection = findViewById(R.id.tvWindDirection);
         mTvTemperature = findViewById(R.id.tvTemp);
         mTvHumidity = findViewById(R.id.tvHumidityValue);//습기
@@ -222,6 +228,13 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                 mSweetSheet.toggle();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
+
     }
 
     @Override
@@ -740,4 +753,18 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
         tvTimeSunrise.setText(getResources().getString(R.string.am) + " " + sunRise.getSunSetHour().intValue() + " : " + sunRise.getSunSetMinute().intValue());
         tvTimeSunset.setText(getResources().getString(R.string.pm) + " " + tempSunsetHour + " : " + sunSet.getSunSetMinute().intValue());
     }
+
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String maxVelocity = intent.getStringExtra("maxVelocity");
+            String maxVelocityTime = intent.getStringExtra("maxVelocityTime");
+            String serial = intent.getStringExtra("serial");
+            if(mEnvSensor.getSerial() == serial) {
+                mTvMaxVelocity.setText(maxVelocity + "m/s");
+                mTvMaxVelocityTime.setText(maxVelocity);
+            }
+        }
+    };
 }

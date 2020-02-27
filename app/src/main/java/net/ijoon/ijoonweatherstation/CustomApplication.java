@@ -30,8 +30,8 @@ import java.util.UUID;
 
 public class CustomApplication extends GlobalApplication implements SCNetClientCallback {
 
-        private final static String mServerIp = "1.246.219.189";
-//    private final static String mServerIp = "192.168.0.30";
+//        private final static String mServerIp = "1.246.219.189";
+    private final static String mServerIp = "192.168.0.30";
     private final static int mServerPort = 19193;
     MyActivityLifecycleCallbacks mMyActivityLifecycleCallbacks;
     public ServerSession mServerSession;
@@ -80,6 +80,7 @@ public class CustomApplication extends GlobalApplication implements SCNetClientC
         Registry.registMessage("RegistSensorResponse", envsensor.PacketType.registSensorRes.getNumber());
         Registry.registMessage("UnregistSensorRequest", envsensor.PacketType.unregistSensorReq.getNumber());
         Registry.registMessage("UnregistSensorResponse", envsensor.PacketType.unregistSensorRes.getNumber());
+        Registry.registMessage("Ping", envsensor.PacketType.ping.getNumber());
 
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -207,6 +208,12 @@ public class CustomApplication extends GlobalApplication implements SCNetClientC
     public void onDetach() {
         Log.d("yot132","onDetach called");
         super.onDetach();
+    }
+
+    @Override
+    public void onTimedOut() {
+        mServerSession.request(envsensor.Ping.newBuilder().build());
+
     }
 
 
