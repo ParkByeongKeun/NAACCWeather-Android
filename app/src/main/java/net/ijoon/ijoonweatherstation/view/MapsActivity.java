@@ -121,9 +121,10 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 
         actionBar = getSupportActionBar();
         setCustomMarkerView();
-        envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
-
-        mCustomApplication.mServerSession.request(request);
+        if(mCustomApplication.mServerSession != null) {
+            envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+            mCustomApplication.mServerSession.request(request);
+        }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -657,17 +658,38 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             String maxVelocity = intent.getStringExtra("maxVelocity");
             String maxVelocityTime = intent.getStringExtra("maxVelocityTime");
             String serial = intent.getStringExtra("serial");
-
+            mMap.clear();
+            Log.d("yot132","maxVelocity = " +maxVelocity);
             for(int i = 0 ; i < mSensor.size() ; i ++) {
-
-                if(mSensor.get(i).getSerial() == serial) {
-                    if(Integer.valueOf(maxVelocity) >= 10) {
-                        rl_message.setBackgroundResource(R.drawable.ic_message_danger);
-                    }else {
-                        rl_message.setBackgroundResource(R.drawable.ic_message_default);
+                int finalI = i;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (serial.equals(mSensor.get(finalI).getSerial())) {
+                            if (Float.valueOf(maxVelocity) >= 10.0) {
+                                rl_message.setBackgroundResource(R.drawable.ic_message_danger);
+                            } else {
+                                rl_message.setBackgroundResource(R.drawable.ic_message_default);
+                            }
+                            tv_marker.setText(maxVelocity + "m/s");
+                        }else {
+                            if (mSensor.get(finalI).getMaxVelocity() >= 10.0) {
+                                rl_message.setBackgroundResource(R.drawable.ic_message_danger);
+                            } else {
+                                rl_message.setBackgroundResource(R.drawable.ic_message_default);
+                            }
+                            tv_marker.setText(String.format("%.1f", mSensor.get(finalI).getMaxVelocity()) + "m/s");
+                        }
+                        LatLng position = new LatLng(mSensor.get(finalI).getLatitude(),mSensor.get(finalI).getLongitude());
+                        markerOptions.position(position);
+                        markerOptions.title(mSensor.get(finalI).getName());
+                        markerOptions.snippet(String.valueOf(mSensor.get(finalI).getId()));
+                        mArrMarkerOptions.add(markerOptions);
+                        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), marker_root_view)));
+                        Marker marker = mMap.addMarker(mArrMarkerOptions.get(finalI));
+                        marker.setAlpha(1f);
                     }
-                    tv_marker.setText(maxVelocity + "m/s");
-                }
+                });
             }
         }
     };

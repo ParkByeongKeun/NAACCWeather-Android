@@ -292,6 +292,14 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                 try {
                     envsensor.StreamingStartResponse response = envsensor.StreamingStartResponse.parseFrom(bodyBuf);
                     if(response.getResult() == envsensor.StreamingStartResponse.Result.success) {
+
+
+
+
+
+                        
+
+
                         Log.d("yot132","envsensor.StreamingStartResponse.Result.success called");
                     }else {
                         Log.d("yot132","envsensor.StreamingStartResponse.Result.failed called");
@@ -384,8 +392,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                             }
                             mTvMaxVelocity.setText(String.format("%.1f",mCustomApplication.getEnvSensor().getMaxVelocity()) + "m/s");
                             String[] tempMaxVelocityTime = mCustomApplication.getEnvSensor().getMaxTime().split(" ");
-                            mTvMaxVelocityTime.setText(tempMaxVelocityTime[1]);
-
+                            mTvMaxVelocityTime.setText(tempMaxVelocityTime[0]);
                             mTvTemperature.setText(String.format("%.2f",response.getCtemperature())+"℃");
                             mTvHumidity.setText(String.format("%.2f",response.getChumidity())+" %");//습기
                             mTvPressure.setText(String.format("%.2f",response.getCpressure())+" hPa");//압력
@@ -761,9 +768,16 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
             String maxVelocity = intent.getStringExtra("maxVelocity");
             String maxVelocityTime = intent.getStringExtra("maxVelocityTime");
             String serial = intent.getStringExtra("serial");
-            if(mEnvSensor.getSerial() == serial) {
-                mTvMaxVelocity.setText(maxVelocity + "m/s");
-                mTvMaxVelocityTime.setText(maxVelocity);
+            if(mEnvSensor.getSerial().equals(serial)) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("yot132","22");
+                        mTvMaxVelocity.setText(maxVelocity + "m/s");
+                        mTvMaxVelocityTime.setText(maxVelocityTime);
+                    }
+                });
+
             }
         }
     };
