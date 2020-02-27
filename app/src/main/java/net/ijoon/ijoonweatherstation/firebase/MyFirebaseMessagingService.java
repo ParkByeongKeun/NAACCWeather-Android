@@ -75,13 +75,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            Intent intent = new Intent("maxVelocityData");
-            intent.putExtra("maxVelocity", remoteMessage.getData().get("max_velocity"));
-            intent.putExtra("maxVelocityTime", remoteMessage.getData().get("max_time"));
-            intent.putExtra("serial", remoteMessage.getData().get("serial"));
+            if(remoteMessage.getData().get("max_velocity") != null) {
+                Intent intent = new Intent("maxVelocityData");
+                intent.putExtra("maxVelocity", remoteMessage.getData().get("max_velocity"));
+                intent.putExtra("maxVelocityTime", remoteMessage.getData().get("max_time"));
+                intent.putExtra("serial", remoteMessage.getData().get("serial"));
 
-            sendBroadcast(intent);
-
+                sendBroadcast(intent);
+            }
             if (/* Check if data needs to be processed by long running job */ true) {
                 // For long-running tasks (10 seconds or more) use WorkManager.
                 scheduleJob();

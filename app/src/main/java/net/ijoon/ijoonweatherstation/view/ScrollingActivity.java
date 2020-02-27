@@ -292,9 +292,6 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                 try {
                     envsensor.StreamingStartResponse response = envsensor.StreamingStartResponse.parseFrom(bodyBuf);
                     if(response.getResult() == envsensor.StreamingStartResponse.Result.success) {
-
-
-
                         runOnUiThread(new Runnable() {
                             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                             @Override
