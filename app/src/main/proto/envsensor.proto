@@ -33,6 +33,7 @@ enum PacketType {
   unregistSensorReq = 24;
   unregistSensorRes = 25;
 
+  ping = 26;
 }
 
 message StreamingStartRequest {
@@ -48,6 +49,7 @@ message StreamingStartResponse {
 
   Result result = 1;
   string serial = 2;
+  EnvSensorData data = 3;
 }
 
 message StreamingStopRequest {
@@ -306,5 +308,9 @@ message UnregistSensorResponse {
 
   Result result = 1;
   string serial = 2;
+}
+
+message Ping {
+  
 }
 
