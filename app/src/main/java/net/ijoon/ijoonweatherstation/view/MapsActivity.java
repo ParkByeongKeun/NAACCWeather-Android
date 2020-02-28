@@ -334,6 +334,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                 mCustomApplication.mServerSession.request(request);
                                 showSuccessAlertDialog(getResources().getString(R.string.text_changed_sensor_position_success));
                             }else {
+                                showDialog("실패했습니다.");
                                 Log.d("yot132","position false");
                             }
                             isSetGPS = false;
