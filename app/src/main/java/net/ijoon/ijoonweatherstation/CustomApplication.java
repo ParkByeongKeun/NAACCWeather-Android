@@ -22,13 +22,12 @@ import net.ijoon.scnet_android.Connection;
 import net.ijoon.scnet_android.GlobalApplication;
 import net.ijoon.scnet_android.Registry;
 import net.ijoon.scnet_android.RendezvousSession;
-import net.ijoon.scnet_android.SCNetClientCallback;
 import net.ijoon.scnet_android.ServerSession;
 
 import java.util.Stack;
 import java.util.UUID;
 
-public class CustomApplication extends GlobalApplication implements SCNetClientCallback {
+public class CustomApplication extends GlobalApplication {
 
         private final static String mServerIp = "1.246.219.189";
 //    private final static String mServerIp = "192.168.0.30";
@@ -100,8 +99,6 @@ public class CustomApplication extends GlobalApplication implements SCNetClientC
                 });
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
-
-        Log.d("yot132","tokeee = " + mToken);
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
 
         this.mMyActivityLifecycleCallbacks = new MyActivityLifecycleCallbacks();
