@@ -96,6 +96,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        super.mGlobalApplication.name = "mapView";
         IntentFilter filter = new IntentFilter();
         filter.addAction("maxVelocityData");
         registerReceiver(mBroadcastReceiver, filter);
@@ -311,6 +312,9 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 
                 break;
             }
+            case 7 : {
+                break;
+            }
             case 8 : {
                 //SetSensorPosition
                 runOnUiThread(new Runnable() {
@@ -318,6 +322,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                     @Override
                     public void run() {
                         try {
+
                             final envsensor.SetSensorPositionResponse response = envsensor.SetSensorPositionResponse.parseFrom(bodyBuf);
                             if(response.getResult() == envsensor.SetSensorPositionResponse.Result.success) {
                                 getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
@@ -328,6 +333,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                 envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
                                 mCustomApplication.mServerSession.request(request);
                                 showSuccessAlertDialog(getResources().getString(R.string.text_changed_sensor_position_success));
+                            }else {
+                                Log.d("yot132","position false");
                             }
                             isSetGPS = false;
                         } catch (InvalidProtocolBufferException e) {
@@ -429,7 +436,14 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                     actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF0B45")));
                     actionBar.setTitle(R.string.text_select_location_on_the_map);
                 }
-                mSweetSheet.dismiss();
+                if(!mSweetSheet.isShow()) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mSweetSheet.dismiss();
+                        }
+                    });
+                }
                 isSetGPS = true;
             }
         });
@@ -444,10 +458,13 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             startActivity(intent);
         });
         view.findViewById(R.id.rlHandOver).setOnClickListener(v -> {
+            Intent intent = new Intent(MapsActivity.this,StationHandOfOutActivity.class);
+            startActivity(intent);
 
         });
         view.findViewById(R.id.rlSharedUsers).setOnClickListener(v -> {
-
+            Intent intent = new Intent(MapsActivity.this,SharedUsersActivity.class);
+            startActivity(intent);
         });
         view.findViewById(R.id.rlUnRegist).setOnClickListener(v -> {
             showUnRegistDialog(mSensor.get(mPosition).getName() + " 센서를 삭제하시겠습니까?");
