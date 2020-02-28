@@ -180,7 +180,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                    showCustomToast(messageBody, "message", Toast.LENGTH_SHORT);
                 }
             });
-            Log.d("yot132","test11");
         }
         else
         {

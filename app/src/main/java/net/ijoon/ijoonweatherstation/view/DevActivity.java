@@ -22,7 +22,7 @@ import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.RendezvousClientCallback;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
 
-public class DevActivity extends SCNetAppCompatActivity implements RendezvousClientCallback, SwipeRefreshLayout.OnRefreshListener{
+public class DevActivity extends SCNetAppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
         SwipeRefreshLayout mSwipeRefreshLayout;
         View view;
