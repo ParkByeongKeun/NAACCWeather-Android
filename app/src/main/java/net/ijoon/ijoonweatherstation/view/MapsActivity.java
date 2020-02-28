@@ -301,18 +301,16 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                         marker.setAlpha(1f);
                                 }
                                 if(!isRefresh) {
-                                    LatLng firstGPS = new LatLng(response.getSensor(0).getLatitude(), response.getSensor(0).getLongitude());
-                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom((firstGPS),15));
+                                    LatLng firstGPS = new LatLng(36.526803, 127.293589);
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom((firstGPS),10));
                                     isRefresh = false;
                                 }
-
                             }
                         } catch (InvalidProtocolBufferException e) {
                             e.printStackTrace();
                         }
                     }
                 });
-
                 break;
             }
             case 7 : {
