@@ -82,6 +82,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     String mToken;
     MarkerOptions markerOptions = new MarkerOptions();
     boolean isRefresh;
+    int ALIVEPING = 15;
 
     private void setCustomMarkerView() {
         marker_root_view = LayoutInflater.from(this).inflate(R.layout.marker_layout, null);
@@ -274,18 +275,20 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                             final envsensor.GetSensorListResponse response = envsensor.GetSensorListResponse.parseFrom(bodyBuf);
                             for (int i = 0; i < response.getSensorCount(); i++) {
                                 mSensor.add(response.getSensor(i));
-
                             }
                             if (response.getSensorCount() == 0) {
                                 //Todo : 센서가 없습니다.
                                 showDialog("센서가 없습니다.");
                             } else {
                                     for(int i = 0 ; i < response.getSensorCount() ; i ++) {
-
-                                        if(mSensor.get(i).getMaxVelocity() >= 10.0) {
-                                            rl_message.setBackgroundResource(R.drawable.ic_message_danger);
+                                        if(mSensor.get(i).getPing() >= ALIVEPING) {
+                                            rl_message.setBackgroundResource(R.drawable.ic_message_ping);
                                         }else {
-                                            rl_message.setBackgroundResource(R.drawable.ic_message_default);
+                                            if(mSensor.get(i).getMaxVelocity() >= 10.0) {
+                                                rl_message.setBackgroundResource(R.drawable.ic_message_danger);
+                                            }else {
+                                                rl_message.setBackgroundResource(R.drawable.ic_message_default);
+                                            }
                                         }
                                         tv_marker.setText(String.format("%.1f", mSensor.get(i).getMaxVelocity()) + "m/s");
                                         LatLng position = new LatLng(response.getSensor(i).getLatitude(),response.getSensor(i).getLongitude());
