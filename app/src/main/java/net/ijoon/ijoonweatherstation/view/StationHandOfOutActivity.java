@@ -53,7 +53,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class StationHandOfOutActivity extends SCNetAppCompatActivity implements RendezvousClientCallback {
+public class StationHandOfOutActivity extends SCNetAppCompatActivity {
 
     String mSerial;
     String mToken;
@@ -301,7 +301,7 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity implements 
     }
 
     @Override
-    public void onMessage(MessageHeader messageHeader, byte[] buffer) {
+    public void onResponse(MessageHeader messageHeader, byte[] bodyBuf) {
         envsensor.PacketType packetType = envsensor.PacketType.forNumber(messageHeader.mPacketType);
         if(packetType == null) {
             Log.d("yot132", "packetType is null");
@@ -310,7 +310,7 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity implements 
         switch (packetType) {
             case handoverSensorRes: {
                 try {
-                    final envsensor.HandoverSensorResponse response = envsensor.HandoverSensorResponse.parseFrom(buffer);
+                    final envsensor.HandoverSensorResponse response = envsensor.HandoverSensorResponse.parseFrom(bodyBuf);
                     if(response.getResult() == envsensor.HandoverSensorResponse.Result.success) {
                         showAlertDialog(getResources().getString(R.string.textTransferSucceeded));
                     }else if(response.getResult() == envsensor.HandoverSensorResponse.Result.unauthorized) {
@@ -336,4 +336,5 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity implements 
             }
         }
     }
+
 }

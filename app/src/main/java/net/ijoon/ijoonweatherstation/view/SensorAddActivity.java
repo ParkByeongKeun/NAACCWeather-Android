@@ -29,11 +29,12 @@ import com.google.zxing.integration.android.IntentResult;
 import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
+import net.ijoon.scnet_android.GlobalApplication;
 import net.ijoon.scnet_android.MessageHeader;
-import net.ijoon.scnet_android.RendezvousClientCallback;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
+import net.ijoon.scnet_android.SCNetClientCallback;
 
-public class SensorAddActivity extends SCNetAppCompatActivity implements RendezvousClientCallback {
+public class SensorAddActivity extends SCNetAppCompatActivity {
 
     View view;
     EditText mEtSerial;
@@ -55,7 +56,7 @@ public class SensorAddActivity extends SCNetAppCompatActivity implements Rendezv
         mToken = preferences.getString("token","");
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
-
+        super.mGlobalApplication.name = "SensorAdd";
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -88,27 +89,28 @@ public class SensorAddActivity extends SCNetAppCompatActivity implements Rendezv
                 if(mEtSerial.getText().toString().equals("")  || mEtAuth.getText().toString().equals("")) {
                     showAlertDialog("입력정보를 확인해주세요.");
                 }else {
-                    envsensor.RegistSensorRequest registSensorRequest = envsensor.RegistSensorRequest.newBuilder().setLatitude(0).setLongitude(0).setAccessToken(mToken).setSerial(mEtSerial.getText().toString()).setAuth(mEtAuth.getText().toString()).build();
+                    float lat = 36;
+                    float lng = 127;
+                    GlobalApplication globalApplication = (GlobalApplication)getApplicationContext();
+                    globalApplication.mCallback = SensorAddActivity.this;//testClass;
+
+                    envsensor.RegistSensorRequest registSensorRequest = envsensor.RegistSensorRequest.newBuilder().setLatitude(lat).setLongitude(lng).setAccessToken(mToken).setSerial(mEtSerial.getText().toString()).setAuth(mEtAuth.getText().toString()).build();
                     mCustomApplication.mServerSession.request(registSensorRequest);
                 }
-
-
             }
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    public void onMessage(MessageHeader messageHeader, byte[] buffer) {
-        envsensor.PacketType packetType = envsensor.PacketType.forNumber(messageHeader.mPacketType);
-        if(packetType == null) {
+    public void onResponse(MessageHeader messageHeader, byte[] bodyBuf) {
+        if (messageHeader == null) {
             Log.d("yot132", "packetType is null");
             return;
         }
-        switch (packetType) {
-            case registSensorRes: {
+        switch (messageHeader.mPacketType) {
+            case 23: {
                 try {
-                    final envsensor.RegistSensorResponse response = envsensor.RegistSensorResponse.parseFrom(buffer);
+                    final envsensor.RegistSensorResponse response = envsensor.RegistSensorResponse.parseFrom(bodyBuf);
                     if (response.getResult() == envsensor.RegistSensorResponse.Result.success) {
                         showAlertDialog(getResources().getString(R.string.textRegistSuccess));
                     }else {
@@ -118,6 +120,9 @@ public class SensorAddActivity extends SCNetAppCompatActivity implements Rendezv
                     e.printStackTrace();
                 }
 
+                break;
+            }
+            case 2 : {
                 break;
             }
             default: {
@@ -181,6 +186,7 @@ public class SensorAddActivity extends SCNetAppCompatActivity implements Rendezv
             if(contents != null) {
                 String []contentsParsed = contents.split(",");
                 if(contentsParsed.length == 2) {
+
                     String serial = contentsParsed[0];
                     String auth = contentsParsed[1];
                     envsensor.RegistSensorRequest registSensorRequest = envsensor.RegistSensorRequest.newBuilder().setAccessToken(mToken).setSerial(serial).setAuth(auth).build();
@@ -192,6 +198,41 @@ public class SensorAddActivity extends SCNetAppCompatActivity implements Rendezv
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    class TestClass implements SCNetClientCallback {
+
+        public TestClass () {
+
+        }
+        @Override
+        public void onAttaching() {
+
+        }
+
+        @Override
+        public void onAttached() {
+
+        }
+
+        @Override
+        public void onAttachFailed() {
+
+        }
+
+        @Override
+        public void onDetach() {
+
+        }
+
+        @Override
+        public void onTimedOut() {
+
+        }
+
+        @Override
+        public void onResponse(MessageHeader messageHeader, byte[] bodyBuf) {
         }
     }
 }
