@@ -59,7 +59,7 @@ public class JoinActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-            actionBar.setTitle(Html.fromHtml("<font color='#000000'>" + getResources().getString(R.string.textJoin) + "</font>"));
+            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textJoin) + "</font>"));
 
         }
 
