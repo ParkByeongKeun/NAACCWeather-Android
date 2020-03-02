@@ -114,8 +114,8 @@
     <string name="textEmailRetransmission">이메일 재전송</string>
     <string name="textGoToTheLoginPage">로그인 페이지로 이동</string>
     <string name="textSimplySignupEmail">간편 회원가입</string>
-    <string name="textEmailAuthentication">이메일 인증</string>
-    <string name="textBeNearCompletion">거의 완료되었습니다!</string>
+    <string name="textEmailAuthentication">가입하</string>
+    <string name="textBeNearCompletion">거의 완료되었습니다!</string>기
     <string name="textForgotPassword">비밀번호를 잊으 셨나요?</string>
     <string name="textEasyLoginWithRegisteredEmail">등록된 이메일로 간편 로그인</string>
     <string name="textMaxVelocity">최대 풍속</string>

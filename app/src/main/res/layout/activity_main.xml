@@ -80,23 +80,30 @@
                     android:layout_marginRight="50dp"
                     android:background="@color/white"/>
 
-                <TextView
-                    android:id="@+id/tv_max"
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:text="@string/textMaxVelocity"
-                    android:textColor="@color/white"
-                    android:textSize="18dp" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_max"
-                    android:layout_marginLeft="50dp"
-                    android:text="-"
-                    android:id="@+id/tv_velocity_max_time"
-                    android:textColor="@color/white"
-                    android:textSize="18dp"/>
+                    android:layout_centerVertical="true"
+                    android:id="@+id/rlMessage">
+                    <TextView
+                        android:id="@+id/tv_max"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="50dp"
+                        android:text="@string/textMaxVelocity"
+                        android:textColor="@color/white"
+                        android:textSize="18dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_max"
+                        android:layout_marginLeft="50dp"
+                        android:text="-"
+                        android:id="@+id/tv_velocity_max_time"
+                        android:textColor="@color/white"
+                        android:textSize="18dp"/>
+                </RelativeLayout>
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -107,7 +114,7 @@
                     android:textSize="30dp"
                     android:textStyle="bold"
                     android:id="@+id/tv_wind_velocity_max"
-                    android:layout_toRightOf="@+id/tv_max"
+                    android:layout_toRightOf="@+id/rlMessage"
                     android:textColor="@color/white" />
 
             </RelativeLayout>

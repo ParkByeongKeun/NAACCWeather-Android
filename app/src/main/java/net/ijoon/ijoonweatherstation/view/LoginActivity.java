@@ -107,8 +107,8 @@ public class LoginActivity extends SCNetAppCompatActivity {
                 mStrPassword = mEtPassword.getText().toString();
 
                 login(mStrId,mStrPassword);
-//                if(android.util.Patterns.EMAIL_ADDRESS.matcher(mStrId).matches()) {
-//                    checkUserId(mStrId, mStrPassword);
+//                if(android.util.Patterns.EMAIL_ADDRESS.matcher(mStrAuth).matches()) {
+//                    resetPW(mStrAuth, mStrPassword);
 //                }else {
 //                    showAlertDialog(getResources().getString(R.string.textNotEmailFormat));
 //                }
@@ -120,12 +120,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
             startActivity(intent);
         });
         mTvForgot.setOnClickListener(v -> {
-            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
-                return;
-            }
-            mLastClickTime = SystemClock.elapsedRealtime();
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("http://circular.ijoon.net/"));
+            Intent intent = new Intent(LoginActivity.this,ForgotPWActivity.class);
             startActivity(intent);
         });
 
@@ -164,7 +159,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
                     editor.putString("id", mStrId);
                     editor.apply();
                     isLoginSuccess = true;
-                    Log.d("yot132","checkUserId success");
+                    Log.d("yot132","resetPW success");
                     envsensor.GetSensorListRequest sensorListRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(token).build();
                     mCustomApplication.mServerSession.request(sensorListRequest);
 
@@ -324,6 +319,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
                         }
                     }
                 } catch (InvalidProtocolBufferException e) {
+                    Log.d("yot132","error - " + e);
                     e.printStackTrace();
                 }
                 break;

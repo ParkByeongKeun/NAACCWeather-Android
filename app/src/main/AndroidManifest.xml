@@ -93,6 +93,12 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".view.EmailConfirmActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".view.ForgotPWActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.ForgotPWAuthenticationActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".view.ForgotPWConfirmActivity"
+            android:screenOrientation="portrait"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:background="@drawable/buttonshapewhitebg"
-                    android:text="@string/textLogin"
+                    android:text="@string/textOk"
                     android:id="@+id/btnOk"
                     android:textAllCaps="false"
                     android:textColor="#96ffffff"

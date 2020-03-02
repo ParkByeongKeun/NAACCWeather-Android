@@ -76,7 +76,7 @@ public class EmailConfirmActivity extends SCNetAppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + "이메일 확인하기" + "</font>"));
+            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + "" + "</font>"));
         }
 
         mBtnOk = findViewById(R.id.btnOk);
@@ -86,10 +86,7 @@ public class EmailConfirmActivity extends SCNetAppCompatActivity {
             @Override
             public void onClick(View v) {
                 mStrId = mEtId.getText().toString();
-                mEtId.setText(mStrId);
-
                 checkUserId(mStrId);
-
             }
         });
 
@@ -111,8 +108,6 @@ public class EmailConfirmActivity extends SCNetAppCompatActivity {
                 return chain.proceed(request);
             }
         });
-
-        Log.d("yot132","user id = " + userId);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://1.246.219.189:20217")
                 .addConverterFactory(GsonConverterFactory.create())

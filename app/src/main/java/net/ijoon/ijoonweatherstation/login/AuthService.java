@@ -29,4 +29,10 @@ public interface AuthService {
     Call<VerifyJoinResponse> verifyJoin(@Body VerifyJoinRequest request);
     @POST("/api/auth/checkUserId")
     Call<CheckUserIdResponse> checkUserId(@Body CheckUserIdRequest request);
+    @POST("/api/auth/resetPasswordRequest")
+    Call<ResetPasswordResponse> resetPasswordRequest(@Body ResetPasswordRequest request);
+    @POST("/api/auth/resetPassword")
+    Call<ResetPasswordAuthResponse> resetPassword(@Body ResetPasswordAuthRequest request);
+    @POST("/api/auth/resetPasswordCheckCode")
+    Call<ResetPasswordCheckResponse> resetPassword(@Body ResetPasswordCheckRequest request);
 }
