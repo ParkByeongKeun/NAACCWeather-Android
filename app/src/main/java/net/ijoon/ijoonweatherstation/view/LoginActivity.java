@@ -67,6 +67,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
     boolean isLoginSuccess;
     InputMethodManager imm;
     TextView mTvForgot;
+    TextView mTvForgotEmail;
     long mLastClickTime = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -93,6 +94,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
             showAlertDialog(getResources().getString(R.string.textExpiredToken));
         }
         mTvForgot = findViewById(R.id.tvForgot);
+        mTvForgotEmail = findViewById(R.id.tvEmailForgot);
         mBtnLogin = findViewById(R.id.btnLogin);
         mEtId = findViewById(R.id.etId);
         mEtPassword = findViewById(R.id.etPassword);
@@ -106,13 +108,17 @@ public class LoginActivity extends SCNetAppCompatActivity {
 
                 login(mStrId,mStrPassword);
 //                if(android.util.Patterns.EMAIL_ADDRESS.matcher(mStrId).matches()) {
-//                    login(mStrId, mStrPassword);
+//                    checkUserId(mStrId, mStrPassword);
 //                }else {
 //                    showAlertDialog(getResources().getString(R.string.textNotEmailFormat));
 //                }
             }
         });
 
+        mTvForgotEmail.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this,EmailConfirmActivity.class);
+            startActivity(intent);
+        });
         mTvForgot.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
                 return;
@@ -158,7 +164,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
                     editor.putString("id", mStrId);
                     editor.apply();
                     isLoginSuccess = true;
-                    Log.d("yot132","login success");
+                    Log.d("yot132","checkUserId success");
                     envsensor.GetSensorListRequest sensorListRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(token).build();
                     mCustomApplication.mServerSession.request(sensorListRequest);
 

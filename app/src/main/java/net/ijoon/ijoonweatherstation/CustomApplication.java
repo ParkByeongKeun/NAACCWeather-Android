@@ -95,6 +95,7 @@ public class CustomApplication extends GlobalApplication {
 
                         // Log and toast
                         fcmToken = token;
+                        Log.d("yot132","fcmToken = " + fcmToken);
                     }
                 });
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);

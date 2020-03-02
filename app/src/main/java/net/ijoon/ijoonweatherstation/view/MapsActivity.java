@@ -101,6 +101,9 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         IntentFilter filter = new IntentFilter();
         filter.addAction("maxVelocityData");
         registerReceiver(mBroadcastReceiver, filter);
+        IntentFilter filter1 = new IntentFilter();
+        filter1.addAction("sensor_activated");
+        registerReceiver(mActivatedBroadcastReceiver, filter1);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create channel to show notifications.
@@ -117,6 +120,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
+        Log.d("yot132","accessToken = " + mToken);
 
         mBackPressCloseHandler = new BackPressCloseHandler(this);
         mArrMarkerOptions = new ArrayList<>();
@@ -195,6 +199,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
+        unregisterReceiver(mActivatedBroadcastReceiver);
         if (serviceIntent!=null) {
             stopService(serviceIntent);
             serviceIntent = null;
@@ -660,12 +665,16 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                             }
                             tv_marker.setText(maxVelocity + "m/s");
                         }else {
-                            if (mSensor.get(finalI).getMaxVelocity() >= 10.0) {
-                                rl_message.setBackgroundResource(R.drawable.ic_message_danger);
-                            } else {
-                                rl_message.setBackgroundResource(R.drawable.ic_message_default);
+                            if (mSensor.get(finalI).getPing() >= ALIVEPING) {
+                                rl_message.setBackgroundResource(R.drawable.ic_message_ping);
+                            }else {
+                                if (mSensor.get(finalI).getMaxVelocity() >= 10.0) {
+                                    rl_message.setBackgroundResource(R.drawable.ic_message_danger);
+                                }else {
+                                    rl_message.setBackgroundResource(R.drawable.ic_message_default);
+                                }
+                                tv_marker.setText(String.format("%.1f", mSensor.get(finalI).getMaxVelocity()) + "m/s");
                             }
-                            tv_marker.setText(String.format("%.1f", mSensor.get(finalI).getMaxVelocity()) + "m/s");
                         }
                         LatLng position = new LatLng(mSensor.get(finalI).getLatitude(),mSensor.get(finalI).getLongitude());
                         markerOptions.position(position);
@@ -675,6 +684,29 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), marker_root_view)));
                         Marker marker = mMap.addMarker(mArrMarkerOptions.get(finalI));
                         marker.setAlpha(1f);
+                    }
+                });
+            }
+        }
+    };
+
+    private BroadcastReceiver mActivatedBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String type = intent.getStringExtra("type");
+            String serial = intent.getStringExtra("serial");
+
+            mMap.clear();
+            mArrMarkerOptions.clear();
+            for(int i = 0 ; i < mSensor.size() ; i ++) {
+                int finalI = i;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (serial.equals(mSensor.get(finalI).getSerial())) {
+                            envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+                            mCustomApplication.mServerSession.request(request);
+                        }
                     }
                 });
             }
