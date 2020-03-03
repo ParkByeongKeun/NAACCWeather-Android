@@ -68,7 +68,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // TODO(developer): Handle FCM messages here.
 
-        Log.d("yot132","?@#");
         sendNotification(remoteMessage.getData().get("message"));
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
