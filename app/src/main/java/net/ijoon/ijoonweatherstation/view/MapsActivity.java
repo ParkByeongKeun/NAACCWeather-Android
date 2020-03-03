@@ -305,8 +305,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                         marker.setAlpha(1f);
                                 }
                                 if(!isRefresh) {
-                                    LatLng firstGPS = new LatLng(36.526803, 127.293589);
-                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom((firstGPS),10));
+                                    LatLng firstGPS = new LatLng(36.5, 127.266667);
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom((firstGPS),12));
                                     isRefresh = false;
                                 }
                             }
@@ -404,6 +404,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             }
         }
         setupCustomView();
+
         mCustomApplication.setEnvSensor(mSensor.get(mPosition));
         mSweetSheet.show();
         return false;
