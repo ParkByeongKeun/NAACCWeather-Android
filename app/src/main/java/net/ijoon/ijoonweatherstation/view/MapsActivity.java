@@ -675,9 +675,9 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                 }else {
                                     rl_message.setBackgroundResource(R.drawable.ic_message_default);
                                 }
-                                tv_marker.setText(mSensor.get(finalI).getName());
-                                tvMarkerSubTitle.setText(String.format("%.1f", mSensor.get(finalI).getMaxVelocity()) + "m/s" + " ("+maxVelocityTime + ")");
                             }
+                            tv_marker.setText(mSensor.get(finalI).getName());
+                            tvMarkerSubTitle.setText(String.format("%.1f", mSensor.get(finalI).getMaxVelocity()) + "m/s" + " ("+maxVelocityTime + ")");
                         }
                         LatLng position = new LatLng(mSensor.get(finalI).getLatitude(),mSensor.get(finalI).getLongitude());
                         markerOptions.position(position);
