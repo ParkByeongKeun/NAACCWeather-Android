@@ -79,7 +79,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rlTop"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
         android:id="@+id/llmid">
 
 
@@ -87,6 +88,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:clickable="true"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="80dp"
@@ -104,6 +107,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:clickable="true"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="80dp"
@@ -121,6 +126,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:clickable="true"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="80dp"
@@ -139,8 +146,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/llmid"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp">
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="5dp"
@@ -150,6 +156,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
+                    android:background="@drawable/selector"
+                    android:clickable="true"
                     android:orientation="horizontal">
                     <ImageView
                         android:layout_width="40dp"
@@ -169,6 +177,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
+                    android:background="@drawable/selector"
+                    android:clickable="true"
                     android:orientation="horizontal">
                     <ImageView
                         android:layout_width="40dp"
@@ -188,6 +198,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
+                    android:background="@drawable/selector"
+                    android:clickable="true"
                     android:orientation="horizontal">
                     <ImageView
                         android:layout_width="40dp"
