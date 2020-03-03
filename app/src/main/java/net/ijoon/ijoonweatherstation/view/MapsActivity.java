@@ -78,6 +78,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     private BackPressCloseHandler mBackPressCloseHandler;
     View marker_root_view;
     TextView tv_marker;
+    TextView tvMarkerSubTitle;
     RelativeLayout rl_message;
     String mToken;
     MarkerOptions markerOptions = new MarkerOptions();
@@ -88,6 +89,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         marker_root_view = LayoutInflater.from(this).inflate(R.layout.marker_layout, null);
         tv_marker = marker_root_view.findViewById(R.id.tv_marker);
         rl_message = marker_root_view.findViewById(R.id.rlMessage);
+        tvMarkerSubTitle = marker_root_view.findViewById(R.id.tv_sub_title_marker);
     }
 
     private Intent serviceIntent;
@@ -139,7 +141,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         rl = findViewById(R.id.rl);
         mSweetSheet = new SweetSheet(rl);
 
-
         PowerManager pm = (PowerManager) getApplicationContext().getSystemService(POWER_SERVICE);
         boolean isWhiteListing = false;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -159,41 +160,38 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                             Log.w("yot132", "getInstanceId failed", task.getException());
                             return;
                         }
-
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
                     }
                 });
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
     }
 
-    private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, MapsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
-
-        String channelId = "fcm_default_channel";//getString(R.string.default_notification_channel_id);
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.logo_weather)//drawable.splash)
-                        .setContentTitle("즉시 작업을 중단하시오")
-                        .setContentText("세종시 행복동 최대 풍속 11.6 m/s")
-                        .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
-                        .setPriority(Notification.PRIORITY_HIGH)
-                        .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId,"Channel human readable title", NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
-    }
+//    private void sendNotification(String messageBody) {
+//        Intent intent = new Intent(this, MapsActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
+//
+//        String channelId = "fcm_default_channel";//getString(R.string.default_notification_channel_id);
+//        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//        NotificationCompat.Builder notificationBuilder =
+//                new NotificationCompat.Builder(this, channelId)
+//                        .setSmallIcon(R.drawable.logo_weather)//drawable.splash)
+//                        .setContentTitle("즉시 작업을 중단하시오")
+//                        .setContentText("세종시 행복동 최대 풍속 11.6 m/s")
+//                        .setAutoCancel(true)
+//                        .setSound(defaultSoundUri)
+//                        .setPriority(Notification.PRIORITY_HIGH)
+//                        .setContentIntent(pendingIntent);
+//
+//        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//
+//        // Since android Oreo notification channel is needed.
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            NotificationChannel channel = new NotificationChannel(channelId,"Channel human readable title", NotificationManager.IMPORTANCE_DEFAULT);
+//            notificationManager.createNotificationChannel(channel);
+//        }
+//
+//        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+//    }
 
     @Override
     protected void onDestroy() {
@@ -295,7 +293,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                                 rl_message.setBackgroundResource(R.drawable.ic_message_default);
                                             }
                                         }
-                                        tv_marker.setText(String.format("%.1f", mSensor.get(i).getMaxVelocity()) + "m/s");
+                                        tv_marker.setText(mSensor.get(i).getName());
+                                        tvMarkerSubTitle.setText(String.format("%.1f", mSensor.get(i).getMaxVelocity()) + "m/s" + " (" + mSensor.get(i).getMaxTime()+ ")");
                                         LatLng position = new LatLng(response.getSensor(i).getLatitude(),response.getSensor(i).getLongitude());
                                         markerOptions.position(position);
                                         markerOptions.title(response.getSensor(i).getName());
@@ -406,14 +405,15 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         }
         setupCustomView();
         mCustomApplication.setEnvSensor(mSensor.get(mPosition));
-        mSweetSheet.toggle();
+        mSweetSheet.show();
         return false;
     }
 
+
+
     private void setupCustomView() {
-        mSweetSheet = new SweetSheet(rl);
         CustomDelegate customDelegate = new CustomDelegate(true,
-                CustomDelegate.AnimationType.DuangLayoutAnimation);
+                CustomDelegate.AnimationType.AlphaAnimation);
         View view = LayoutInflater.from(this).inflate(R.layout.layout_custom_view, null, false);
         customDelegate.setCustomView(view);
         mSweetSheet.setDelegate(customDelegate);
@@ -663,7 +663,9 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                             } else {
                                 rl_message.setBackgroundResource(R.drawable.ic_message_default);
                             }
-                            tv_marker.setText(maxVelocity + "m/s");
+                            tv_marker.setText(mSensor.get(finalI).getName());
+                            tvMarkerSubTitle.setText(maxVelocity + "m/s (" + maxVelocityTime + ")");
+
                         }else {
                             if (mSensor.get(finalI).getPing() >= ALIVEPING) {
                                 rl_message.setBackgroundResource(R.drawable.ic_message_ping);
@@ -673,7 +675,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                 }else {
                                     rl_message.setBackgroundResource(R.drawable.ic_message_default);
                                 }
-                                tv_marker.setText(String.format("%.1f", mSensor.get(finalI).getMaxVelocity()) + "m/s");
+                                tv_marker.setText(mSensor.get(finalI).getName());
+                                tvMarkerSubTitle.setText(String.format("%.1f", mSensor.get(finalI).getMaxVelocity()) + "m/s" + " ("+maxVelocityTime + ")");
                             }
                         }
                         LatLng position = new LatLng(mSensor.get(finalI).getLatitude(),mSensor.get(finalI).getLongitude());
