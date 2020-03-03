@@ -407,7 +407,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 
         mCustomApplication.setEnvSensor(mSensor.get(mPosition));
         mSweetSheet.show();
-        return false;
+        return true;
     }
 
 
