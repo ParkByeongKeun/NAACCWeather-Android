@@ -10,9 +10,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -48,6 +51,8 @@ public class JoinEmailActivity extends AppCompatActivity {
     View view;
     Button mBtnAuthOk;
     EditText mEtAuth;
+    InputMethodManager imm;
+    RelativeLayout mRlRoot;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -57,18 +62,23 @@ public class JoinEmailActivity extends AppCompatActivity {
         mBtnRetryEmail = findViewById(R.id.btnRetryEmail);
         mBtnAuthOk = findViewById(R.id.btnAuthOk);
         mEtAuth = findViewById(R.id.etAuth);
-
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        mRlRoot = findViewById(R.id.rlRootView);
         mId = getIntent().getStringExtra("id");
-
+        mRlRoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imm.hideSoftInputFromWindow(mEtAuth.getWindowToken(), 0);
+            }
+        });
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        getWindow().setStatusBarColor(Color.parseColor("#196482"));//statusBar
-
         getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));
         ActionBar actionBar = this.getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + "Circular" + "</font>"));
-            actionBar.setBackgroundDrawable(new ColorDrawable(0xFF196482));//title
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + "인증번호 확인" + "</font>"));
         }
 
         mBtnAuthOk.setOnClickListener(v -> {
@@ -190,5 +200,23 @@ public class JoinEmailActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(JoinEmailActivity.this,DefaultActivity.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(0,0);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(JoinEmailActivity.this,DefaultActivity.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(0,0);
+        return super.onOptionsItemSelected(item);
     }
 }
