@@ -107,7 +107,7 @@
     <string name= "Successful">Successful</string>
     <string name= "textDelete">has been deleted.</string>
     <string name= "textCancel">Cancel</string>
-    <string name= "textNotCircularMember">you are not a Circular member.</string>
+    <string name= "textNotCircularMember">you are not a member.</string>
     <string name= "textSharingSucceded">Sharing succeeded.</string>
     <string name= "textSharingFailedCheckOtherID">Sharing failed. Please check the other ID.</string>
     <string name= "textTransferSucceeded">Transfer succeeded</string>
@@ -131,8 +131,8 @@
     <string name= "textPasswordToChange">Password to change</string>
     <string name= "textCheckYourExistingPassword">Please check your existing password.</string>
     <string name= "textAreYouSureWantToLogout">Are you sure you want to logout?</string>
-    <string name= "textCircularWithdrawal">Circular Withdrawal?</string>
-    <string name= "textEnterYourPasswordAndPressTheCheckButton">Circular To withdraw your membership, enter your password and press the check button.</string>
+    <string name= "textCircularWithdrawal">Withdrawal?</string>
+    <string name= "textEnterYourPasswordAndPressTheCheckButton">To withdraw your membership, enter your password and press the check button.</string>
     <string name= "textMeantimeThankYouForUsing">In the meantime Thank you for using it.</string>
     <string name= "textConfirmYourPassword">Please confirm your password.</string>
     <string name= "textNoAccessToServer">  No access to server.</string>
@@ -191,7 +191,7 @@
     <string name="textGoToTheLoginPage">Go to the login page</string>
     <string name="textSimplySignupEmail">Simply sign up as an email</string>
     <string name="textEmailAuthentication">EmailAuthentication</string>
-    <string name="textSignupCircular">Please sign up for Circular</string>
+    <string name="textSignupCircular">Please sign up </string>
     <string name="textUsing">Are you already using it?                  Login</string>
     <string name="textMyStation">My Station</string>
     <string name="textPerson">person</string>
@@ -203,7 +203,7 @@
     <string name="textResentFailed">Resent failed.</string>
     <string name="textCheckInfomation">Please check the input information.</string>
     <string name="textSetting">Setting</string>
-    <string name="textCancelCircularMembership">To cancel your circular membership, enter your password \n and press the OK button.</string>
+    <string name="textCancelCircularMembership">To cancel your membership, enter your password \n and press the OK button.</string>
     <string name="textFailedToWithdrawal">Failed to withdrawal</string>
     <string name="textPasswordChange">Change Password</string>
     <string name="textNicknameChangedSuccess">Nickname changed successfully.\nChanged nickname </string>
