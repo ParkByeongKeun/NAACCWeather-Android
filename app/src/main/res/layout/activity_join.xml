@@ -128,7 +128,6 @@ android:background="@drawable/blue_skies">
             android:drawableRight="@drawable/ic_nickname"
             android:hint="@string/textNickname"
             android:id="@+id/etNick"
-            android:inputType="textPassword"
             android:maxLines="1"
             android:textColor="@android:color/white"
             android:textSize="16sp" />

@@ -27,6 +27,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import net.ijoon.envsensor;
@@ -180,14 +182,15 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
         httpClient.addInterceptor(new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).build();
+                Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).addHeader("Content-Type", "application/json").build();
                 return chain.proceed(request);
             }
         });
+        Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://1.246.219.189:20217")
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(httpClient.build())
                 .build();
         AuthService service = retrofit.create(AuthService.class);

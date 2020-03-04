@@ -103,6 +103,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         IntentFilter filter = new IntentFilter();
         filter.addAction("maxVelocityData");
         registerReceiver(mBroadcastReceiver, filter);
+
+
         IntentFilter filter1 = new IntentFilter();
         filter1.addAction("sensor_activated");
         registerReceiver(mActivatedBroadcastReceiver, filter1);
@@ -409,9 +411,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         mSweetSheet.show();
         return true;
     }
-
-
-
+    
     private void setupCustomView() {
         CustomDelegate customDelegate = new CustomDelegate(true,
                 CustomDelegate.AnimationType.AlphaAnimation);
@@ -702,18 +702,17 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 
             mMap.clear();
             mArrMarkerOptions.clear();
-            for(int i = 0 ; i < mSensor.size() ; i ++) {
-                int finalI = i;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (serial.equals(mSensor.get(finalI).getSerial())) {
-                            envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
-                            mCustomApplication.mServerSession.request(request);
-                        }
-                    }
-                });
-            }
+//            for(int i = 0 ; i < mSensor.size() ; i ++) {
+//                int finalI = i;
+//
+//            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+                    mCustomApplication.mServerSession.request(request);
+                }
+            });
         }
     };
 }

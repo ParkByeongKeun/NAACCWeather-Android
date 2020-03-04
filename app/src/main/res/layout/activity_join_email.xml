@@ -27,6 +27,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -98,6 +100,8 @@
             android:drawablePadding="16dp"
             android:drawableRight="@drawable/ic_email_white_24dp"
             android:hint="인증번호"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:id="@+id/etAuth"
             android:inputType="textEmailAddress"
             android:maxLines="1"
@@ -142,19 +146,6 @@
             android:layout_marginBottom="8dp"
             android:gravity="center"
             android:orientation="horizontal">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="16dp"
-                android:padding="10dp"
-                android:background="@drawable/buttonshapewhitebg"
-                android:text="@string/textGoToTheLoginPage"
-                android:id="@+id/btnLoginPage"
-                android:textAllCaps="false"
-                android:textStyle="bold"
-                android:textColor="#96ffffff"
-                android:textSize="16dp" />
 
             <Button
                 android:layout_width="wrap_content"

@@ -160,7 +160,8 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
             @Override
             public void onResponse(Call<DeleteResponse> call, Response<DeleteResponse> response) {
                 if(response.body().getSuccess()) {
-                    showAlertDialog(getResources().getString(R.string.textMeantimeThankYouForUsing));
+
+                    showDeleteAlertDialog(getResources().getString(R.string.textMeantimeThankYouForUsing));
                 }else {
                     showAlertDialog(getResources().getString(R.string.textFailedToWithdrawal));
                 }
@@ -181,6 +182,35 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,
                                         int which) {
+                        SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+                        preferences.edit().clear().apply();
+                        preferences.edit().putString("id","");
+                        preferences.edit().putString("token","");
+                        preferences.edit().apply();
+                        SettingActivity.super.activityFinish();
+
+                        Intent intent = new Intent(SettingActivity.this, DefaultActivity.class);
+                        startActivity(intent);
+                    }
+                });
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                alertDialog.show();
+            }
+        });
+    }
+
+    public void showDeleteAlertDialog(String message) {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle(getResources().getString(R.string.textNotification));
+        alertDialog.setMessage(message);
+        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        dialog.cancel();
+
                         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
                         preferences.edit().clear().apply();
                         preferences.edit().putString("id","");

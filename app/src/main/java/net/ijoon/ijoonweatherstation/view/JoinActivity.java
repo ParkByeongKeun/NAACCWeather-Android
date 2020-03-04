@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -19,11 +20,22 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.ijoonweatherstation.login.AuthService;
+import net.ijoon.ijoonweatherstation.login.CheckResponse;
 import net.ijoon.ijoonweatherstation.login.JoinRequest;
 import net.ijoon.ijoonweatherstation.login.JoinResponse;
+import net.ijoon.ijoonweatherstation.login.ResetPasswordAuthRequest;
+import net.ijoon.ijoonweatherstation.login.ResetPasswordAuthResponse;
 
+import java.io.IOException;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -109,20 +121,39 @@ public class JoinActivity extends AppCompatActivity {
     }
 
     void join(String id, String pw, String rePw, String name) {
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(new Interceptor()    {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request request = chain.request().newBuilder().addHeader("Content-Type", "application/json").build();
+                return chain.proceed(request);
+            }
+        });
+        Gson gson = new GsonBuilder().setLenient().create();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://1.246.219.189:20217")
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
+
         AuthService service = retrofit.create(AuthService.class);
         final Call<JoinResponse> joinResponseCall = service.join(new JoinRequest(id, pw, rePw, name));
         joinResponseCall.enqueue(new Callback<JoinResponse>() {
             @Override
             public void onResponse(Call<JoinResponse> call, Response<JoinResponse> response) {
-                Intent intent = new Intent(JoinActivity.this,JoinEmailActivity.class);
-                intent.putExtra("id", mEtId.getText().toString());
-                startActivity(intent);
-                finish();
-                overridePendingTransition(0,0);
+                JoinResponse body = response.body();
+                if(body == null) {
+                    showAlertDialog("이미 등록된 아이디입니다.");
+                    return;
+                }
+                if(body.getSuccess()) {
+                    Intent intent = new Intent(JoinActivity.this,JoinEmailActivity.class);
+                    intent.putExtra("id", mEtId.getText().toString());
+                    startActivity(intent);
+                    finish();
+                    overridePendingTransition(0,0);
+                } else {
+                    showAlertDialog("실패했습니다.");
+                }
             }
             @Override
             public void onFailure(Call<JoinResponse> call, Throwable t) {

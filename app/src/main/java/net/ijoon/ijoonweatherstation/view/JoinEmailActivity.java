@@ -19,6 +19,9 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.ijoonweatherstation.login.AuthService;
 import net.ijoon.ijoonweatherstation.login.LoginResponse;
@@ -27,6 +30,11 @@ import net.ijoon.ijoonweatherstation.login.ResendResponse;
 import net.ijoon.ijoonweatherstation.login.VerifyJoinRequest;
 import net.ijoon.ijoonweatherstation.login.VerifyJoinResponse;
 
+import java.io.IOException;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,7 +44,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class JoinEmailActivity extends AppCompatActivity {
 
     Button mBtnRetryEmail;
-    Button mBtnLoginPage;
     String mId;
     View view;
     Button mBtnAuthOk;
@@ -48,7 +55,6 @@ public class JoinEmailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_email);
         mBtnRetryEmail = findViewById(R.id.btnRetryEmail);
-        mBtnLoginPage = findViewById(R.id.btnLoginPage);
         mBtnAuthOk = findViewById(R.id.btnAuthOk);
         mEtAuth = findViewById(R.id.etAuth);
 
@@ -75,21 +81,22 @@ public class JoinEmailActivity extends AppCompatActivity {
                 resend(mId);
             }
         });
-        mBtnLoginPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(JoinEmailActivity.this, DefaultActivity.class);
-                startActivity(intent);
-                finish();
-                overridePendingTransition(0,0);
-            }
-        });
     }
 
     void verifyJoin(String id,String verifyJoinNumber) {
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(new Interceptor()    {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request request = chain.request().newBuilder().addHeader("Content-Type", "application/json").build();
+                return chain.proceed(request);
+            }
+        });
+        Gson gson = new GsonBuilder().setLenient().create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://1.246.219.189:20217")
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         AuthService service = retrofit.create(AuthService.class);
         final Call<VerifyJoinResponse> verifyJoinResponseCall = service.verifyJoin(new VerifyJoinRequest(id,verifyJoinNumber));
@@ -104,7 +111,7 @@ public class JoinEmailActivity extends AppCompatActivity {
                     return;
                 }
                 if(body.getSuccess()) {
-                    showAuthAlertDialog("인증 성공! 로그인 후 사용해주세요.");
+                    showAuthAlertDialog("인증 성공\n 로그인 후 사용해주세요.");
                 }else {
                     showAlertDialog("인증 실패");
                 }

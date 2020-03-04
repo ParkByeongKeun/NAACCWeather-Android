@@ -88,6 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:id="@+id/llMySensor"
             android:background="@drawable/selector"
             android:clickable="true"
             android:orientation="vertical">
@@ -109,6 +110,7 @@
             android:layout_weight="1"
             android:background="@drawable/selector"
             android:clickable="true"
+            android:id="@+id/llAnalysis"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="80dp"
@@ -119,7 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="분"/>
+                android:text="분석"/>
         </LinearLayout>
 
         <LinearLayout
@@ -128,6 +130,7 @@
             android:layout_weight="1"
             android:background="@drawable/selector"
             android:clickable="true"
+            android:id="@+id/llChart"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="80dp"
@@ -158,6 +161,7 @@
                     android:layout_margin="20dp"
                     android:background="@drawable/selector"
                     android:clickable="true"
+                    android:id="@+id/llMore"
                     android:orientation="horizontal">
                     <ImageView
                         android:layout_width="40dp"
@@ -177,6 +181,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
+                    android:id="@+id/llAppInfo"
                     android:background="@drawable/selector"
                     android:clickable="true"
                     android:orientation="horizontal">
@@ -198,6 +203,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
+                    android:id="@+id/llNotice"
                     android:background="@drawable/selector"
                     android:clickable="true"
                     android:orientation="horizontal">
@@ -218,7 +224,5 @@
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>
-
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
 </RelativeLayout>

@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+
 import net.ijoon.ijoonweatherstation.R;
 
 public class DefaultActivity extends Activity {
@@ -18,6 +22,7 @@ public class DefaultActivity extends Activity {
     Button mBtnLogin;
     TextView mTvVersion;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

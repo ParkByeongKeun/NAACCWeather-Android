@@ -82,15 +82,45 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     intent.putExtra("maxVelocityTime", remoteMessage.getData().get("max_time"));
                     intent.putExtra("serial", remoteMessage.getData().get("serial"));
                     sendBroadcast(intent);
-                }else {
-                    Intent intent = new Intent("sensor_activated");
+                } else {
+                    Intent mainIntent = new Intent("sensor_activated");
                     if(remoteMessage.getData().get("type").equals("sensor_activated")) {
-                        intent.putExtra("type", "sensor_activated");
+                        mainIntent.putExtra("type", "sensor_activated");
+                    }else if(remoteMessage.getData().get("type").equals("sensor_shared")) {
+                        Intent intent = new Intent("sensor_shared");
+                        intent.putExtra("assigneeId", remoteMessage.getData().get("assigneeId"));
+                        intent.putExtra("serial", remoteMessage.getData().get("serial"));
+                        sendBroadcast(intent);
+                    }else if(remoteMessage.getData().get("type").equals("sensor_share_canceled")) {
+                        Intent intent = new Intent("sensor_share_canceled");
+                        intent.putExtra("assigneeId", remoteMessage.getData().get("assigneeId"));
+                        intent.putExtra("serial", remoteMessage.getData().get("serial"));
+                        sendBroadcast(intent);
+                    }else if(remoteMessage.getData().get("type").equals("sensor_renamed")) {
+                        Intent intent = new Intent("sensor_renamed");
+                        intent.putExtra("name", remoteMessage.getData().get("name"));
+                        intent.putExtra("serial", remoteMessage.getData().get("serial"));
+                        sendBroadcast(intent);
+                    }else if(remoteMessage.getData().get("type").equals("position")) {
+                        Intent intent = new Intent("position");
+                        intent.putExtra("latitude", remoteMessage.getData().get("latitude"));
+                        intent.putExtra("longitude", remoteMessage.getData().get("longitude"));
+                        intent.putExtra("serial", remoteMessage.getData().get("serial"));
+                        sendBroadcast(intent);
+                    }else if(remoteMessage.getData().get("type").equals("handover")) {
+                        Intent intent = new Intent("handover");
+                        intent.putExtra("userId", remoteMessage.getData().get("userId"));
+                        intent.putExtra("serial", remoteMessage.getData().get("serial"));
+                        sendBroadcast(intent);
+                    }else if(remoteMessage.getData().get("type").equals("sensor_public")) {
+
                     }else {
-                        intent.putExtra("type", "sensor_deactivated");
+                        mainIntent.putExtra("type", "sensor_deactivated");
                     }
-                    intent.putExtra("serial", remoteMessage.getData().get("serial"));
-                    sendBroadcast(intent);
+                    mainIntent.putExtra("serial", remoteMessage.getData().get("serial"));
+                    mainIntent.putExtra("pull", "pull");
+
+                    sendBroadcast(mainIntent);
                 }
 
 

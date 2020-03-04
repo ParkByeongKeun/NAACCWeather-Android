@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -53,11 +54,25 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
         TextView tvId;
         TextView tvNickname;
 
+        LinearLayout mLlMySensor;
+        LinearLayout mLlAnalysis;
+        LinearLayout mLlChart;
+        LinearLayout mLlMore;
+        LinearLayout mLlAppInfo;
+        LinearLayout mLlNotice;
+
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         protected void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.activity_infomation);
+                mLlMySensor = findViewById(R.id.llMySensor);
+                mLlAnalysis = findViewById(R.id.llAnalysis);
+                mLlChart = findViewById(R.id.llChart);
+                mLlMore = findViewById(R.id.llMore);
+                mLlAppInfo = findViewById(R.id.llAppInfo);
+                mLlNotice = findViewById(R.id.llNotice);
+
                 mCustomApplication = (CustomApplication)getApplication();
                 mEnvSensor = mCustomApplication.getEnvSensor();
                 tvId = findViewById(R.id.tvId);
@@ -87,6 +102,35 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                         startActivity(intent);
                 });
 
+                mLlAnalysis.setOnClickListener(v -> {
+                        Intent intent = new Intent(InfomationActivity.this, InfoAnalysisActivity.class);
+                        startActivity(intent);
+                });
+
+                mLlAppInfo.setOnClickListener(v -> {
+                        Intent intent = new Intent(InfomationActivity.this, InfoAppInfoActivity.class);
+                        startActivity(intent);
+                });
+
+                mLlChart.setOnClickListener(v -> {
+                        Intent intent = new Intent(InfomationActivity.this, InfoChartActivity.class);
+                        startActivity(intent);
+                });
+
+                mLlMore.setOnClickListener(v -> {
+                        Intent intent = new Intent(InfomationActivity.this, InfoMoreActivity.class);
+                        startActivity(intent);
+                });
+
+                mLlMySensor.setOnClickListener(v -> {
+                        Intent intent = new Intent(InfomationActivity.this, InfoMySensorActivity.class);
+                        startActivity(intent);
+                });
+
+                mLlNotice.setOnClickListener(v -> {
+                        Intent intent = new Intent(InfomationActivity.this, InfoNoticeActivity.class);
+                        startActivity(intent);
+                });
         }
 
 
