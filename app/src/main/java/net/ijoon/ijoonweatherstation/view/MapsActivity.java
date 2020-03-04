@@ -1,10 +1,8 @@
 package net.ijoon.ijoonweatherstation.view;
 
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,7 +13,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,7 +32,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
-import androidx.core.app.NotificationCompat;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -49,7 +46,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mingle.sweetpick.CustomDelegate;
 import com.mingle.sweetpick.SweetSheet;
@@ -84,6 +80,9 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     MarkerOptions markerOptions = new MarkerOptions();
     boolean isRefresh;
     int ALIVEPING = 15;
+    float saveLat;
+    float saveLong;
+    float saveZoom;
 
     private void setCustomMarkerView() {
         marker_root_view = LayoutInflater.from(this).inflate(R.layout.marker_layout, null);
@@ -124,7 +123,9 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
-        Log.d("yot132","accessToken = " + mToken);
+        saveLat = preferences.getFloat("lat",(float) 36.5);
+        saveLong = preferences.getFloat("long",(float) 127.266667);
+        saveZoom = preferences.getFloat("zoom",12);
 
         mBackPressCloseHandler = new BackPressCloseHandler(this);
         mArrMarkerOptions = new ArrayList<>();
@@ -195,6 +196,19 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 //        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
 //    }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences preferencesPosition = getSharedPreferences("preferences",MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferencesPosition.edit();
+        Log.d("yot132","zoom = " + saveLat);
+        editor.putFloat("lat", saveLat);
+        editor.putFloat("long", saveLong);
+        editor.putFloat("zoom", saveZoom);
+        editor.apply();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -238,11 +252,23 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         return super.onOptionsItemSelected(item);
     }
 
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         // Add a marker in Sydney and move the camera
         mMap.setOnMarkerClickListener(this);
+
+        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                saveLat = (float) mMap.getCameraPosition().target.latitude;
+                saveLong = (float) mMap.getCameraPosition().target.longitude;
+                saveZoom = mMap.getCameraPosition().zoom;
+            }
+        });
+
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
@@ -307,8 +333,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                         marker.setAlpha(1f);
                                 }
                                 if(!isRefresh) {
-                                    LatLng firstGPS = new LatLng(36.5, 127.266667);
-                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom((firstGPS),12));
+                                    LatLng firstGPS = new LatLng(saveLat, saveLong);
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom((firstGPS),saveZoom));
                                     isRefresh = false;
                                 }
                             }
