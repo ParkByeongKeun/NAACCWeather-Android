@@ -119,8 +119,8 @@
             android:layout_height="wrap_content"
             android:text="@string/text_changing_sensor_gps"
             android:layout_centerInParent="true"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
             android:textStyle="bold"
             android:textColor="#1178ff"/>
 
@@ -143,8 +143,8 @@
             android:layout_height="wrap_content"
             android:text="@string/text_set_sensor_name"
             android:layout_centerInParent="true"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
             android:textStyle="bold"
             android:textColor="#1178ff"/>
 
@@ -167,8 +167,8 @@
             android:layout_height="wrap_content"
             android:text="@string/textShare"
             android:layout_centerInParent="true"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
             android:textStyle="bold"
             android:textColor="#1178ff"/>
 
@@ -191,8 +191,8 @@
             android:layout_height="wrap_content"
             android:text="@string/textHandOver"
             android:layout_centerInParent="true"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
             android:textStyle="bold"
             android:textColor="#1178ff"/>
 
@@ -217,8 +217,8 @@
             android:layout_height="wrap_content"
             android:text="@string/textSharedUsers"
             android:layout_centerInParent="true"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
             android:textStyle="bold"
             android:textColor="#1178ff"/>
 
@@ -241,8 +241,8 @@
             android:layout_height="wrap_content"
             android:text="@string/textUnRegist"
             android:layout_centerInParent="true"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
             android:textStyle="bold"
             android:textColor="#1178ff"/>
 
