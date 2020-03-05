@@ -119,6 +119,16 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         IntentFilter filter = new IntentFilter();
         filter.addAction("maxVelocityData");
         registerReceiver(mBroadcastReceiver, filter);
+        Bundle extras = getIntent().getExtras();
+
+        if (extras == null) {
+
+        }else {
+            String action = extras.getString("action");
+
+            Log.d("yot132","action = " + action);
+
+        }
 
 
         IntentFilter filter1 = new IntentFilter();
@@ -227,7 +237,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         super.onPause();
         SharedPreferences preferencesPosition = getSharedPreferences("preferences",MODE_PRIVATE);
         SharedPreferences.Editor editor = preferencesPosition.edit();
-        Log.d("yot132","zoom = " + saveLat);
         editor.putFloat("lat", saveLat);
         editor.putFloat("long", saveLong);
         editor.putFloat("zoom", saveZoom);
