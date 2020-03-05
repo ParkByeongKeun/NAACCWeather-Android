@@ -131,7 +131,6 @@ public class EmailConfirmActivity extends SCNetAppCompatActivity {
                     }else {
                         showAlertDialog("등록된 아이디가 아닙니다.");
                     }
-                    Log.d("yot132","22");
 
                 }else {
                     showAlertDialog("확인할 수 없습니다.");

@@ -116,7 +116,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setPermission();
-        super.mGlobalApplication.name = "mapView";
         IntentFilter filter = new IntentFilter();
         filter.addAction("maxVelocityData");
         registerReceiver(mBroadcastReceiver, filter);
@@ -151,10 +150,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 
         actionBar = getSupportActionBar();
         setCustomMarkerView();
-        if(mCustomApplication.mServerSession != null) {
-            envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
-            mCustomApplication.mServerSession.request(request);
-        }
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -186,7 +182,18 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
     }
 
-//    private void sendNotification(String messageBody) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(mCustomApplication.mServerSession != null) {
+            Log.d("yot132","onResume called");
+            envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+            mCustomApplication.mServerSession.request(request);
+        }
+    }
+
+    //    private void sendNotification(String messageBody) {
 //        Intent intent = new Intent(this, MapsActivity.class);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
@@ -320,7 +327,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             }
             case 6: {
                 Log.d("yot132","onresponse called !!! ");
-
                 //getSensorListResponse
                 runOnUiThread(new Runnable() {
                     @Override
@@ -381,7 +387,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                     @Override
                     public void run() {
                         try {
-
                             final envsensor.SetSensorPositionResponse response = envsensor.SetSensorPositionResponse.parseFrom(bodyBuf);
                             if(response.getResult() == envsensor.SetSensorPositionResponse.Result.success) {
                                 getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom

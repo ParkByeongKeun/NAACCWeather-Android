@@ -1102,7 +1102,6 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d("yot132","22");
                         mTvMaxVelocity.setText(maxVelocity + "m/s");
                         mTvMaxVelocityTime.setText(maxVelocityTime);
                     }

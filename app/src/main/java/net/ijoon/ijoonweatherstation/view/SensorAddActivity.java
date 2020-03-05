@@ -56,8 +56,6 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
         mToken = preferences.getString("token","");
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
-        super.mGlobalApplication.name = "SensorAdd";
-
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textNewStationRegistration) + "</font>"));
