@@ -81,44 +81,43 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     intent.putExtra("maxVelocityTime", remoteMessage.getData().get("max_time"));
                     intent.putExtra("serial", remoteMessage.getData().get("serial"));
                     sendBroadcast(intent);
+                } else if(remoteMessage.getData().get("type").equals("sensor_shared")) {
+                    Intent intent = new Intent("sensor_shared");
+                    Log.d("yot132","??");
+                    intent.putExtra("assigneeId", remoteMessage.getData().get("assigneeId"));
+                    intent.putExtra("serial", remoteMessage.getData().get("serial"));
+                    sendBroadcast(intent);
+                }else if(remoteMessage.getData().get("type").equals("sensor_share_canceled")) {
+                    Intent intent = new Intent("sensor_share_canceled");
+                    intent.putExtra("assigneeId", remoteMessage.getData().get("assigneeId"));
+                    intent.putExtra("serial", remoteMessage.getData().get("serial"));
+                    sendBroadcast(intent);
+                }else if(remoteMessage.getData().get("type").equals("sensor_renamed")) {
+                    Intent intent = new Intent("sensor_renamed");
+                    intent.putExtra("name", remoteMessage.getData().get("name"));
+                    intent.putExtra("serial", remoteMessage.getData().get("serial"));
+                    sendBroadcast(intent);
+                }else if(remoteMessage.getData().get("type").equals("position")) {
+                    Intent intent = new Intent("position");
+                    intent.putExtra("latitude", remoteMessage.getData().get("latitude"));
+                    intent.putExtra("longitude", remoteMessage.getData().get("longitude"));
+                    intent.putExtra("serial", remoteMessage.getData().get("serial"));
+                    sendBroadcast(intent);
+                }else if(remoteMessage.getData().get("type").equals("handover")) {
+                    Intent intent = new Intent("handover");
+                    intent.putExtra("userId", remoteMessage.getData().get("userId"));
+                    intent.putExtra("serial", remoteMessage.getData().get("serial"));
+                    sendBroadcast(intent);
+                }else if(remoteMessage.getData().get("type").equals("sensor_public")) {
+
                 } else {
                     Intent mainIntent = new Intent("sensor_activated");
                     if(remoteMessage.getData().get("type").equals("sensor_activated")) {
                         mainIntent.putExtra("type", "sensor_activated");
-                    }else if(remoteMessage.getData().get("type").equals("sensor_shared")) {
-                        Intent intent = new Intent("sensor_shared");
-                        intent.putExtra("assigneeId", remoteMessage.getData().get("assigneeId"));
-                        intent.putExtra("serial", remoteMessage.getData().get("serial"));
-                        sendBroadcast(intent);
-                    }else if(remoteMessage.getData().get("type").equals("sensor_share_canceled")) {
-                        Intent intent = new Intent("sensor_share_canceled");
-                        intent.putExtra("assigneeId", remoteMessage.getData().get("assigneeId"));
-                        intent.putExtra("serial", remoteMessage.getData().get("serial"));
-                        sendBroadcast(intent);
-                    }else if(remoteMessage.getData().get("type").equals("sensor_renamed")) {
-                        Intent intent = new Intent("sensor_renamed");
-                        intent.putExtra("name", remoteMessage.getData().get("name"));
-                        intent.putExtra("serial", remoteMessage.getData().get("serial"));
-                        sendBroadcast(intent);
-                    }else if(remoteMessage.getData().get("type").equals("position")) {
-                        Intent intent = new Intent("position");
-                        intent.putExtra("latitude", remoteMessage.getData().get("latitude"));
-                        intent.putExtra("longitude", remoteMessage.getData().get("longitude"));
-                        intent.putExtra("serial", remoteMessage.getData().get("serial"));
-                        sendBroadcast(intent);
-                    }else if(remoteMessage.getData().get("type").equals("handover")) {
-                        Intent intent = new Intent("handover");
-                        intent.putExtra("userId", remoteMessage.getData().get("userId"));
-                        intent.putExtra("serial", remoteMessage.getData().get("serial"));
-                        sendBroadcast(intent);
-                    }else if(remoteMessage.getData().get("type").equals("sensor_public")) {
-
-                    }else {
+                    } else {
                         mainIntent.putExtra("type", "sensor_deactivated");
                     }
                     mainIntent.putExtra("serial", remoteMessage.getData().get("serial"));
-                    mainIntent.putExtra("pull", "pull");
-
                     sendBroadcast(mainIntent);
                 }
 
@@ -131,6 +130,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 handleNow();
             }
 
+        }else {
+            Log.d("yot132",";;");
         }
 
         // Check if message contains a notification payload.
@@ -214,7 +215,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // 현재 떠있는 화면이 알람을 띄워야하는지 체크해서 띄울지 말지를 결정
             // 1. 앱이 백그라운드이면 무조건 띄우고
             // 2. 앱이 포어그라운드이면 해당 액티비티로 BR을 날려서 해당 액티비티가 처리하도록 해야함
-//            notification(intent, "title", "message");
+            notification(intent, "title", "message");
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -259,25 +260,25 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-//    private void notification(Intent intent, String title, String content)
-//    {
-//        // notification
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-//                PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-//                .setSmallIcon(R.mipmap.ic_launcher)
-//                .setContentTitle(title)
-//                .setContentText(content)
-//                .setAutoCancel(true)
-//                .setSound(defaultSoundUri)
-//                .setContentIntent(pendingIntent);
-//
-//        NotificationManager notificationManager =
-//                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
-//    }
+    private void notification(Intent intent, String title, String content)
+    {
+        // notification
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(title)
+                .setContentText(content)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
 
     public void sendNotification(String title, String serial, String action)
     {

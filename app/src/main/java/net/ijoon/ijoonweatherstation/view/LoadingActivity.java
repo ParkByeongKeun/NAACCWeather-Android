@@ -59,8 +59,6 @@ public class LoadingActivity extends Activity {
         mToken = preferences.getString("token","");
         mTvVersion = findViewById(R.id.tvVersion);
 
-        regPushToken(UUIDManager.getDeviceUUID(this),mCustomApplication.fcmToken);
-
         mTvVersion.setText("ver " + getAppVersionName());
         getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));
         view = getWindow().getDecorView();
@@ -71,6 +69,7 @@ public class LoadingActivity extends Activity {
             public void run() {
                 try {
                     Thread.sleep(2000);
+                    regPushToken(UUIDManager.getDeviceUUID(getApplicationContext()),mCustomApplication.fcmToken);
                     if(!mToken.equals("")) {
                         check(mToken);
                     }else {
@@ -261,15 +260,15 @@ public class LoadingActivity extends Activity {
 
 
     void regPushToken(final String UUID, final String pushToken) {
+
         new Thread(() -> {
             Call<RegPushTokenResponse> call = RetrofitClient
-                    .getApiService(RetrofitHeader.getHeader(mToken))
+                    .getApiService(mToken)
                     .regPushToken(new RegPushTokenRequest(UUID, pushToken));
-
             call.enqueue(new Callback<RegPushTokenResponse>() {
                 @Override
                 public void onResponse(Call<RegPushTokenResponse> call, Response<RegPushTokenResponse> response) {
-//                    Log.d("yot132", "onResponse..." + response.body().toString());
+
                 }
 
                 @Override

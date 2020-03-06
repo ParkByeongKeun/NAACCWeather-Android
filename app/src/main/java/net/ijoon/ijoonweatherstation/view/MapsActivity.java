@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,6 +55,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mingle.sweetpick.CustomDelegate;
+import com.mingle.sweetpick.Effect;
 import com.mingle.sweetpick.SweetSheet;
 import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.util.BackPressCloseHandler;
@@ -116,24 +118,21 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setPermission();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("maxVelocityData");
-        registerReceiver(mBroadcastReceiver, filter);
-        Bundle extras = getIntent().getExtras();
-
-        if (extras == null) {
-
-        }else {
-            String action = extras.getString("action");
-
-            Log.d("yot132","action = " + action);
-
-        }
 
 
-        IntentFilter filter1 = new IntentFilter();
-        filter1.addAction("sensor_activated");
-        registerReceiver(mActivatedBroadcastReceiver, filter1);
+//          Bundle extras = getIntent().getExtras();
+//
+//        if (extras == null) {
+//
+//        }else {
+//            String action = extras.getString("action");
+//
+//            Log.d("yot132","action = " + action);
+//
+//        }
+
+
+        brManager();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create channel to show notifications.
@@ -167,15 +166,16 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         mapFragment.getMapAsync(this);
         rl = findViewById(R.id.rl);
         mSweetSheet = new SweetSheet(rl);
-
         PowerManager pm = (PowerManager) getApplicationContext().getSystemService(POWER_SERVICE);
         boolean isWhiteListing = false;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             isWhiteListing = pm.isIgnoringBatteryOptimizations(getApplicationContext().getPackageName());
         }
         if (!isWhiteListing) {
             Intent intent = new Intent();
-            intent.setAction(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            }
             intent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
             startActivity(intent);
         }
@@ -354,6 +354,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                             } else {
                                     for(int i = 0 ; i < response.getSensorCount() ; i ++) {
                                         if(mSensor.get(i).getPing() >= ALIVEPING) {
+
                                             rl_message.setBackgroundResource(R.drawable.ic_message_ping);
                                         }else {
                                             if(mSensor.get(i).getMaxVelocity() >= 10.0) {
@@ -474,7 +475,12 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         setupCustomView();
 
         mCustomApplication.setEnvSensor(mSensor.get(mPosition));
-        mSweetSheet.show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mSweetSheet.show();
+            }
+        });
         return true;
     }
     
@@ -510,7 +516,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                     actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF0B45")));
                     actionBar.setTitle(R.string.text_select_location_on_the_map);
                 }
-                if(!mSweetSheet.isShow()) {
+                if(mSweetSheet.isShow()) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -551,7 +557,12 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     @Override
     public void onBackPressed() {
         if(mSweetSheet.isShow()){
-            mSweetSheet.dismiss();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mSweetSheet.dismiss();
+                }
+            });
         } else if(isSetGPS) {
             getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
             getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
@@ -632,6 +643,44 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         dialog.show();
     }
 
+    public void brManager() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("maxVelocityData");
+        registerReceiver(mBroadcastReceiver, filter);
+
+        IntentFilter filter1 = new IntentFilter();
+        filter1.addAction("sensor_activated");
+        registerReceiver(mActivatedBroadcastReceiver, filter1);
+
+        IntentFilter filterShared = new IntentFilter();
+        filterShared.addAction("sensor_shared");
+        registerReceiver(mActivatedBroadcastReceiver, filterShared);
+
+        IntentFilter filterSharedCanceled = new IntentFilter();
+        filterSharedCanceled.addAction("sensor_share_canceled");
+        registerReceiver(mActivatedBroadcastReceiver, filterSharedCanceled);
+
+        IntentFilter filterRename = new IntentFilter();
+        filterRename.addAction("sensor_renamed");
+        registerReceiver(mActivatedBroadcastReceiver, filterRename);
+
+        IntentFilter filterPosition = new IntentFilter();
+        filterPosition.addAction("position");
+        registerReceiver(mActivatedBroadcastReceiver, filterPosition);
+
+        IntentFilter filterHandover = new IntentFilter();
+        filterHandover.addAction("handover");
+        registerReceiver(mActivatedBroadcastReceiver, filterHandover);
+
+        IntentFilter filterSensorPublic = new IntentFilter();
+        filterSensorPublic.addAction("sensor_public");
+        registerReceiver(mActivatedBroadcastReceiver, filterSensorPublic);
+
+        IntentFilter filterDeactivated= new IntentFilter();
+        filterDeactivated.addAction("sensor_deactivated");
+        registerReceiver(mActivatedBroadcastReceiver, filterDeactivated);
+
+    }
     // View를 Bitmap으로 변환
     private Bitmap createDrawableFromView(Context context, View view) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -763,15 +812,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     private BroadcastReceiver mActivatedBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String type = intent.getStringExtra("type");
-            String serial = intent.getStringExtra("serial");
-
-            mMap.clear();
-            mArrMarkerOptions.clear();
-//            for(int i = 0 ; i < mSensor.size() ; i ++) {
-//                int finalI = i;
-//
-//            }
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
