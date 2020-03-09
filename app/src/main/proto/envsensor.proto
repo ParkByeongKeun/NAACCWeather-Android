@@ -34,6 +34,11 @@ enum PacketType {
   unregistSensorRes = 25;
 
   ping = 26;
+
+  statisticalDataOfDayRequest = 27;
+  statisticalDataOfDayResponse = 28;
+  statisticalDataOfYearRequest = 29;
+  statisticalDataOfYearResponse = 30;
 }
 
 message StreamingStartRequest {
@@ -312,5 +317,57 @@ message UnregistSensorResponse {
 
 message Ping {
   
+}
+
+message Item {
+  float maxVelocity = 1;
+  float avgVelocity = 2;
+  uint32 utc = 3;
+}
+
+message StatisticalDataOfDayRequest {
+  string accessToken = 1;
+  string serial = 2;
+  string date = 3;
+  uint32 intervalMin = 4;
+}
+
+message StatisticalDataOfDayResponse {
+  enum Result {
+    success = 0;
+    expiredToken = 1;
+    unauthorized = 2;
+    invalidData = 3;
+    failed = 4;
+  }
+
+  Result result = 1;
+  string serial = 2;
+  string date = 3;
+  uint32 intervalMin = 4;
+  repeated Item items = 5;
+}
+
+message StatisticalDataOfYearRequest {
+  string accessToken = 1;
+  string serial = 2;
+  uint32 year = 3;
+  bool isIntervalDay = 4;
+}
+
+message StatisticalDataOfYearResponse {
+  enum Result {
+    success = 0;
+    expiredToken = 1;
+    unauthorized = 2;
+    invalidData = 3;
+    failed = 4;
+  }
+
+  Result result = 1;
+  string serial = 2;
+  uint32 year = 3;
+  bool isIntervalDay = 4;
+  repeated Item items = 5;
 }
 
