@@ -27,7 +27,7 @@ public class InfoAppInfoActivity extends AppCompatActivity {
 
 
         tvVersion = findViewById(R.id.tvVersion);
-        tvVersion.setText("ver " + getAppVersionName());
+        tvVersion.setText("소프트웨어 버전 " + getAppVersionName());
         mCustomApplication = (CustomApplication) getApplicationContext();
         actionBar = this.getSupportActionBar();
         if (actionBar != null) {
