@@ -24,10 +24,7 @@ import net.ijoon.scnet_android.SCNetAppCompatActivity;
  */
 public abstract class ChartBase extends SCNetAppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
-    protected final String[] time = new String[] {
-            "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
-            "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"
-    };
+    protected final String[] time = new String[365];
 
     protected final String[] parties = new String[] {
             "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G", "Party H",
