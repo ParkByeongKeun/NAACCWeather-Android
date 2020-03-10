@@ -86,7 +86,7 @@ public class CustomDialog extends Dialog implements SwipeRefreshLayout.OnRefresh
     }
 
     public void setDialogTitleCountText(int count) {
-        mTvDialogTitle.setText("Sensor");
+        mTvDialogTitle.setText("센서");
     }
 
     public int getPosition() {

@@ -72,7 +72,7 @@ public class InfoChartActivity extends ChartBase {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + mCustomApplication.getEnvSensor().getSerial() + "</font>"));
+            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + mCustomApplication.getEnvSensor().getName() + "</font>"));
         }
         mCustomDialog = new CustomDialog(this);
         mIvleft = findViewById(R.id.ivLeft);
@@ -98,7 +98,7 @@ public class InfoChartActivity extends ChartBase {
         mCustomDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + mSensor.get(mCustomDialog.getPosition()).getSerial() + "</font>"));
+                actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + mSensor.get(mCustomDialog.getPosition()).getName() + "</font>"));
                 envsensor.StatisticalDataOfDayRequest request = envsensor.StatisticalDataOfDayRequest.newBuilder().setAccessToken(mToken).setDate(mComputableDate.getCurrentTimeText())
                         .setSerial(mSensor.get(mCustomDialog.getPosition()).getSerial()).setIntervalMin(INTERVAL).build();
                 mCustomApplication.mServerSession.request(request);
@@ -222,7 +222,7 @@ public class InfoChartActivity extends ChartBase {
                     final envsensor.GetSensorListResponse response = envsensor.GetSensorListResponse.parseFrom(bodyBuf);
                     mSensor = new ArrayList<>();
                     for(int i = 0 ; i < response.getSensorCount() ; i ++) {
-                        mCustomDialog.addItem(response.getSensor(i).getSerial(),true,"");
+                        mCustomDialog.addItem(response.getSensor(i).getName(),true,"");
                         mSensor.add(response.getSensor(i));
                     }
                 } catch (InvalidProtocolBufferException e) {
