@@ -35,6 +35,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
+import net.ijoon.ijoonweatherstation.util.ChartAnalysisBase;
 import net.ijoon.ijoonweatherstation.util.ChartBase;
 import net.ijoon.ijoonweatherstation.util.ComputableDate;
 import net.ijoon.ijoonweatherstation.util.CustomDialog;
@@ -44,7 +45,7 @@ import net.ijoon.scnet_android.SCNetAppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InfoAnalysisActivity extends ChartBase {
+public class InfoAnalysisActivity extends ChartAnalysisBase {
 
     CustomApplication mCustomApplication;
     ActionBar actionBar;
