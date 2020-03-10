@@ -23,8 +23,8 @@
             android:src="@drawable/ic_keyboard_arrow_left"/>
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerHorizontal="true"
             android:src="@drawable/ic_date"
             android:id="@+id/ivCenter"/>
