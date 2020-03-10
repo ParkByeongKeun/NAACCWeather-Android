@@ -1,10 +1,13 @@
 package net.ijoon.ijoonweatherstation.view;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +17,7 @@ import net.ijoon.ijoonweatherstation.R;
 public class InfoMoreActivity extends AppCompatActivity {
     CustomApplication mCustomApplication;
     ActionBar actionBar;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +29,8 @@ public class InfoMoreActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
             actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + "더보기" + "</font>"));
         }
+        getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+
     }
 
     @Override

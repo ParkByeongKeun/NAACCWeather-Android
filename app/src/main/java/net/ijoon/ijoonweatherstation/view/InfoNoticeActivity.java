@@ -1,10 +1,13 @@
 package net.ijoon.ijoonweatherstation.view;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +18,7 @@ public class InfoNoticeActivity extends AppCompatActivity {
     CustomApplication mCustomApplication;
     ActionBar actionBar;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +30,8 @@ public class InfoNoticeActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
             actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + "공지사항" + "</font>"));
         }
+        getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+
     }
 
     @Override

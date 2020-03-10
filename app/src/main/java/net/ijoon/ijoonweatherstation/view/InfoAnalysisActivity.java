@@ -12,36 +12,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.github.mikephil.charting.charts.CombinedChart;
+import androidx.appcompat.app.ActionBar;import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.protobuf.InvalidProtocolBufferException;
-
 import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.ijoonweatherstation.util.ChartAnalysisBase;
-import net.ijoon.ijoonweatherstation.util.ChartBase;
 import net.ijoon.ijoonweatherstation.util.ComputableDate;
 import net.ijoon.ijoonweatherstation.util.CustomDialog;
 import net.ijoon.scnet_android.MessageHeader;
-import net.ijoon.scnet_android.SCNetAppCompatActivity;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -267,11 +256,11 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
             entries.add(new Entry(index, sensorVelocityList.get(index).getAvgVelocity()));
 
         LineDataSet set = new LineDataSet(entries, "일별 평균 풍속");
-        set.setColor(Color.rgb(210, 198, 90));
+        set.setColor(Color.rgb(170, 198, 30));
         set.setLineWidth(2.5f);
-        set.setCircleColor(Color.rgb(210, 198, 90));
+        set.setCircleColor(Color.rgb(170, 198, 30));
         set.setCircleRadius(5f);
-        set.setFillColor(Color.rgb(210, 198, 90));
+        set.setFillColor(Color.rgb(170, 198, 30));
         set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         set.setDrawValues(true);
         set.setValueTextSize(10f);
@@ -282,6 +271,4 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
 
         return d;
     }
-
-
 }

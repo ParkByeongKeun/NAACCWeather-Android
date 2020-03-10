@@ -180,6 +180,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             intent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
             startActivity(intent);
         }
+        getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
