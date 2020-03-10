@@ -63,21 +63,11 @@ public class CustomDialog extends Dialog implements SwipeRefreshLayout.OnRefresh
     }
 
     public void addItem(String title, boolean isOn, String owner) {
-//        if (isOn) {
-//            if (owner.equals(mId)) {
-//                mListViewAdapter.addItem(R.drawable.ic_logo, title, true);
-//            }else {
-//                mListViewAdapter.addItem(R.drawable.ic_logo, title, true);
-//            }
-//        }else {
-//            if (owner.equals(mId)) {
-//                mListViewAdapter.addItem(R.drawable.ic_logo_off, title, false);
-//            }else {
-//                mListViewAdapter.addItem(R.drawable.ic_logo_off, title, false);
-//            }
-//        }
-
-        mListViewAdapter.addItem(R.drawable.logo_weather, title, true);
+        if (isOn) {
+            mListViewAdapter.addItem(R.drawable.logo_weather, title, true);
+        }else {
+            mListViewAdapter.addItem(R.drawable.logo_weather_gray, title, false);
+        }
 
     }
 
