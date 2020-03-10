@@ -1,13 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff">
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swipe_layout">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff"
+                android:id="@+id/rlMyRoom">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector"
+                    android:layout_margin="10dp"
+                    android:clickable="true"
+                    android:id="@+id/rlId">
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/logo_weather"
+                        android:id="@+id/ivLogo"
+                        android:layout_marginBottom="10dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="NAACC Weather 가입을 환영합니다. "
+                        android:layout_toRightOf="@+id/ivLogo"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="13dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/tvTop" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/ivLogo"
+                        android:layout_below="@+id/tvTop"
+                        android:layout_marginLeft="20dp"
+                        android:text="실시간 환경 모니터링 시스템"
+                        android:textSize="10dp"
+                        android:textColor="@color/lightGray"
+                        android:layout_marginTop="5dp"/>
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="센서 정보가 없습니다."
-        android:layout_centerInParent="true"/>
-
+                </RelativeLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/rlId"
+                    android:background="@color/lightGray"
+                    />
+            </RelativeLayout>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </RelativeLayout>
