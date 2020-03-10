@@ -13,6 +13,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/tvCalendal"
             android:layout_below="@+id/ivCenter"
+            android:layout_marginTop="20dp"
             android:textColor="@color/textGray"
             android:layout_centerHorizontal="true"/>
         <ImageView
@@ -20,12 +21,14 @@
             android:layout_height="50dp"
             android:id="@+id/ivLeft"
             android:layout_toLeftOf="@+id/ivCenter"
+            android:layout_centerVertical="true"
             android:src="@drawable/ic_keyboard_arrow_left"/>
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:src="@drawable/ic_date"
             android:id="@+id/ivCenter"/>
 
@@ -34,6 +37,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_toRightOf="@+id/ivCenter"
+            android:layout_centerVertical="true"
             android:src="@drawable/ic_keyboard_arrow_right"
             android:id="@+id/ivRight"/>
     </RelativeLayout>
