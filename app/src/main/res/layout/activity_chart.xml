@@ -1,13 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="센서 정보가 없습니다."
-        android:layout_centerInParent="true"/>
+        android:id="@+id/rlController"
+        android:layout_margin="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvCalendal"
+            android:layout_below="@+id/ivCenter"
+            android:textColor="@color/textGray"
+            android:layout_centerHorizontal="true"/>
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/ivLeft"
+            android:layout_toLeftOf="@+id/ivCenter"
+            android:src="@drawable/ic_keyboard_arrow_left"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_date"
+            android:id="@+id/ivCenter"/>
+
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@+id/ivCenter"
+            android:src="@drawable/ic_keyboard_arrow_right"
+            android:id="@+id/ivRight"/>
+    </RelativeLayout>
+
+    <com.github.mikephil.charting.charts.CombinedChart
+        android:id="@+id/chart1"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/rlController"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

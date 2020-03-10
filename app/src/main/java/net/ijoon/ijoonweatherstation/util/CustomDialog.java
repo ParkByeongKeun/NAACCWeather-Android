@@ -26,7 +26,6 @@ public class CustomDialog extends Dialog implements SwipeRefreshLayout.OnRefresh
     private ListView mListView;
     private ListViewAdapter mListViewAdapter;
     private TextView mTvDialogTitle;
-    private RelativeLayout mRlRegister;
     private int mPosition;
     private String mId;
 
@@ -40,21 +39,10 @@ public class CustomDialog extends Dialog implements SwipeRefreshLayout.OnRefresh
         setContentView(R.layout.custom_dialog);     //다이얼로그에서 사용할 레이아웃
         mListView = findViewById(R.id.listView);
         mTvDialogTitle = findViewById(R.id.dialogTitle);
-        mRlRegister = findViewById(R.id.rlRegister);
         mSwipeRefreshLayout = findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mListViewAdapter = new ListViewAdapter();
         mListView.setAdapter(mListViewAdapter);
-        mRlRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(mSwipeRefreshLayout, getContext().getResources().getString(R.string.textWorkingOn), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
-
-//                Intent intent = new Intent(getContext(), SensorAddActivity.class);
-//                getContext().startActivity(intent);
-            }
-        });
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

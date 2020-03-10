@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity"
+    >
+
+
+    <item android:id="@+id/menu_list"
+        android:title=""
+        android:icon="@drawable/ic_keyboard_arrow_down"
+        app:showAsAction="always" />
+</menu>

@@ -81,6 +81,9 @@ dependencies {
     //QRCode
     implementation 'com.journeyapps:zxing-android-embedded:3.4.0'
 
+    //chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

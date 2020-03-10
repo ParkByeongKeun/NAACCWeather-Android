@@ -81,6 +81,11 @@ public class CustomApplication extends GlobalApplication {
         Registry.registMessage("UnregistSensorResponse", envsensor.PacketType.unregistSensorRes.getNumber());
         Registry.registMessage("Ping", envsensor.PacketType.ping.getNumber());
 
+        Registry.registMessage("StatisticalDataOfDayRequest", envsensor.PacketType.statisticalDataOfDayRequest.getNumber());
+        Registry.registMessage("StatisticalDataOfDayResponse", envsensor.PacketType.statisticalDataOfDayResponse.getNumber());
+        Registry.registMessage("StatisticalDataOfYearRequest", envsensor.PacketType.statisticalDataOfYearRequest.getNumber());
+        Registry.registMessage("StatisticalDataOfYearResponse", envsensor.PacketType.statisticalDataOfYearResponse.getNumber());
+
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override

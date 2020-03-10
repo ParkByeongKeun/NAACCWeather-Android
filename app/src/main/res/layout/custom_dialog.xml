@@ -38,27 +38,7 @@
     </ListView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rlRegister">
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_add"
-            android:layout_centerVertical="true"
-            android:id="@+id/iv"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="추가하기"
-            android:layout_toRightOf="@+id/iv"
-            android:layout_margin="10dp"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
+
 
     <TextView
         android:layout_width="match_parent"

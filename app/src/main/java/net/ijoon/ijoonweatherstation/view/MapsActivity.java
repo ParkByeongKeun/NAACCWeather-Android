@@ -156,7 +156,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         mBackPressCloseHandler = new BackPressCloseHandler(this);
         mArrMarkerOptions = new ArrayList<>();
         mCustomApplication = (CustomApplication) getApplicationContext();
-
         actionBar = getSupportActionBar();
         setCustomMarkerView();
 
@@ -203,35 +202,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         }
     }
 
-    //    private void sendNotification(String messageBody) {
-//        Intent intent = new Intent(this, MapsActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
-//
-//        String channelId = "fcm_default_channel";//getString(R.string.default_notification_channel_id);
-//        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//        NotificationCompat.Builder notificationBuilder =
-//                new NotificationCompat.Builder(this, channelId)
-//                        .setSmallIcon(R.drawable.logo_weather)//drawable.splash)
-//                        .setContentTitle("즉시 작업을 중단하시오")
-//                        .setContentText("세종시 행복동 최대 풍속 11.6 m/s")
-//                        .setAutoCancel(true)
-//                        .setSound(defaultSoundUri)
-//                        .setPriority(Notification.PRIORITY_HIGH)
-//                        .setContentIntent(pendingIntent);
-//
-//        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//
-//        // Since android Oreo notification channel is needed.
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            NotificationChannel channel = new NotificationChannel(channelId,"Channel human readable title", NotificationManager.IMPORTANCE_DEFAULT);
-//            notificationManager.createNotificationChannel(channel);
-//        }
-//
-//        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
-//    }
-
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -273,6 +243,9 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             }
             case android.R.id.home:
             {
+
+                mCustomApplication.setEnvSensor(mSensor.get(mPosition));
+
                 Intent intent = new Intent(MapsActivity.this, InfomationActivity.class);
                 startActivity(intent);
                 return true;
