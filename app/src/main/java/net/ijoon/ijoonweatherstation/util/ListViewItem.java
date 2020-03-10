@@ -3,7 +3,8 @@ package net.ijoon.ijoonweatherstation.util;
 public class ListViewItem {
     private int logoIcon;
     private int linkIcon;
-    private String titleStr ;
+    private String titleStr;
+    private String titleSerial;
     private boolean isOn ;
 
     public void setLinkIconId(int id) {
@@ -18,6 +19,9 @@ public class ListViewItem {
     public void setIsOn(boolean isOn) {
         this.isOn = isOn;
     }
+    public void setTitleSerial(String serial) {
+        titleSerial = serial;
+    }
 
     public int getLogoIconId() {
         return this.logoIcon;
@@ -26,9 +30,11 @@ public class ListViewItem {
     public int getLinkIconId() {
         return this.linkIcon;
     }
-
+    public String getSerial() {
+        return this.titleSerial;
+    }
     public String getTitle() {
-        return this.titleStr ;
+        return this.titleStr;
     }
     public boolean getIsOn() {
         return this.isOn;

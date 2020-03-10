@@ -18,6 +18,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
@@ -91,6 +92,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     float saveLat;
     float saveLong;
     float saveZoom;
+    boolean isMarkerClicked;
 
     private void setCustomMarkerView() {
         marker_root_view = LayoutInflater.from(this).inflate(R.layout.marker_layout, null);
@@ -452,6 +454,14 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             @Override
             public void run() {
                 mSweetSheet.show();
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        isMarkerClicked = true;
+                    }
+                }, 300);
             }
         });
         return true;

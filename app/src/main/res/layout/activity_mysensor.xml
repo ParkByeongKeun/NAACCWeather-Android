@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="센서 정보가 없습니다."
-        android:layout_centerInParent="true"/>
-
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <net.ijoon.ijoonweatherstation.util.ParallaxScollListView
+        android:id="@+id/layout_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="@null"
+        android:duplicateParentState="true"
+        android:scrollingCache="false"
+        android:headerDividersEnabled="false"
+        android:footerDividersEnabled="false"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        />
 </RelativeLayout>
