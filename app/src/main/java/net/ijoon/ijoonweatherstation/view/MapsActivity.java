@@ -115,6 +115,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
