@@ -77,7 +77,6 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
     Handler handler;
     Runnable getNameRunnable;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,8 +106,10 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
         mUserListAdapter = new UserListAdapter(this,mArrUserList);
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
-        getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+            getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
+        }
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
         ActionBar actionBar = this.getSupportActionBar();
         if (actionBar != null) {

@@ -52,7 +52,6 @@ public class ForgotPWAuthenticationActivity extends AppCompatActivity {
     View view;
     InputMethodManager imm;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +62,9 @@ public class ForgotPWAuthenticationActivity extends AppCompatActivity {
 
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));
+        }
         mCustomApplication = (CustomApplication)getApplication();
         ActionBar actionBar = this.getSupportActionBar();
         if (actionBar != null) {

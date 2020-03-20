@@ -46,7 +46,6 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
     List<envsensor.Sensor> mSensor;
     int MAXPING = 15;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +58,9 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
             actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + "내 센서" + "</font>"));
         }
-        getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+        }
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
         envsensor.GetSensorListRequest getSensorRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();

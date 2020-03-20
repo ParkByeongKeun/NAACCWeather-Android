@@ -63,7 +63,6 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
     String mId;
     private long mLastClickTime = 0;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +88,10 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         mTvId.setText(mId);
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
-        getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+            getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
+        }
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
         ActionBar actionBar = this.getSupportActionBar();
         if (actionBar != null) {
@@ -276,7 +277,6 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         et.setLayoutParams(params);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void showPasswordChangeEditTextAlertDialog(String message) {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         final EditText existingEditText;

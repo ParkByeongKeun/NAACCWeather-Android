@@ -23,7 +23,6 @@ public class MoniterActivity extends SCNetAppCompatActivity  {
     CustomApplication mCustomApplication;
     List<envsensor.Sensor> mSensor;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

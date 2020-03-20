@@ -46,7 +46,6 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
     InputMethodManager imm;
     ActionBar actionBar;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +61,10 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         }
-        getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
-        getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+            getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
+        }
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
         mEtSerial = findViewById(R.id.etSerial);
         mEtAuth = findViewById(R.id.etAuth);

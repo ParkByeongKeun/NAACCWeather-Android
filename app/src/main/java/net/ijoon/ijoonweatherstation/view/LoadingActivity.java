@@ -49,7 +49,6 @@ public class LoadingActivity extends Activity {
     String mToken;
     CustomApplication mCustomApplication;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,12 +57,13 @@ public class LoadingActivity extends Activity {
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
         mTvVersion = findViewById(R.id.tvVersion);
-
         mTvVersion.setText("ver " + getAppVersionName());
-        getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));
+            getWindow().setStatusBarColor(Color.parseColor("#f2f2f2"));
+        }
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        getWindow().setStatusBarColor(Color.parseColor("#f2f2f2"));
         loadingThread = new Thread(new Runnable() {
             @Override
             public void run() {

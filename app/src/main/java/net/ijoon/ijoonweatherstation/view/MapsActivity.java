@@ -115,7 +115,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,7 +180,9 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             intent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
             startActivity(intent);
         }
-        getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+        }
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
@@ -370,15 +371,15 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             case 8 : {
                 //SetSensorPosition
                 runOnUiThread(new Runnable() {
-                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                     @Override
                     public void run() {
                         try {
                             final envsensor.SetSensorPositionResponse response = envsensor.SetSensorPositionResponse.parseFrom(bodyBuf);
                             if(response.getResult() == envsensor.SetSensorPositionResponse.Result.success) {
-                                getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
-                                getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
-//                                mAppBar.setBackgroundColor(Color.parseColor("#56CBF2"));
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+                                    getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
+                                }
                                 actionBar.setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
                                 actionBar.setTitle("iJoonWeatherStation");
                                 envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
@@ -492,11 +493,12 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             }
         });
         view.findViewById(R.id.rlGPSSetting).setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
-                getWindow().setNavigationBarColor(Color.parseColor("#FFAE98"));//bottom
-                getWindow().setStatusBarColor(Color.parseColor("#FF0B45"));//statusBar
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().setNavigationBarColor(Color.parseColor("#FFAE98"));//bottom
+                    getWindow().setStatusBarColor(Color.parseColor("#FF0B45"));//statusBar
+                }
                 if (actionBar != null) {
                     actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF0B45")));
                     actionBar.setTitle(R.string.text_select_location_on_the_map);
@@ -538,7 +540,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBackPressed() {
         if(mSweetSheet.isShow()){
@@ -549,8 +550,10 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 }
             });
         } else if(isSetGPS) {
-            getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
-            getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+                getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
+            }
             actionBar.setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
             actionBar.setTitle("iJoonWeatherStation");
             isSetGPS = false;

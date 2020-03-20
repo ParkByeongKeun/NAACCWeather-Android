@@ -211,7 +211,6 @@ public class FocusChaosCompassView extends View {
 
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -221,9 +220,12 @@ public class FocusChaosCompassView extends View {
         //画文字
         drawText();
         //画指南针外圈
-        drawCompassOutSide();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            drawCompassOutSide();
+            drawCompassCircum();
+        }
         //画指南针外接圆
-        drawCompassCircum();
+
         //画内部渐变颜色圆
         drawInnerCricle();
         //画指南针内部刻度
@@ -336,7 +338,6 @@ public class FocusChaosCompassView extends View {
     /**
      * 指南针外接圆，和外部圆换道理差不多
      */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void drawCompassCircum() {
         mCanvas.save();
         //外接圆小三角形的高度
@@ -350,17 +351,23 @@ public class FocusChaosCompassView extends View {
         mCircumTriangle.lineTo(width/2+mTriangleSide/2,mTextHeight+mTriangleHeight*2);
         mCircumTriangle.close();
         mCanvas.drawPath(mCircumTriangle,mCircumPaint);
-        mCanvas.drawArc(width/2-mCircumRadius,mTextHeight+mOutSideRadius-mCircumRadius,
-                width/2+mCircumRadius,mTextHeight+mOutSideRadius+mCircumRadius,-85,350,false,mDeepGrayPaint);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mCanvas.drawArc(width/2-mCircumRadius,mTextHeight+mOutSideRadius-mCircumRadius,
+                    width/2+mCircumRadius,mTextHeight+mOutSideRadius+mCircumRadius,-85,350,false,mDeepGrayPaint);
+        }
         mAnglePaint.setStrokeWidth(5f);
         if (val<=180){
             valCompare = val;
-            mCanvas.drawArc(width/2-mCircumRadius,mTextHeight+mOutSideRadius-mCircumRadius,
-                    width/2+mCircumRadius,mTextHeight+mOutSideRadius+mCircumRadius,-85,valCompare,false,mAnglePaint);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mCanvas.drawArc(width/2-mCircumRadius,mTextHeight+mOutSideRadius-mCircumRadius,
+                        width/2+mCircumRadius,mTextHeight+mOutSideRadius+mCircumRadius,-85,valCompare,false,mAnglePaint);
+            }
         }else{
             valCompare = 360-val;
-            mCanvas.drawArc(width/2-mCircumRadius,mTextHeight+mOutSideRadius-mCircumRadius,
-                    width/2+mCircumRadius,mTextHeight+mOutSideRadius+mCircumRadius,-95,-valCompare,false,mAnglePaint);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mCanvas.drawArc(width/2-mCircumRadius,mTextHeight+mOutSideRadius-mCircumRadius,
+                        width/2+mCircumRadius,mTextHeight+mOutSideRadius+mCircumRadius,-95,-valCompare,false,mAnglePaint);
+            }
         }
 
         mCanvas.restore();
@@ -371,7 +378,6 @@ public class FocusChaosCompassView extends View {
      * 1、用Path实现小三角形
      * 2、两个圆弧
      */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void drawCompassOutSide() {
         mCanvas.save();
         //小三角形的高度
@@ -391,10 +397,12 @@ public class FocusChaosCompassView extends View {
         mLightGrayPaint.setStrokeWidth((float)5);
         mDeepGrayPaint.setStrokeWidth((float)3);
         mLightGrayPaint.setStyle(Paint.Style.STROKE);
-        mCanvas.drawArc(width/2-mOutSideRadius,mTextHeight,width/2+mOutSideRadius,mTextHeight+mOutSideRadius*2,-80,120,false,mLightGrayPaint);
-        mCanvas.drawArc(width/2-mOutSideRadius,mTextHeight,width/2+mOutSideRadius,mTextHeight+mOutSideRadius*2,40,20,false,mDeepGrayPaint);
-        mCanvas.drawArc(width/2-mOutSideRadius,mTextHeight,width/2+mOutSideRadius,mTextHeight+mOutSideRadius*2,-100,-20,false,mLightGrayPaint);
-        mCanvas.drawArc(width/2-mOutSideRadius,mTextHeight,width/2+mOutSideRadius,mTextHeight+mOutSideRadius*2,-120,-120,false,mDarkRedPaint);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mCanvas.drawArc(width/2-mOutSideRadius,mTextHeight,width/2+mOutSideRadius,mTextHeight+mOutSideRadius*2,-80,120,false,mLightGrayPaint);
+            mCanvas.drawArc(width/2-mOutSideRadius,mTextHeight,width/2+mOutSideRadius,mTextHeight+mOutSideRadius*2,40,20,false,mDeepGrayPaint);
+            mCanvas.drawArc(width/2-mOutSideRadius,mTextHeight,width/2+mOutSideRadius,mTextHeight+mOutSideRadius*2,-100,-20,false,mLightGrayPaint);
+            mCanvas.drawArc(width/2-mOutSideRadius,mTextHeight,width/2+mOutSideRadius,mTextHeight+mOutSideRadius*2,-120,-120,false,mDarkRedPaint);
+        }
         mCanvas.restore();
     }
 

@@ -62,7 +62,7 @@ public class InfoChartActivity extends ChartBase {
     int position = 0;
     ActionBar actionBar;
     int MAXPING = 15;
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +79,9 @@ public class InfoChartActivity extends ChartBase {
         mIvRight = findViewById(R.id.ivRight);
         mTvCalendal = findViewById(R.id.tvCalendal);
 
-        getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+        }
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
         sensorVelocityList = new ArrayList<>();

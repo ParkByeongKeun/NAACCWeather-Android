@@ -57,7 +57,6 @@ public class JoinActivity extends AppCompatActivity {
     RelativeLayout mRlRoot;
     InputMethodManager imm;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

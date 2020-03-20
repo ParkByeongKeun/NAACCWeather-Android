@@ -50,7 +50,6 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
     CustomDialog mCustomDialog;
     int MAXPING = 15;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +70,9 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
             actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + mCustomApplication.getEnvSensor().getName() + "</font>"));
         }
-        getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+        }
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
         envsensor.StatisticalDataOfYearRequest yearRequest = envsensor.StatisticalDataOfYearRequest.newBuilder().setYear(mComputableDate.getYear()).setAccessToken(mToken)

@@ -22,7 +22,6 @@ public class DefaultActivity extends Activity {
     Button mBtnLogin;
     TextView mTvVersion;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +31,9 @@ public class DefaultActivity extends Activity {
         mTvVersion = findViewById(R.id.tvVersion);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));
+        }
         mBtnJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

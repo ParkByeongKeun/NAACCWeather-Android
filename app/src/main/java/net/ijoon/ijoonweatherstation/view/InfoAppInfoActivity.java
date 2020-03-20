@@ -23,7 +23,6 @@ public class InfoAppInfoActivity extends AppCompatActivity {
     CustomApplication mCustomApplication;
     ActionBar actionBar;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +38,9 @@ public class InfoAppInfoActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
             actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + "앱 정보" + "</font>"));
         }
-        getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
+        }
 
     }
 
