@@ -176,6 +176,7 @@ message Authority {
   bool position = 2;
   bool sharing = 3;
   bool update = 4;
+  bool statistic = 5;
 }
 
 message ShareSensorRequest {
