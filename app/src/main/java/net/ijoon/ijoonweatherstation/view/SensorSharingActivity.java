@@ -120,7 +120,7 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
         mBtnSuccess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                envsensor.Authority builder = envsensor.Authority.newBuilder().setName(true).setPosition(true).setSharing(true).setUpdate(true).build();
+                envsensor.Authority builder = envsensor.Authority.newBuilder().setName(true).setPosition(true).setSharing(true).setUpdate(true).setStatistic(true).build();
                 envsensor.ShareSensorRequest stationNameRequest = envsensor.ShareSensorRequest.newBuilder().setAuth(builder).setAccessToken(mToken).setSerial(mSerial).setUserId(mEtName.getText().toString()).build();
                 mCustomApplication.mServerSession.request(stationNameRequest);
             }
