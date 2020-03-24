@@ -59,13 +59,29 @@ import com.mingle.sweetpick.CustomDelegate;
 import com.mingle.sweetpick.Effect;
 import com.mingle.sweetpick.SweetSheet;
 import net.ijoon.envsensor;
+import net.ijoon.ijoonweatherstation.login.AuthService;
+import net.ijoon.ijoonweatherstation.login.UpdateDispNameRequest;
+import net.ijoon.ijoonweatherstation.login.UpdateDispNameResponse;
+import net.ijoon.ijoonweatherstation.login.UpdateTokenRequest;
+import net.ijoon.ijoonweatherstation.login.UpdateTokenResponse;
 import net.ijoon.ijoonweatherstation.util.BackPressCloseHandler;
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -154,7 +170,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         saveLat = preferences.getFloat("lat",(float) 36.5);
         saveLong = preferences.getFloat("long",(float) 127.266667);
         saveZoom = preferences.getFloat("zoom",12);
-
+        updateUpdateToken();
         mBackPressCloseHandler = new BackPressCloseHandler(this);
         mArrMarkerOptions = new ArrayList<>();
         mCustomApplication = (CustomApplication) getApplicationContext();
@@ -588,6 +604,45 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         params.leftMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
         params.rightMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
         et.setLayoutParams(params);
+    }
+
+    void updateUpdateToken() {
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).build();
+                return chain.proceed(request);
+            }
+        });
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://1.246.219.189:20217")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(httpClient.build())
+                .build();
+        AuthService service = retrofit.create(AuthService.class);
+        final Call<UpdateTokenResponse> ResponseCall = service.updateToken(new UpdateTokenRequest());
+        ResponseCall.request().header(mToken);
+        ResponseCall.enqueue(new Callback<UpdateTokenResponse>() {
+            @Override
+            public void onResponse(Call<UpdateTokenResponse> call, Response<UpdateTokenResponse> response) {
+                if(response.body().getSuccess()) {
+                    String accessToken = response.body().getAccessToken();
+                    if(accessToken == null) {
+                        return;
+                    }
+                    SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+                    SharedPreferences.Editor editor =  preferences.edit();
+                    editor.putString("token", accessToken);
+                    editor.apply();
+                }else {
+                }
+            }
+            @Override
+            public void onFailure(Call<UpdateTokenResponse> call, Throwable t) {
+                Log.d("yot132", "onFailure" + t.getMessage());
+            }
+        });
     }
 
     public void showSuccessAlertDialog(String message) {

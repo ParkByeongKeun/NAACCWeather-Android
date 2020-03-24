@@ -35,4 +35,7 @@ public interface AuthService {
     Call<ResetPasswordAuthResponse> resetPassword(@Body ResetPasswordAuthRequest request);
     @POST("/api/auth/resetPasswordCheckCode")
     Call<ResetPasswordCheckResponse> resetPassword(@Body ResetPasswordCheckRequest request);
+    @PUT("/api/auth/updateToken")
+    Call<UpdateTokenResponse> updateToken(@Body UpdateTokenRequest request);
+
 }
