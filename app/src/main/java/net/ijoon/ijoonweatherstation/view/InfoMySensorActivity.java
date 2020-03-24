@@ -1,5 +1,6 @@
 package net.ijoon.ijoonweatherstation.view;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
@@ -72,6 +74,14 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
         mListView.setZoomRatio(ParallaxScollListView.ZOOM_X2);
         mListView.setParallaxImageView(mImageView);
         mListView.addHeaderView(header);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mCustomApplication.setEnvSensor(mSensor.get(position -1));
+                Intent intent = new Intent(InfoMySensorActivity.this,ScrollingActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
     }
@@ -115,7 +125,12 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
                             adapter.addItem(R.drawable.logo_weather,mSensor.get(i).getName(),true,mSensor.get(i).getSerial());
                         }
                     }
-                    mListView.setAdapter(adapter);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mListView.setAdapter(adapter);
+                        }
+                    });
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                 }
