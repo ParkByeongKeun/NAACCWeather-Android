@@ -183,7 +183,7 @@ public class LoadingActivity extends Activity {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
                 this);
         alertDialog.setTitle(getResources().getString(R.string.textNotification));
-        alertDialog.setMessage(getResources().getString(R.string.textFailedLogin));
+        alertDialog.setMessage(getResources().getString(R.string.textExpiredToken));
         alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogInterface, int i) {
