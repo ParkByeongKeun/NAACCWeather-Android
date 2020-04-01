@@ -108,7 +108,14 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     float saveLat;
     float saveLong;
     float saveZoom;
-    boolean isMarkerClicked;
+    boolean isMarkerClicked = true;
+    int prevPosition = -1;
+    CustomDelegate customDelegate;
+    View view;
+    TextView tvName;
+    Handler handler;
+    Runnable connCheckRunnable;
+
 
     private void setCustomMarkerView() {
         marker_root_view = LayoutInflater.from(this).inflate(R.layout.marker_layout, null);
@@ -136,22 +143,15 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setPermission();
-
-
-//          Bundle extras = getIntent().getExtras();
-//
-//        if (extras == null) {
-//
-//        }else {
-//            String action = extras.getString("action");
-//
-//            Log.d("yot132","action = " + action);
-//
-//        }
-
-
         brManager();
-
+        handler = new Handler();
+        connCheckRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mSweetSheet.setBackgroundClickEnable(true);
+                isMarkerClicked = true;
+            }
+        };
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create channel to show notifications.
             String channelId  = getString(R.string.default_notification_channel_id);
@@ -210,6 +210,66 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                     }
                 });
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+
+
+        CustomDelegate customDelegate = new CustomDelegate(true,
+                CustomDelegate.AnimationType.AlphaAnimation);
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_custom_view, null, false);
+        customDelegate.setCustomView(view);
+        mSweetSheet.setDelegate(customDelegate);
+        tvName = view.findViewById(R.id.tvName);
+        view.findViewById(R.id.rlBottom).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapsActivity.this,ScrollingActivity.class);
+                startActivity(intent);
+            }
+        });
+        view.findViewById(R.id.rlGPSSetting).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().setNavigationBarColor(Color.parseColor("#FFAE98"));//bottom
+                    getWindow().setStatusBarColor(Color.parseColor("#FF0B45"));//statusBar
+                }
+                if (actionBar != null) {
+                    actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF0B45")));
+                    actionBar.setTitle(R.string.text_select_location_on_the_map);
+                }
+                if(mSweetSheet.isShow()) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mSweetSheet.dismiss();
+                        }
+                    });
+                }
+                isSetGPS = true;
+            }
+        });
+        view.findViewById(R.id.rlSetName).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showNicknameChangeDialog();
+            }
+        });
+        view.findViewById(R.id.rlShare).setOnClickListener(v -> {
+            Intent intent = new Intent(MapsActivity.this,SensorSharingActivity.class);
+            startActivity(intent);
+        });
+        view.findViewById(R.id.rlHandOver).setOnClickListener(v -> {
+            Intent intent = new Intent(MapsActivity.this,StationHandOfOutActivity.class);
+            startActivity(intent);
+
+        });
+        view.findViewById(R.id.rlSharedUsers).setOnClickListener(v -> {
+            Intent intent = new Intent(MapsActivity.this,SharedUsersActivity.class);
+            startActivity(intent);
+        });
+        view.findViewById(R.id.rlUnRegist).setOnClickListener(v -> {
+            showUnRegistDialog(mSensor.get(mPosition).getName() + " 센서를 삭제하시겠습니까?");
+
+        });
     }
 
     @Override
@@ -466,33 +526,23 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 mPosition = i;
             }
         }
-        setupCustomView();
-
-        mCustomApplication.setEnvSensor(mSensor.get(mPosition));
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mSweetSheet.show();
-
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        isMarkerClicked = true;
-                    }
-                }, 300);
-            }
-        });
+        mSweetSheet.setBackgroundClickEnable(false);
+        if(isMarkerClicked) {
+            changConnectingUI(true);
+                setupCustomView();
+                mCustomApplication.setEnvSensor(mSensor.get(mPosition));
+                if(!mSweetSheet.isShow()) {
+                    mSweetSheet.show();
+                }else {
+                    mSweetSheet.dismiss();
+                }
+            isMarkerClicked = false;
+        }
+        prevPosition = mPosition;
         return true;
     }
-    
+
     private void setupCustomView() {
-        CustomDelegate customDelegate = new CustomDelegate(true,
-                CustomDelegate.AnimationType.AlphaAnimation);
-        View view = LayoutInflater.from(this).inflate(R.layout.layout_custom_view, null, false);
-        customDelegate.setCustomView(view);
-        mSweetSheet.setDelegate(customDelegate);
-        final TextView tvName = view.findViewById(R.id.tvName);
         if(!mSensor.isEmpty()) {
             runOnUiThread(new Runnable() {
                 @Override
@@ -501,59 +551,12 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 }
             });
         }
-        view.findViewById(R.id.rlBottom).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MapsActivity.this,ScrollingActivity.class);
-                startActivity(intent);
-            }
-        });
-        view.findViewById(R.id.rlGPSSetting).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setNavigationBarColor(Color.parseColor("#FFAE98"));//bottom
-                    getWindow().setStatusBarColor(Color.parseColor("#FF0B45"));//statusBar
-                }
-                if (actionBar != null) {
-                    actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF0B45")));
-                    actionBar.setTitle(R.string.text_select_location_on_the_map);
-                }
-                if(mSweetSheet.isShow()) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mSweetSheet.dismiss();
-                        }
-                    });
-                }
-                isSetGPS = true;
-            }
-        });
-        view.findViewById(R.id.rlSetName).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showNicknameChangeDialog();
-            }
-        });
-        view.findViewById(R.id.rlShare).setOnClickListener(v -> {
-            Intent intent = new Intent(MapsActivity.this,SensorSharingActivity.class);
-            startActivity(intent);
-        });
-        view.findViewById(R.id.rlHandOver).setOnClickListener(v -> {
-            Intent intent = new Intent(MapsActivity.this,StationHandOfOutActivity.class);
-            startActivity(intent);
+    }
 
-        });
-        view.findViewById(R.id.rlSharedUsers).setOnClickListener(v -> {
-            Intent intent = new Intent(MapsActivity.this,SharedUsersActivity.class);
-            startActivity(intent);
-        });
-        view.findViewById(R.id.rlUnRegist).setOnClickListener(v -> {
-            showUnRegistDialog(mSensor.get(mPosition).getName() + " 센서를 삭제하시겠습니까?");
-
-        });
-
+    public void changConnectingUI(boolean isConnecting) {
+        if (isConnecting) {
+            handler.postDelayed(connCheckRunnable, 800);
+        }
     }
 
     @Override
