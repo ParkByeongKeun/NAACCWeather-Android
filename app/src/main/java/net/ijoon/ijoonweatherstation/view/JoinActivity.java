@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -62,25 +63,32 @@ public class JoinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         ActionBar actionBar = this.getSupportActionBar();
-
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
             actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textJoin) + "</font>"));
 
         }
-
-
         mEtId = findViewById(R.id.etId);
         mEtPassword = findViewById(R.id.etPassword);
         mEtNickName = findViewById(R.id.etNick);
         mEtRePassword = findViewById(R.id.etRePassword);
         mRlRoot = findViewById(R.id.rlRoot);
         mBtnJoin = findViewById(R.id.btnJoin);
+        mEtNickName.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode == event.KEYCODE_ENTER)
+                {
+                    hideKeyboard();
+                    return true;
+                }
+                return false;
+            }
+        });
         mRlRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +125,11 @@ public class JoinActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void hideKeyboard()
+    {
+        imm.hideSoftInputFromWindow(mEtNickName.getWindowToken(), 0);
     }
 
     void join(String id, String pw, String rePw, String name) {
