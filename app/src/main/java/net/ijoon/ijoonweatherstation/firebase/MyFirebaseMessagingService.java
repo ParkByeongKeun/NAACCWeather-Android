@@ -215,13 +215,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // 현재 떠있는 화면이 알람을 띄워야하는지 체크해서 띄울지 말지를 결정
             // 1. 앱이 백그라운드이면 무조건 띄우고
             // 2. 앱이 포어그라운드이면 해당 액티비티로 BR을 날려서 해당 액티비티가 처리하도록 해야함
-            notification(intent, "title", "message");
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-//                    showCustomToast(messageBody, "message", Toast.LENGTH_SHORT);
-                }
-            });
+//            notification(intent, "title", "message");
+//            handler.post(new Runnable() {
+//                @Override
+//                public void run() {
+////                    showCustomToast(messageBody, "message", Toast.LENGTH_SHORT);
+//                }
+//            });
         }
         else
         {
@@ -247,7 +247,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationManager.createNotificationChannel(channel);
             }
 
-            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+//            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
+
+
 //            notification(intent, title, message);
 //            // notification popup activity
 //            Intent i = new Intent(getApplicationContext(), NotificationPopupActivity.class)
