@@ -224,6 +224,11 @@ public class LoadingActivity extends Activity {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
+                                SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+                                preferences.edit().clear().apply();
+                                preferences.edit().putString("id","");
+                                preferences.edit().putString("token","");
+                                preferences.edit().apply();
                                 Intent intent = new Intent(LoadingActivity.this, DefaultActivity.class);
                                 intent.putExtra("tokenCheck",1);
                                 startActivity(intent);
@@ -232,13 +237,7 @@ public class LoadingActivity extends Activity {
                         });
                     }
                 });
-        alertDialog.setNegativeButton(getResources().getString(R.string.textCancel),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
+        alertDialog.setCancelable(false);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
