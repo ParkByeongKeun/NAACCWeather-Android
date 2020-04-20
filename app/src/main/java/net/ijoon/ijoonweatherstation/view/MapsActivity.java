@@ -325,6 +325,11 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             case android.R.id.home:
             {
 
+                if(mSensor.isEmpty()) {
+                    Intent intent = new Intent(MapsActivity.this, InfomationActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
                 mCustomApplication.setEnvSensor(mSensor.get(mPosition));
 
                 Intent intent = new Intent(MapsActivity.this, InfomationActivity.class);

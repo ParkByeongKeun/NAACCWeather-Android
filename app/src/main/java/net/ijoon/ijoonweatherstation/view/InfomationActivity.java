@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
@@ -74,6 +75,14 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
 
                 mCustomApplication = (CustomApplication)getApplication();
                 mEnvSensor = mCustomApplication.getEnvSensor();
+                if (mEnvSensor == null) {
+                        Toast.makeText(getApplicationContext(),"센서가 없습니다.",Toast.LENGTH_LONG).show();
+                        mLlChart.setEnabled(false);
+                        mLlAnalysis.setEnabled(false);
+                }else {
+                        mLlChart.setEnabled(true);
+                        mLlAnalysis.setEnabled(true);
+                }
                 tvId = findViewById(R.id.tvId);
                 tvNickname = findViewById(R.id.tvNickname);
                 btnInfo = findViewById(R.id.btnInfo);
