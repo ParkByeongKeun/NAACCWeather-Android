@@ -59,7 +59,7 @@
     <string name = "text_wind_west">서풍</string>
     <string name = "text_wind_south">남풍</string>
     <string name = "text_wind_north">북풍</string>
-    <string name = "text_wind_east_north">동북풍</string>
+    <string name = "text_wind_east_north">북동풍</string>
     <string name = "text_wind_south_east">남동풍</string>
     <string name = "text_wind_south_west">남서풍</string>
     <string name = "text_wind_north_west">북서풍</string>
