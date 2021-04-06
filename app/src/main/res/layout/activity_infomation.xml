@@ -20,10 +20,11 @@
         android:id="@+id/rlTop">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_person"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_person2"
             android:id="@+id/ivProfile"
+            android:layout_margin="20dp"
             android:layout_marginBottom="10dp"/>
 
         <TextView
@@ -70,6 +71,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_below="@+id/ivProfile"
             android:background="@color/colorHint"/>
     </RelativeLayout>
@@ -93,14 +96,15 @@
             android:clickable="true"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_sensor"/>
+                android:src="@drawable/ic_sensor2"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="20dp"
                 android:text="내센서"/>
         </LinearLayout>
 
@@ -113,14 +117,15 @@
             android:id="@+id/llAnalysis"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_analysis"/>
+                android:src="@drawable/ic_analysis2"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="20dp"
                 android:text="분석"/>
         </LinearLayout>
 
@@ -133,14 +138,15 @@
             android:id="@+id/llChart"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_chart"/>
+                android:src="@drawable/ic_chart2"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="20dp"
                 android:text="차트"/>
         </LinearLayout>
 
@@ -164,10 +170,10 @@
                     android:id="@+id/llMore"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginRight="20dp"
-                        android:src="@drawable/ic_more"
+                        android:src="@drawable/ic_more2"
                         android:layout_gravity="center"/>
                     <TextView
                         android:layout_width="match_parent"
@@ -186,10 +192,10 @@
                     android:clickable="true"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginRight="20dp"
-                        android:src="@drawable/ic_info"
+                        android:src="@drawable/ic_info2"
                         android:layout_gravity="center"/>
                     <TextView
                         android:layout_width="match_parent"
@@ -208,10 +214,10 @@
                     android:clickable="true"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginRight="20dp"
-                        android:src="@drawable/ic_alarm"
+                        android:src="@drawable/ic_alarm2"
                         android:layout_gravity="center"/>
                     <TextView
                         android:layout_width="match_parent"
