@@ -83,7 +83,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     sendBroadcast(intent);
                 } else if(remoteMessage.getData().get("type").equals("sensor_shared")) {
                     Intent intent = new Intent("sensor_shared");
-                    Log.d("yot132","??");
                     intent.putExtra("assigneeId", remoteMessage.getData().get("assigneeId"));
                     intent.putExtra("serial", remoteMessage.getData().get("serial"));
                     sendBroadcast(intent);
@@ -131,7 +130,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
 
         }else {
-            Log.d("yot132",";;");
         }
 
         // Check if message contains a notification payload.
@@ -191,7 +189,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      */
     private void sendRegistrationToServer(String token) {
         // TODO: Implement this method to send token to your app server.
-        Log.d("yot132","token11 = " + token);
     }
 
     /**

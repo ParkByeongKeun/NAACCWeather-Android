@@ -60,7 +60,6 @@ public class SharedUsersActivity extends SCNetAppCompatActivity {
             }
 
             case 7 : {
-                Log.d("yot132","1");
                 break;
             }
 
@@ -69,7 +68,6 @@ public class SharedUsersActivity extends SCNetAppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            Log.d("yot132","!~!d");
                             final envsensor.SharedUsersResponse response = envsensor.SharedUsersResponse.parseFrom(bodyBuf);
                             if(response.getResult() == envsensor.SharedUsersResponse.Result.success) {
                               data = response.getSharedUsersList();

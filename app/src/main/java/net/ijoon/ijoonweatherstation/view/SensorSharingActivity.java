@@ -317,7 +317,6 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
         switch (messageHeader.mPacketType) {
             case 13: {
                 try {
-                    Log.d("yot132","11");
                     final envsensor.ShareSensorResponse response = envsensor.ShareSensorResponse.parseFrom(bodyBuf);
                     if(response.getResult() == envsensor.ShareSensorResponse.Result.success) {
                         showAlertDialog(getResources().getString(R.string.textSharingSucceded));
