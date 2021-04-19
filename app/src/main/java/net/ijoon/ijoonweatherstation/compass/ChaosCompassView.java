@@ -170,12 +170,12 @@ public class ChaosCompassView extends View {
         mNorthPaint = new Paint();
 
         mNorthPaint.setAntiAlias(true);
-        mNorthPaint.setTextSize(20);
+        mNorthPaint.setTextSize(15);
         mNorthPaint.setColor(context.getResources().getColor(R.color.red));
 
         mOthersPaint = new Paint();
         mOthersPaint.setAntiAlias(true);
-        mOthersPaint.setTextSize(20);
+        mOthersPaint.setTextSize(15);
         mOthersPaint.setColor(context.getResources().getColor(R.color.white));
 
         mPositionRect = new Rect();
@@ -183,13 +183,13 @@ public class ChaosCompassView extends View {
 
         mCenterPaint = new Paint();
         mCenterPaint.setAntiAlias(true);
-        mCenterPaint.setTextSize(50);
+        mCenterPaint.setTextSize(30);
         mCenterPaint.setColor(context.getResources().getColor(R.color.white));
 
         mSamllDegreePaint = new Paint();
         mSamllDegreePaint.setStyle(Paint.Style.STROKE);
         mSamllDegreePaint.setAntiAlias(true);
-        mSamllDegreePaint.setTextSize(20);
+        mSamllDegreePaint.setTextSize(15);
         mSamllDegreePaint.setColor(context.getResources().getColor(R.color.lightGray));
 
         mSencondRect = new Rect();
