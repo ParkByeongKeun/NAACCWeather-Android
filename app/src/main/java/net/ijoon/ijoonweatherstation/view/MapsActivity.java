@@ -361,23 +361,22 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         }
 
-        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
-            @Override
-            public void onCameraMove() {
-                saveLat = (float) mMap.getCameraPosition().target.latitude;
-                saveLong = (float) mMap.getCameraPosition().target.longitude;
-                saveZoom = mMap.getCameraPosition().zoom;
-            }
+        mMap.setOnCameraMoveListener(() -> {
+            saveLat = (float) mMap.getCameraPosition().target.latitude;
+            saveLong = (float) mMap.getCameraPosition().target.longitude;
+            saveZoom = mMap.getCameraPosition().zoom;
         });
 
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                if(isSetGPS) {
-                    sensorLng =  String.valueOf(latLng.latitude);
-                    sensorLong = String.valueOf(latLng.longitude);
-                    showPositionAlertDialog(getResources().getString(R.string.text_notifycation),(getResources().getString(R.string.text_current_location) + mSensor.get(mPosition).getId() + getResources().getString(R.string.text_move_sensor)) ,getResources().getString(R.string.text_ok),"");
-                }
+        mMap.setOnMapClickListener(latLng -> {
+            if(isSetGPS) {
+                sensorLng =  String.valueOf(latLng.latitude);
+                sensorLong = String.valueOf(latLng.longitude);
+                showPositionAlertDialog(getResources().getString(R.string.text_notifycation),(getResources().getString(R.string.text_current_location) + mSensor.get(mPosition).getId() + getResources().getString(R.string.text_move_sensor)) ,getResources().getString(R.string.text_ok),"");
+            }
+            if(!mSweetSheet.isShow()) {
+                mSweetSheet.show();
+            }else {
+                mSweetSheet.dismiss();
             }
         });
     }
@@ -539,7 +538,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 if(!mSweetSheet.isShow()) {
                     mSweetSheet.show();
                 }else {
-                    mSweetSheet.dismiss();
+                    tvName.setText(mSensor.get(mPosition).getName());
+
                 }
             isMarkerClicked = false;
         }
