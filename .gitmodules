@@ -4,3 +4,6 @@
 [submodule "app/src/main/proto"]
 	path = app/src/main/proto
 	url = http://works.ijoon.net/envsensor/envsensor-pb
+[submodule "EnvSensor-pb"]
+	path = EnvSensor-pb
+	url = http://yot132@works.ijoon.net/EnvSensor/EnvSensor-pb
