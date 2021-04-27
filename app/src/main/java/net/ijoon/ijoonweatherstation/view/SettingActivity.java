@@ -27,6 +27,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.kakao.sdk.user.UserApiClient;
+
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.ijoonweatherstation.login.AuthService;
@@ -56,6 +58,7 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
     RelativeLayout mRlPasswordChange;
     RelativeLayout mRlLogout;
     RelativeLayout mRlWithdrawal;
+    RelativeLayout mRlKakaoSharing;
     TextView mTvId;
     TextView mTvNickname;
     String mToken;
@@ -82,6 +85,7 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         mRlPasswordChange = findViewById(R.id.rlPasswordChange);
         mRlLogout = findViewById(R.id.rlLogout);
         mRlWithdrawal = findViewById(R.id.rlWithdrawal);
+        mRlKakaoSharing = findViewById(R.id.rlKakaotalk);
         mTvId = findViewById(R.id.tvId);
         mTvNickname = findViewById(R.id.tvNickname);
         mTvNickname.setText(mNickname);
@@ -137,6 +141,39 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 showWidthdrawalEditTextAlertDialog(getResources().getString(R.string.textCancelCircularMembership));
+            }
+        });
+        mRlKakaoSharing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(UserApiClient.getInstance().isKakaoTalkLoginAvailable(getApplicationContext())) {
+                    UserApiClient.getInstance().loginWithKakaoTalk(getApplicationContext(), (oAuthToken, throwable) -> {
+                        if(throwable != null) {
+                            Log.d("yot132", "로그인 실패, " + throwable.toString());
+                            UserApiClient.getInstance().loginWithKakaoAccount(getApplicationContext(), (oAuthToken1, throwable1) -> {
+                                if(throwable1 != null) {
+                                    Log.d("yot132", "로그인 실패, " + throwable.toString());
+                                } else if(oAuthToken1 != null) {
+
+                                    Log.d("yot132", "로그인 성공 = " + oAuthToken1);
+                                }
+                                return null;
+                            });
+                        } else if(oAuthToken != null) {
+                            Log.d("yot132", "로그인 성공");
+                        }
+                        return null;
+                    });
+                } else {
+                    UserApiClient.getInstance().loginWithKakaoAccount(getApplicationContext(), (oAuthToken, throwable) -> {
+                        if(throwable != null) {
+                            Log.d("yot132", "로그인 실패, " + throwable.toString());
+                        } else if(oAuthToken != null) {
+                            Log.d("yot132", "로그인 성공");
+                        }
+                        return null;
+                    });
+                }
             }
         });
     }

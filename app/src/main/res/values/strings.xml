@@ -231,6 +231,7 @@
     <string name="textImageBufferSizeSetting">Image buffer size setting</string>
     <string name="textNotConnectionWithStation">The station is not connected.</string>
     <string name="textWithdrawal">withdrawal</string>
+    <string name="textKakaoSharing">Kakaotalk Sharing</string>
     <string name="textCheckStationAgain">Check station again</string>
     <string name="textLoginFailed">Please check user ID or password</string>
     <string name="textTryAgainServer">Could not connect to server. Do you want to try again?</string>

@@ -55,6 +55,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.kakao.sdk.common.util.Utility;
+import com.kakao.sdk.user.UserApiClient;
 import com.mingle.sweetpick.CustomDelegate;
 import com.mingle.sweetpick.Effect;
 import com.mingle.sweetpick.SweetSheet;
@@ -144,6 +146,9 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         setContentView(R.layout.activity_maps);
         setPermission();
         brManager();
+        String keyHash = Utility.INSTANCE.getKeyHash(this);
+        Log.d("Hash", keyHash);
+
         handler = new Handler();
         connCheckRunnable = new Runnable() {
             @Override
