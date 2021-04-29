@@ -70,7 +70,17 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.MapsActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:host="net.ijoon.envmonitor"
+                    android:scheme="naacc" />
+            </intent-filter>
+        </activity>
         <activity android:name=".view.DevActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.DefaultActivity"
