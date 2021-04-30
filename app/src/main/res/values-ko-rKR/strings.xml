@@ -279,4 +279,8 @@
     <!-- [END fcm_default_icon_string] -->
     <string name="msg_subscribe_failed">Failed to subscribe to weather topic</string>
     <string name="fcm_message">FCM Message</string>
+
+
+    <string name="pairing">연동됨</string>
+    <string name="no_pairing">연동안됨</string>
 </resources>

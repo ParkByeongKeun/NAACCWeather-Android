@@ -61,9 +61,11 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
     RelativeLayout mRlKakaoSharing;
     TextView mTvId;
     TextView mTvNickname;
+    TextView mTvKaKao;
     String mToken;
     String mNickname;
     String mId;
+    String mKakao;
     private long mLastClickTime = 0;
 
     @Override
@@ -80,7 +82,7 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
         mId = preferences.getString("id","");
-
+        mKakao = preferences.getString("kakao","");
         mRlNickname = findViewById(R.id.rlNickname);
         mRlPasswordChange = findViewById(R.id.rlPasswordChange);
         mRlLogout = findViewById(R.id.rlLogout);
@@ -89,6 +91,12 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         mTvId = findViewById(R.id.tvId);
         mTvNickname = findViewById(R.id.tvNickname);
         mTvNickname.setText(mNickname);
+        mTvKaKao = findViewById(R.id.tvKakao);
+        if(mKakao.equals("")) {
+            mTvKaKao.setText(getResources().getString(R.string.no_pairing));
+        }else {
+            mTvKaKao.setText(getResources().getString(R.string.pairing));
+        }
         mTvId.setText(mId);
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -146,33 +154,36 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         mRlKakaoSharing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(UserApiClient.getInstance().isKakaoTalkLoginAvailable(getApplicationContext())) {
-                    UserApiClient.getInstance().loginWithKakaoTalk(getApplicationContext(), (oAuthToken, throwable) -> {
-                        if(throwable != null) {
-                            Log.d("yot132", "로그인 실패, " + throwable.toString());
-                            UserApiClient.getInstance().loginWithKakaoAccount(getApplicationContext(), (oAuthToken1, throwable1) -> {
-                                if(throwable1 != null) {
-                                    Log.d("yot132", "로그인 실패, " + throwable.toString());
-                                } else if(oAuthToken1 != null) {
+                SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
 
-                                    Log.d("yot132", "로그인 성공 = " + oAuthToken1);
-                                }
-                                return null;
-                            });
-                        } else if(oAuthToken != null) {
-                            Log.d("yot132", "로그인 성공");
-                        }
-                        return null;
-                    });
-                } else {
-                    UserApiClient.getInstance().loginWithKakaoAccount(getApplicationContext(), (oAuthToken, throwable) -> {
-                        if(throwable != null) {
-                            Log.d("yot132", "로그인 실패, " + throwable.toString());
-                        } else if(oAuthToken != null) {
-                            Log.d("yot132", "로그인 성공");
-                        }
-                        return null;
-                    });
+                if(preferences.getString("kakao","").equals("")) {
+                    if(UserApiClient.getInstance().isKakaoTalkLoginAvailable(getApplicationContext())) {
+                        UserApiClient.getInstance().loginWithKakaoTalk(getApplicationContext(), (oAuthToken, throwable) -> {
+                            if(throwable != null) {
+                                UserApiClient.getInstance().loginWithKakaoAccount(getApplicationContext(), (oAuthToken1, throwable1) -> {
+                                    if(throwable1 != null) {
+                                    } else if(oAuthToken1 != null) {
+                                        preferences.edit().putString("kakao",String.valueOf(oAuthToken1));
+                                        preferences.edit().apply();
+                                    }
+                                    return null;
+                                });
+                            } else if(oAuthToken != null) {
+                                preferences.edit().putString("kakao",String.valueOf(oAuthToken));
+                                preferences.edit().apply();
+                            }
+                            return null;
+                        });
+                    } else {
+                        UserApiClient.getInstance().loginWithKakaoAccount(getApplicationContext(), (oAuthToken, throwable) -> {
+                            if(throwable != null) {
+                            } else if(oAuthToken != null) {
+                                preferences.edit().putString("kakao",String.valueOf(oAuthToken));
+                                preferences.edit().apply();
+                            }
+                            return null;
+                        });
+                    }
                 }
             }
         });
