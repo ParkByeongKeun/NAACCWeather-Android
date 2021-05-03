@@ -286,6 +286,28 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
             mCustomApplication.mServerSession.request(request);
         }
+
+        if(mCustomApplication.pushSerial != null) {
+            for (int i = 0 ; i < mSensor.size() ; i ++) {
+                if(String.valueOf(mSensor.get(i).getSerial()).equals(mCustomApplication.pushSerial)) {
+                    mPosition = i;
+                }
+            }
+            mSweetSheet.setBackgroundClickEnable(false);
+            if(isMarkerClicked) {
+                changConnectingUI(true);
+                setupCustomView();
+                mCustomApplication.setEnvSensor(mSensor.get(mPosition));
+                if(!mSweetSheet.isShow()) {
+                    mSweetSheet.show();
+                }else {
+                    tvName.setText(mSensor.get(mPosition).getName());
+                }
+                isMarkerClicked = false;
+            }
+            prevPosition = mPosition;
+            mSweetSheet.toggle();
+        }
     }
 
     @Override

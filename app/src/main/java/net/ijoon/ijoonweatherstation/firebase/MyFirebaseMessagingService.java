@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.ijoonweatherstation.view.MapsActivity;
 
@@ -39,6 +41,7 @@ import net.ijoon.ijoonweatherstation.view.MapsActivity;
  */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
+    CustomApplication customApplication;
     private static final String TAG = "yot132";
     final Handler handler = new Handler();
 
@@ -80,6 +83,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     intent.putExtra("maxVelocity", remoteMessage.getData().get("max_velocity"));
                     intent.putExtra("maxVelocityTime", remoteMessage.getData().get("max_time"));
                     intent.putExtra("serial", remoteMessage.getData().get("serial"));
+                    customApplication = (CustomApplication)getApplicationContext();
+                    customApplication.pushSerial = remoteMessage.getData().get("serial");
                     sendBroadcast(intent);
                 } else if(remoteMessage.getData().get("type").equals("sensor_shared")) {
                     Intent intent = new Intent("sensor_shared");

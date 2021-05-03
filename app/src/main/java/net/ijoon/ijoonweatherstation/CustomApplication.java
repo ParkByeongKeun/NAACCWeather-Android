@@ -36,7 +36,7 @@ public class CustomApplication extends GlobalApplication {
     MyActivityLifecycleCallbacks mMyActivityLifecycleCallbacks;
     public ServerSession mServerSession;
     private envsensor.Sensor mEnvSensor;
-
+    public String pushSerial;
     public envsensor.Sensor getEnvSensor() {
         return mEnvSensor;
     }
