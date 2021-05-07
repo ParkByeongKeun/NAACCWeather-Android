@@ -99,14 +99,12 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:alpha="0.6"
-                android:src="@drawable/ic_sensor2"/>
+                android:src="@drawable/ic_sensor"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:textStyle="bold"
                 android:text="내센서"/>
         </LinearLayout>
 
@@ -121,15 +119,13 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:alpha="0.6"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_analysis2"/>
+                android:src="@drawable/ic_analysis"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:textStyle="bold"
                 android:text="분석"/>
         </LinearLayout>
 
@@ -145,14 +141,12 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:alpha="0.6"
-                android:src="@drawable/ic_chart2"/>
+                android:src="@drawable/ic_chart"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:textStyle="bold"
                 android:text="차트"/>
         </LinearLayout>
 
@@ -176,17 +170,15 @@
                     android:id="@+id/llMore"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginRight="20dp"
-                        android:alpha="0.6"
-                        android:src="@drawable/ic_more2"
+                        android:src="@drawable/ic_more"
                         android:layout_gravity="center"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textStyle="bold"
                         android:text="모아 보기" />
 
                 </LinearLayout>
@@ -200,17 +192,15 @@
                     android:clickable="true"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginRight="20dp"
-                        android:src="@drawable/ic_info2"
-                        android:alpha="0.6"
+                        android:src="@drawable/ic_info"
                         android:layout_gravity="center"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textStyle="bold"
                         android:text="앱 정보 보기" />
 
                 </LinearLayout>
@@ -224,17 +214,15 @@
                     android:clickable="true"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginRight="20dp"
-                        android:alpha="0.6"
-                        android:src="@drawable/ic_alarm2"
+                        android:src="@drawable/ic_alarm"
                         android:layout_gravity="center"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textStyle="bold"
                         android:text="공지사항" />
 
                 </LinearLayout>
