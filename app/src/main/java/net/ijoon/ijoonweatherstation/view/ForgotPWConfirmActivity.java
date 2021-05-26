@@ -81,36 +81,33 @@ public class ForgotPWConfirmActivity extends AppCompatActivity {
         mEtPassword = findViewById(R.id.etPassword);
         mEtRePassword = findViewById(R.id.etRePassword);
         mRlRoot = findViewById(R.id.rlRoot);
-        mBtnOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPw = mEtPassword.getText().toString();
-                mPwRe = mEtRePassword.getText().toString();
-                if (mPw.equals(mPwRe)) {
-                    changePassword(mStrUserId, mPw, mStrAuth);
+        mBtnOk.setOnClickListener(v -> {
+            mPw = mEtPassword.getText().toString();
+            mPwRe = mEtRePassword.getText().toString();
+            if(!mPw.equals("")) {
+                if(mPw.length() >= 6 && mPw.length() <= 15) {
+                    if (mPw.equals(mPwRe)) {
+                        changePassword(mStrUserId, mPw, mStrAuth);
+                    }else {
+                        showAlertDialog(getResources().getString(R.string.textCheckInfomation));
+                    }
                 }else {
-                    showAlertDialog(getResources().getString(R.string.textCheckInfomation));
+                    //6~15
+                    showAlertDialog(getResources().getString(R.string.text_characters_count));
                 }
+            }else {
+                showAlertDialog(getResources().getString(R.string.textCheckInfomation));
             }
         });
 
-        mRlRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imm.hideSoftInputFromWindow(mEtPassword.getWindowToken(), 0);
-
-            }
-        });
+        mRlRoot.setOnClickListener(v -> imm.hideSoftInputFromWindow(mEtPassword.getWindowToken(), 0));
     }
 
     void changePassword(String userId, String password, String verificationCode) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(new Interceptor()    {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request request = chain.request().newBuilder().addHeader("Content-Type", "application/json").build();
-                return chain.proceed(request);
-            }
+        httpClient.addInterceptor(chain -> {
+            Request request = chain.request().newBuilder().addHeader("Content-Type", "application/json").build();
+            return chain.proceed(request);
         });
         Gson gson = new GsonBuilder().setLenient().create();
 
@@ -182,17 +179,7 @@ public class ForgotPWConfirmActivity extends AppCompatActivity {
         alertDialog
                 .setMessage(message);
         alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int which) {
-                        dialog.cancel();
-                    }
-                });
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                alertDialog.show();
-            }
-        });
+                (dialog, which) -> dialog.cancel());
+        runOnUiThread(() -> alertDialog.show());
     }
 }
