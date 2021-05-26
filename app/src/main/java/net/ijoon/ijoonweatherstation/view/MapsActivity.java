@@ -32,11 +32,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -56,14 +55,10 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.kakao.sdk.common.util.Utility;
-import com.kakao.sdk.user.UserApiClient;
 import com.mingle.sweetpick.CustomDelegate;
-import com.mingle.sweetpick.Effect;
 import com.mingle.sweetpick.SweetSheet;
 import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.login.AuthService;
-import net.ijoon.ijoonweatherstation.login.UpdateDispNameRequest;
-import net.ijoon.ijoonweatherstation.login.UpdateDispNameResponse;
 import net.ijoon.ijoonweatherstation.login.UpdateTokenRequest;
 import net.ijoon.ijoonweatherstation.login.UpdateTokenResponse;
 import net.ijoon.ijoonweatherstation.util.BackPressCloseHandler;
@@ -117,7 +112,9 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     TextView tvName;
     Handler handler;
     Runnable connCheckRunnable;
-
+    Switch mSwitch;
+    boolean isFix;
+    String fixSensorName;
 
     private void setCustomMarkerView() {
         marker_root_view = LayoutInflater.from(this).inflate(R.layout.marker_layout, null);
@@ -175,6 +172,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         saveLat = preferences.getFloat("lat",(float) 36.5);
         saveLong = preferences.getFloat("long",(float) 127.266667);
         saveZoom = preferences.getFloat("zoom",12);
+        isFix = preferences.getBoolean("fix",false);
+        fixSensorName = preferences.getString("fixSensorName","");
         updateUpdateToken();
         mBackPressCloseHandler = new BackPressCloseHandler(this);
         mArrMarkerOptions = new ArrayList<>();
@@ -215,8 +214,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                     }
                 });
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-
-
         CustomDelegate customDelegate = new CustomDelegate(true,
                 CustomDelegate.AnimationType.AlphaAnimation);
         View view = LayoutInflater.from(this).inflate(R.layout.layout_custom_view, null, false);
@@ -275,6 +272,34 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             showUnRegistDialog(mSensor.get(mPosition).getName() + getResources().getString(R.string.textDeleteSensor));
 
         });
+        mSwitch = view.findViewById(R.id.checkBox);
+        mSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences sharedPreferences = getSharedPreferences("preferences",MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("fix",isChecked);
+            editor.putString("fixSensorName",mSensor.get(mPosition).getName());
+            editor.apply();
+        });
+
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(300);
+                if(isFix) {
+                    if(mSensor != null && mSensor.size() > 0) {
+                        for(int i = 0 ; i < mSensor.size() ; i ++) {
+                            if(mSensor.get(i).getName().equals(fixSensorName)) {
+                                mCustomApplication.setEnvSensor(mSensor.get(i));
+                                Intent intent = new Intent(MapsActivity.this,ScrollingActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
     }
 
     @Override
@@ -562,6 +587,13 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 mPosition = i;
             }
         }
+        if(isFix) {
+            if(fixSensorName.equals(mSensor.get(mPosition).getName())) {
+                mSwitch.setChecked(true);
+            }else {
+                mSwitch.setChecked(false);
+            }
+        }
         mSweetSheet.setBackgroundClickEnable(false);
         if(isMarkerClicked) {
             changConnectingUI(true);
@@ -571,7 +603,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                     mSweetSheet.show();
                 }else {
                     tvName.setText(mSensor.get(mPosition).getName());
-
                 }
             isMarkerClicked = false;
         }
