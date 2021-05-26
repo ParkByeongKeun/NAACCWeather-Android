@@ -256,7 +256,7 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
         for (int index = 0; index < sensorVelocityList.size(); index++)
             entries.add(new Entry(index, sensorVelocityList.get(index).getAvgVelocity()));
 
-        LineDataSet set = new LineDataSet(entries, "일별 평균 풍속");
+        LineDataSet set = new LineDataSet(entries, getResources().getString(R.string.textAverageDailyVelocity));
         set.setColor(Color.rgb(170, 198, 30));
         set.setLineWidth(2.5f);
         set.setCircleColor(Color.rgb(170, 198, 30));

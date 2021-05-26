@@ -273,4 +273,28 @@
     <string name="no_pairing">No Pairing</string>
 
     <string name="text_characters_count">Password 6 to 15 characters.</string>
+    <string name="textChangedPassword">Changed Password.</string>
+    <string name="textChangePassword">Change Password</string>
+    <string name="textUnKnown">Unknown</string>
+    <string name="textRegistered">ID registered with NAACC Weather</string>
+    <string name="textUnRegistered">This is not an ID registered on NAACC Weather.</string>
+    <string name="textAverageDailyVelocity">Average daily Velocity</string>
+    <string name="textAppInfomation">App Infomation</string>
+    <string name="textAverageVelocity">Average Velocity</string>
+    <string name="textMySensor">My Sensor</string>
+    <string name="textNotice">Notice</string>
+    <string name="textConfirm">Confirm Auth</string>
+    <string name="textDeleteSensor">Delete Sensor</string>
+    <string name="textSensorAvailable">There is no sensor available.</string>
+    <string name="textApp">App Infomation</string>
+    <string name="textConfirmEmail">Confirm Email</string>
+    <string name="textInputEmail">Step1. Reset password</string>
+    <string name="textInputAuth">Step2. Reset password</string>
+    <string name="textInputPW">Step3. Reset password</string>
+    <string name="textEmailAuth">We sent a confirmation number to the email you entered</string>
+    <string name="textForgotEmail">Forgot Email?</string>
+    <string name="textNoInformation">No Information</string>
+    <string name="textWelcome">Welcome to NAACC Weather.</string>
+    <string name="textRealtimeMonitoring">Real-time environmental monitoring system</string>
+
 </resources>

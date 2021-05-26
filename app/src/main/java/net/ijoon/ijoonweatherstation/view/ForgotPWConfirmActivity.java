@@ -74,7 +74,7 @@ public class ForgotPWConfirmActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + "비밀번호 재설정" + "</font>"));
+            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textChangePassword) + "</font>"));
         }
 
         mBtnOk = findViewById(R.id.btnOk);
@@ -105,9 +105,12 @@ public class ForgotPWConfirmActivity extends AppCompatActivity {
 
     void changePassword(String userId, String password, String verificationCode) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(chain -> {
-            Request request = chain.request().newBuilder().addHeader("Content-Type", "application/json").build();
-            return chain.proceed(request);
+        httpClient.addInterceptor(new Interceptor()    {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request request = chain.request().newBuilder().addHeader("Content-Type", "application/json").build();
+                return chain.proceed(request);
+            }
         });
         Gson gson = new GsonBuilder().setLenient().create();
 
@@ -134,7 +137,7 @@ public class ForgotPWConfirmActivity extends AppCompatActivity {
                             break;
                         }
                         case 0 : {
-                            showAlertDialog("비밀번호가 재설정 되었습니다. \n변경된 비밀번호로 로그인 후 사용해주세요");
+                            showAlertDialog(getResources().getString(R.string.textChangedPassword));
                             break;
                         }
                         case 1 : {
@@ -148,7 +151,7 @@ public class ForgotPWConfirmActivity extends AppCompatActivity {
                         }
                     }
                 }else {
-                    showAlertDialog("확인할 수 없습니다.");
+                    showAlertDialog(getResources().getString(R.string.textUnKnown));
                 }
             }
             @Override

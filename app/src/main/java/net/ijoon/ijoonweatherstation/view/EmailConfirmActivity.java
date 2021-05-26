@@ -122,19 +122,19 @@ public class EmailConfirmActivity extends SCNetAppCompatActivity {
                 CheckUserIdResponse body = response.body();
 
                 if(body == null) {
-                    showAlertDialog("확인할 수 없습니다.");
+                    showAlertDialog(getResources().getString(R.string.textUnKnown));
                     return;
                 }
 
                 if(body.getSuccess()) {
                     if(body.getIsExist()) {
-                        showAlertDialog("등록된 아이디입니다.");
+                        showAlertDialog(getResources().getString(R.string.textRegistered));
                     }else {
-                        showAlertDialog("등록된 아이디가 아닙니다.");
+                        showAlertDialog(getResources().getString(R.string.textUnRegistered));
                     }
 
                 }else {
-                    showAlertDialog("확인할 수 없습니다.");
+                    showAlertDialog(getResources().getString(R.string.textUnKnown));
                 }
 
                 switch (body.getErrNo()) {

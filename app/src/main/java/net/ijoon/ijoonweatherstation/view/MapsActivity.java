@@ -272,7 +272,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             startActivity(intent);
         });
         view.findViewById(R.id.rlUnRegist).setOnClickListener(v -> {
-            showUnRegistDialog(mSensor.get(mPosition).getName() + " 센서를 삭제하시겠습니까?");
+            showUnRegistDialog(mSensor.get(mPosition).getName() + getResources().getString(R.string.textDeleteSensor));
 
         });
     }
@@ -435,7 +435,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                             }
                             if (response.getSensorCount() == 0) {
                                 //Todo : 센서가 없습니다.
-                                showDialog("센서가 없습니다.");
+                                showDialog(getResources().getString(R.string.textUnKnown));
                             } else {
                                     for(int i = 0 ; i < response.getSensorCount() ; i ++) {
                                         if(mSensor.get(i).getPing() >= ALIVEPING) {

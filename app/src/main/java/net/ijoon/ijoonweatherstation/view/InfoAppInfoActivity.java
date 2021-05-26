@@ -30,13 +30,13 @@ public class InfoAppInfoActivity extends AppCompatActivity {
 
 
         tvVersion = findViewById(R.id.tvVersion);
-        tvVersion.setText("소프트웨어 버전 " + getAppVersionName());
+        tvVersion.setText("App version\n " + getAppVersionName());
         mCustomApplication = (CustomApplication) getApplicationContext();
         actionBar = this.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + "앱 정보" + "</font>"));
+            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textAppInfomation) + "</font>"));
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom

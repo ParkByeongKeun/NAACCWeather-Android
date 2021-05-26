@@ -25,7 +25,7 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="재설정할 비밀번호를 입력해주세요."
+                    android:text="@string/textInputPW"
                     android:textColor="#ffffff"
                     android:textSize="20sp" />
 

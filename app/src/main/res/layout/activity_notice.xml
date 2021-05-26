@@ -33,7 +33,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="NAACC Weather 가입을 환영합니다. "
+                        android:text="@string/textWelcome"
                         android:layout_toRightOf="@+id/ivLogo"
                         android:textColor="@color/colorBlack"
                         android:textSize="13dp"
@@ -46,7 +46,7 @@
                         android:layout_toRightOf="@id/ivLogo"
                         android:layout_below="@+id/tvTop"
                         android:layout_marginLeft="20dp"
-                        android:text="실시간 환경 모니터링 시스템"
+                        android:text="@string/textRealtimeMonitoring"
                         android:textSize="10dp"
                         android:textColor="@color/lightGray"
                         android:layout_marginTop="5dp"/>

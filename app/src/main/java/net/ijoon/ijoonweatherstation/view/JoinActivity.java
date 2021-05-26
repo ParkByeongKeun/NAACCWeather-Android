@@ -154,7 +154,7 @@ public class JoinActivity extends AppCompatActivity {
             public void onResponse(Call<JoinResponse> call, Response<JoinResponse> response) {
                 JoinResponse body = response.body();
                 if(body == null) {
-                    showAlertDialog("이미 등록된 아이디입니다.");
+                    showAlertDialog(getResources().getString(R.string.textRegistered));
                     return;
                 }
                 if(body.getSuccess()) {
@@ -164,7 +164,7 @@ public class JoinActivity extends AppCompatActivity {
                     finish();
                     overridePendingTransition(0,0);
                 } else {
-                    showAlertDialog("실패했습니다.");
+                    showAlertDialog(getResources().getString(R.string.textFailed));
                 }
             }
             @Override

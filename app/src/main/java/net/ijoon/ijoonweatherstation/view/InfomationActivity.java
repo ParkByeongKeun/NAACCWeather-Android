@@ -76,7 +76,6 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                 mCustomApplication = (CustomApplication)getApplication();
                 mEnvSensor = mCustomApplication.getEnvSensor();
                 if (mEnvSensor == null) {
-                        Toast.makeText(getApplicationContext(),"센서가 없습니다.",Toast.LENGTH_LONG).show();
                         mLlChart.setEnabled(false);
                         mLlAnalysis.setEnabled(false);
                 }else {

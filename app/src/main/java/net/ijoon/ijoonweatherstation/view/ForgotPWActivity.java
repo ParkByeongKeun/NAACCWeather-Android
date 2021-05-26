@@ -70,7 +70,7 @@ public class ForgotPWActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + "비밀번호 재설정" + "</font>"));
+            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textChangePassword) + "</font>"));
         }
 
         mBtnOk = findViewById(R.id.btnOk);
@@ -119,7 +119,7 @@ public class ForgotPWActivity extends AppCompatActivity {
                 Log.d("yot132","res = " + response.isSuccessful());
 
                 if(body == null) {
-                    showAlertDialog("실패");
+                    showAlertDialog(getResources().getString(R.string.textFailed));
                     return;
                 }
                 if(body.getSuccess()) {

@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:text="내센서"/>
+                android:text="@string/textMySensor"/>
         </LinearLayout>
 
         <LinearLayout
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:text="분석"/>
+                android:text="@string/textAnalysis"/>
         </LinearLayout>
 
         <LinearLayout
@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:text="차트"/>
+                android:text="@string/textChart"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -179,7 +179,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="모아 보기" />
+                        android:text="@string/textMore" />
 
                 </LinearLayout>
 
@@ -201,7 +201,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="앱 정보 보기" />
+                        android:text="@string/textApp" />
 
                 </LinearLayout>
 
@@ -223,7 +223,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="공지사항" />
+                        android:text="@string/textNotice" />
 
                 </LinearLayout>
 

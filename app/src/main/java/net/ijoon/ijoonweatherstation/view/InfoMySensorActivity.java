@@ -58,7 +58,7 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + "내 센서" + "</font>"));
+            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textMySensor) + "</font>"));
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
@@ -82,11 +82,7 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

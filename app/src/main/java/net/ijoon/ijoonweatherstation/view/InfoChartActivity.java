@@ -156,7 +156,7 @@ public class InfoChartActivity extends ChartBase {
         for (int index = 0; index < sensorVelocityList.size(); index++)
             entries.add(new Entry(index + 0.5f, sensorVelocityList.get(index).getAvgVelocity()));
 
-        LineDataSet set = new LineDataSet(entries, "평균 풍속");
+        LineDataSet set = new LineDataSet(entries, getResources().getString(R.string.textAverageVelocity));
         set.setColor(Color.rgb(210, 198, 90));
         set.setLineWidth(2.5f);
         set.setCircleColor(Color.rgb(210, 198, 90));
@@ -185,7 +185,7 @@ public class InfoChartActivity extends ChartBase {
             entries2.add(new BarEntry(0, 0, 0));
         }
 
-        BarDataSet set1 = new BarDataSet(entries1, "최대 풍속");
+        BarDataSet set1 = new BarDataSet(entries1, getResources().getString(R.string.textMaxVelocity));
         set1.setColor(Color.rgb(23, 197, 255));
         set1.setValueTextColor(Color.rgb(61, 165, 255));
         set1.setValueTextSize(10f);
