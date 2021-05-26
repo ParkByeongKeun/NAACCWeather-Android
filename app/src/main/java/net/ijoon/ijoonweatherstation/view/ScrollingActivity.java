@@ -370,7 +370,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 mTvPressure.setText(String.format("%.2f",response.getData().getPressure())+" hPa");//압력
                                 sunSet.getSunset(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
                                 sunRise.getSunrise(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
-                                if(response.getData().getCrain() >= 5) {
+                                if(response.getData().getRain() >= 5) {
                                     //rain
                                     isRain = true;
                                     countDownTimer.cancel();
@@ -504,7 +504,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                     mTvWeatherComment.setText(getResources().getString(R.string.midle_title));
                                 }
 
-                                if(response.getData().getCrain()  < 5 && isRain && !isTimerFinish) {
+                                if(response.getData().getRain()  < 5 && isRain && !isTimerFinish) {
                                     mIvWeather.setImageResource(R.drawable.ic_rain);
                                     mTvWeatherComment.setText(getResources().getString(R.string.midle_title6));
                                 }
@@ -753,7 +753,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                             mTvPressure.setText(String.format("%.2f",response.getPressure())+" hPa");//압력
                             sunSet.getSunset(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
                             sunRise.getSunrise(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
-                            if(response.getCrain() >= 5) {
+                            if(response.getRain() >= 5) {
                                 //rain
                                 isRain = true;
                                 countDownTimer.cancel();
@@ -887,7 +887,7 @@ public class ScrollingActivity extends SCNetAppCompatActivity implements  SwipeR
                                 mTvWeatherComment.setText(getResources().getString(R.string.midle_title));
                             }
 
-                            if(response.getCrain()  < 5 && isRain && !isTimerFinish) {
+                            if(response.getRain()  < 5 && isRain && !isTimerFinish) {
                                 mIvWeather.setImageResource(R.drawable.ic_rain);
                                 mTvWeatherComment.setText(getResources().getString(R.string.midle_title6));
                             }
