@@ -86,7 +86,7 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
                 mEtSerial.getText().toString();
                 mEtAuth.getText().toString();
                 if(mEtSerial.getText().toString().equals("")  || mEtAuth.getText().toString().equals("")) {
-                    showAlertDialog("입력정보를 확인해주세요.");
+                    showAlertDialog(getResources().getString(R.string.textCheckInformation));
                 }else {
                     float lat = 36;
                     float lng = 127;

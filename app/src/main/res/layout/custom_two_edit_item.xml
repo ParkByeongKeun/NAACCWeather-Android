@@ -24,4 +24,15 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"/>
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etChange"
+        android:id="@+id/etConfirmChange"
+        android:singleLine="true"
+        android:lines="1"
+        android:hint="@string/textCheckedPasswordToChange"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+
 </RelativeLayout>

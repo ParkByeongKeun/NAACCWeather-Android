@@ -150,6 +150,7 @@
     <string name= "textEditPasswordChange">변경할 비밀번호를 입력해주세요.</string>
     <string name= "textExistingPassword">기존 비밀번호</string>
     <string name= "textPasswordToChange">변경할 비밀번호</string>
+    <string name= "textCheckedPasswordToChange">변경할 비밀번호 확인</string>
     <string name= "textCheckYourExistingPassword">기존 비밀번호를 확인해주세요.</string>
     <string name= "textCircularWithdrawal">회원탈퇴를 하시겠습니까?</string>
     <string name= "textEnterYourPasswordAndPressTheCheckButton">Circular 회원탈퇴를 위해 비밀번호를 입력하고 체크 버튼을 누르십시오.</string>
@@ -283,4 +284,6 @@
 
     <string name="pairing">연동됨</string>
     <string name="no_pairing">연동안됨</string>
+
+    <string name="text_characters_count">비밀번호를 6 ~ 15자로 입력해주세요.</string>
 </resources>

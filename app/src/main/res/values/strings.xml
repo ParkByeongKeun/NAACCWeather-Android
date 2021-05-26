@@ -129,6 +129,7 @@
     <string name= "textEditPasswordChange">Please enter the nickname you want to change.</string>
     <string name= "textExistingPassword">Existing Password</string>
     <string name= "textPasswordToChange">Password to change</string>
+    <string name= "textCheckedPasswordToChange">Checked Password to change</string>
     <string name= "textCheckYourExistingPassword">Please check your existing password.</string>
     <string name= "textAreYouSureWantToLogout">Are you sure you want to logout?</string>
     <string name= "textCircularWithdrawal">Withdrawal?</string>
@@ -270,4 +271,6 @@
 
     <string name="pairing">Pairing</string>
     <string name="no_pairing">No Pairing</string>
+
+    <string name="text_characters_count">Password 6 to 15 characters.</string>
 </resources>

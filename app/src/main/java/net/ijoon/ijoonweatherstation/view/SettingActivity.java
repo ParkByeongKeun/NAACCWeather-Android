@@ -329,6 +329,7 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         final EditText existingEditText;
         final EditText changeEditText;
+        final EditText confirmChangeEditText;
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.custom_two_edit_item,null);
         alertDialog.setView(layout);
@@ -341,20 +342,15 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         changeEditText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         changeEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
+        confirmChangeEditText = layout.findViewById(R.id.etConfirmChange);
+        confirmChangeEditText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        confirmChangeEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
         alertDialog.setTitle(getResources().getString(R.string.textPasswordChange));
         alertDialog.setMessage(message);
         alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        updatePassword(existingEditText.getText().toString(),changeEditText.getText().toString());
-                    }
-                });
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                alertDialog.show();
-            }
-        });
+                (dialog, which) -> updatePassword(existingEditText.getText().toString(),changeEditText.getText().toString(),confirmChangeEditText.getText().toString()));
+        runOnUiThread(() -> alertDialog.show());
     }
 
     private void showNicknameChangeDialog() {
@@ -424,36 +420,51 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         });
     }
 
-    void updatePassword(String pw, String pwNew) {
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).build();
-                return chain.proceed(request);
+    void updatePassword(String pw, String pwNew, String pwConfirmNew) {
+
+        if(!pwNew.equals("") && pwNew.equals(pwConfirmNew)) {
+            if(pwNew.length() >= 6 && pwNew.length() <= 15) {
+                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+                httpClient.addInterceptor(new Interceptor() {
+                    @Override
+                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                        Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).build();
+                        return chain.proceed(request);
+                    }
+                });
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("http://1.246.219.189:20217")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .client(httpClient.build())
+                        .build();
+                AuthService service = retrofit.create(AuthService.class);
+                final Call<UpdatePasswordResponse> updatePasswordResponseCall = service.updatePassword(new UpdatePasswordRequest(pw, pwNew));
+                updatePasswordResponseCall.enqueue(new Callback<UpdatePasswordResponse>() {
+                    @Override
+                    public void onResponse(Call<UpdatePasswordResponse> call, Response<UpdatePasswordResponse> response) {
+                        if(response.body() != null) {
+                            if(response.body().getSuccess()) {
+                                showAlertDialog(getResources().getString(R.string.textPasswordChangeSuccess));
+                            }else {
+                                showAlertDialog(getResources().getString(R.string.textPasswordChangeFail));
+                            }
+                        }else {
+                            showAlertDialog(getResources().getString(R.string.textCheckYourExistingPassword));
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<UpdatePasswordResponse> call, Throwable t) {
+                        Log.d("logdinobei", "onFailure");
+                    }
+                });
+            }else {
+                //6~ 15자로 입력해주세요
+                showAlertDialog(getResources().getString(R.string.text_characters_count));
             }
-        });
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://1.246.219.189:20217")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                .build();
-        AuthService service = retrofit.create(AuthService.class);
-        final Call<UpdatePasswordResponse> updatePasswordResponseCall = service.updatePassword(new UpdatePasswordRequest(pw, pwNew));
-        updatePasswordResponseCall.enqueue(new Callback<UpdatePasswordResponse>() {
-            @Override
-            public void onResponse(Call<UpdatePasswordResponse> call, Response<UpdatePasswordResponse> response) {
-                if(response.body().getSuccess()) {
-                    showAlertDialog(getResources().getString(R.string.textPasswordChangeSuccess));
-                }else {
-                    showAlertDialog(getResources().getString(R.string.textPasswordChangeFail));
-                }
-            }
-            @Override
-            public void onFailure(Call<UpdatePasswordResponse> call, Throwable t) {
-                Log.d("logdinobei", "onFailure");
-            }
-        });
+        }else {
+            //정보를 확인하세요
+            showAlertDialog(getResources().getString(R.string.textCheckInformation));
+        }
     }
 
     @Override
