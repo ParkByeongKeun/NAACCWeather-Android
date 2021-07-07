@@ -377,7 +377,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             case android.R.id.home:
             {
 
-                if(mSensor == null) {
+                if(mSensor.isEmpty()) {
                     Intent intent = new Intent(MapsActivity.this, InfomationActivity.class);
                     startActivity(intent);
                     return true;
@@ -460,7 +460,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                             }
                             if (response.getSensorCount() == 0) {
                                 //Todo : 센서가 없습니다.
-                                showDialog(getResources().getString(R.string.textUnKnown));
+                                showDialog(getResources().getString(R.string.textSensorAvailable));
                             } else {
                                     for(int i = 0 ; i < response.getSensorCount() ; i ++) {
                                         if(mSensor.get(i).getPing() >= ALIVEPING) {

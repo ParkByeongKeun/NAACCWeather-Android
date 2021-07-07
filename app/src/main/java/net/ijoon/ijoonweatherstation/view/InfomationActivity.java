@@ -1,5 +1,7 @@
 package net.ijoon.ijoonweatherstation.view;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -75,13 +77,6 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
 
                 mCustomApplication = (CustomApplication)getApplication();
                 mEnvSensor = mCustomApplication.getEnvSensor();
-                if (mEnvSensor == null) {
-                        mLlChart.setEnabled(false);
-                        mLlAnalysis.setEnabled(false);
-                }else {
-                        mLlChart.setEnabled(true);
-                        mLlAnalysis.setEnabled(true);
-                }
                 tvId = findViewById(R.id.tvId);
                 tvNickname = findViewById(R.id.tvNickname);
                 btnInfo = findViewById(R.id.btnInfo);
@@ -109,8 +104,12 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                 });
 
                 mLlAnalysis.setOnClickListener(v -> {
-                        Intent intent = new Intent(InfomationActivity.this, InfoAnalysisActivity.class);
-                        startActivity(intent);
+                        if (mEnvSensor == null) {
+                                showDialog(getResources().getString(R.string.textSensorAvailable));
+                        }else {
+                                Intent intent = new Intent(InfomationActivity.this, InfoAnalysisActivity.class);
+                                startActivity(intent);
+                        }
                 });
 
                 mLlAppInfo.setOnClickListener(v -> {
@@ -119,8 +118,12 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                 });
 
                 mLlChart.setOnClickListener(v -> {
-                        Intent intent = new Intent(InfomationActivity.this, InfoChartActivity.class);
-                        startActivity(intent);
+                        if (mEnvSensor == null) {
+                                showDialog(getResources().getString(R.string.textSensorAvailable));
+                        }else {
+                                Intent intent = new Intent(InfomationActivity.this, InfoChartActivity.class);
+                                startActivity(intent);
+                        }
                 });
 
                 mLlMore.setOnClickListener(v -> {
@@ -129,8 +132,12 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                 });
 
                 mLlMySensor.setOnClickListener(v -> {
-                        Intent intent = new Intent(InfomationActivity.this, InfoMySensorActivity.class);
-                        startActivity(intent);
+                        if (mEnvSensor == null) {
+                                showDialog(getResources().getString(R.string.textSensorAvailable));
+                        }else {
+                                Intent intent = new Intent(InfomationActivity.this, InfoMySensorActivity.class);
+                                startActivity(intent);
+                        }
                 });
 
                 mLlNotice.setOnClickListener(v -> {
@@ -246,5 +253,24 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
 
         }
 
+        public void showDialog(String message) {
+                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                        this);
+                alertDialog.setTitle(getResources().getString(R.string.textNotification));
+                alertDialog.setMessage(message);
+                alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
+                        new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
 
+
+                                }
+                        });
+                runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                                alertDialog.show();
+                        }
+                });
+        }
 }
