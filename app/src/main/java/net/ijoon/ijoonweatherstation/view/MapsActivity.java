@@ -630,12 +630,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     @Override
     public void onBackPressed() {
         if(mSweetSheet.isShow()){
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mSweetSheet.dismiss();
-                }
-            });
+            runOnUiThread(() -> mSweetSheet.dismiss());
         } else if(isSetGPS) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
