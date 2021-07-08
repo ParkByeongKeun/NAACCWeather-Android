@@ -258,19 +258,14 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                         this);
                 alertDialog.setTitle(getResources().getString(R.string.textNotification));
                 alertDialog.setMessage(message);
-                alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                        new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-
-
-                                }
+                alertDialog.setNegativeButton(getResources().getString(R.string.textCancel),
+                        (dialog, which) -> {
                         });
-                runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                                alertDialog.show();
-                        }
-                });
+                alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
+                        (dialog, which) -> {
+                                Intent intent = new Intent(InfomationActivity.this, SensorAddActivity.class);
+                                startActivity(intent);
+                        });
+                runOnUiThread(() -> alertDialog.show());
         }
 }
