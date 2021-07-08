@@ -31,6 +31,11 @@ import com.kakao.sdk.user.UserApiClient;
 
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
+import net.ijoon.ijoonweatherstation.RestApi.RegPushTokenRequest;
+import net.ijoon.ijoonweatherstation.RestApi.RegPushTokenResponse;
+import net.ijoon.ijoonweatherstation.RestApi.RetrofitClient;
+import net.ijoon.ijoonweatherstation.RestApi.UnRegPushTokenRequest;
+import net.ijoon.ijoonweatherstation.RestApi.UnRegPushTokenResponse;
 import net.ijoon.ijoonweatherstation.login.AuthService;
 import net.ijoon.ijoonweatherstation.login.DeleteRequest;
 import net.ijoon.ijoonweatherstation.login.DeleteResponse;
@@ -38,6 +43,7 @@ import net.ijoon.ijoonweatherstation.login.UpdateDispNameRequest;
 import net.ijoon.ijoonweatherstation.login.UpdateDispNameResponse;
 import net.ijoon.ijoonweatherstation.login.UpdatePasswordRequest;
 import net.ijoon.ijoonweatherstation.login.UpdatePasswordResponse;
+import net.ijoon.ijoonweatherstation.util.UUIDManager;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
 import java.io.IOException;
 import okhttp3.Interceptor;
@@ -228,26 +234,19 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         alertDialog.setTitle(getResources().getString(R.string.textNotification));
         alertDialog.setMessage(message);
         alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int which) {
-                        SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
-                        preferences.edit().clear().apply();
-                        preferences.edit().putString("id","");
-                        preferences.edit().putString("token","");
-                        preferences.edit().apply();
-                        SettingActivity.super.activityFinish();
+                (dialog, which) -> {
+                    unRegPushToken(UUIDManager.getDeviceUUID(getApplicationContext()));
+                    SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+                    preferences.edit().clear().apply();
+                    preferences.edit().putString("id","");
+                    preferences.edit().putString("token","");
+                    preferences.edit().apply();
+                    SettingActivity.super.activityFinish();
 
-                        Intent intent = new Intent(SettingActivity.this, DefaultActivity.class);
-                        startActivity(intent);
-                    }
+                    Intent intent = new Intent(SettingActivity.this, DefaultActivity.class);
+                    startActivity(intent);
                 });
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                alertDialog.show();
-            }
-        });
+        runOnUiThread(() -> alertDialog.show());
     }
 
     public void showDeleteAlertDialog(String message) {
@@ -493,5 +492,25 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
             }
         });
         thread.start();
+    }
+
+    void unRegPushToken(final String UUID) {
+
+        new Thread(() -> {
+            Call<UnRegPushTokenResponse> call = RetrofitClient
+                    .getApiService(mToken)
+                    .regPushToken(new UnRegPushTokenRequest(UUID));
+            call.enqueue(new Callback<UnRegPushTokenResponse>() {
+                @Override
+                public void onResponse(Call<UnRegPushTokenResponse> call, Response<UnRegPushTokenResponse> response) {
+                    Log.d("yot132","pushtoken reg response = " + response.message());
+                }
+
+                @Override
+                public void onFailure(Call<UnRegPushTokenResponse> call, Throwable t) {
+                    Log.d("yot132", "onFailure...");
+                }
+            });
+        }).start();
     }
 }

@@ -69,7 +69,6 @@ public class LoadingActivity extends Activity {
             public void run() {
                 try {
                     Thread.sleep(2000);
-                    regPushToken(UUIDManager.getDeviceUUID(getApplicationContext()),mCustomApplication.fcmToken);
                     if(!mToken.equals("")) {
                         check(mToken);
                     }else {
@@ -255,26 +254,5 @@ public class LoadingActivity extends Activity {
             return "";
         }
         return packageInfo.versionName;
-    }
-
-
-    void regPushToken(final String UUID, final String pushToken) {
-
-        new Thread(() -> {
-            Call<RegPushTokenResponse> call = RetrofitClient
-                    .getApiService(mToken)
-                    .regPushToken(new RegPushTokenRequest(UUID, pushToken));
-            call.enqueue(new Callback<RegPushTokenResponse>() {
-                @Override
-                public void onResponse(Call<RegPushTokenResponse> call, Response<RegPushTokenResponse> response) {
-
-                }
-
-                @Override
-                public void onFailure(Call<RegPushTokenResponse> call, Throwable t) {
-                    Log.d("yot132", "onFailure...");
-                }
-            });
-        }).start();
     }
 }

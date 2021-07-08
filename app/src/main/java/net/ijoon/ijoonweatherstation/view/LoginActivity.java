@@ -34,6 +34,9 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
+import net.ijoon.ijoonweatherstation.RestApi.RegPushTokenRequest;
+import net.ijoon.ijoonweatherstation.RestApi.RegPushTokenResponse;
+import net.ijoon.ijoonweatherstation.RestApi.RetrofitClient;
 import net.ijoon.ijoonweatherstation.login.AuthService;
 import net.ijoon.ijoonweatherstation.login.LoginRequest;
 import net.ijoon.ijoonweatherstation.login.LoginResponse;
@@ -69,6 +72,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
     TextView mTvForgot;
     TextView mTvForgotEmail;
     long mLastClickTime = 0;
+    String mToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +163,8 @@ public class LoginActivity extends SCNetAppCompatActivity {
                     editor.putString("token", token);
                     editor.putString("id", mStrId);
                     editor.apply();
+                    mToken = token;
+                    regPushToken(UUIDManager.getDeviceUUID(getApplicationContext()),mCustomApplication.fcmToken);
                     isLoginSuccess = true;
                     Log.d("yot132","resetPW success");
                     envsensor.GetSensorListRequest sensorListRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(token).build();
@@ -329,5 +335,25 @@ public class LoginActivity extends SCNetAppCompatActivity {
                 break;
             }
         }
+    }
+
+    void regPushToken(final String UUID, final String pushToken) {
+
+        new Thread(() -> {
+            Call<RegPushTokenResponse> call = RetrofitClient
+                    .getApiService(mToken)
+                    .regPushToken(new RegPushTokenRequest(UUID, pushToken));
+            call.enqueue(new Callback<RegPushTokenResponse>() {
+                @Override
+                public void onResponse(Call<RegPushTokenResponse> call, Response<RegPushTokenResponse> response) {
+                    Log.d("yot132","pushtoken reg response = " + response.message());
+                }
+
+                @Override
+                public void onFailure(Call<RegPushTokenResponse> call, Throwable t) {
+                    Log.d("yot132", "onFailure...");
+                }
+            });
+        }).start();
     }
 }
