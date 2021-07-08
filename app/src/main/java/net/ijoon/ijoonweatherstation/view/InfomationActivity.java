@@ -1,7 +1,6 @@
 package net.ijoon.ijoonweatherstation.view;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -9,18 +8,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
@@ -30,10 +24,6 @@ import net.ijoon.ijoonweatherstation.login.NameResponse;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.RendezvousClientCallback;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
-
-import java.io.IOException;
-
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
@@ -47,7 +37,6 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
         SwipeRefreshLayout mSwipeRefreshLayout;
         View view;
         CustomApplication mCustomApplication;
-
         String mToken;
         String mId;
         String mNickname;
@@ -56,7 +45,6 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
         Button btnInfo;
         TextView tvId;
         TextView tvNickname;
-
         LinearLayout mLlMySensor;
         LinearLayout mLlAnalysis;
         LinearLayout mLlChart;
@@ -74,7 +62,6 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                 mLlMore = findViewById(R.id.llMore);
                 mLlAppInfo = findViewById(R.id.llAppInfo);
                 mLlNotice = findViewById(R.id.llNotice);
-
                 mCustomApplication = (CustomApplication)getApplication();
                 mEnvSensor = mCustomApplication.getEnvSensor();
                 tvId = findViewById(R.id.tvId);
@@ -90,19 +77,16 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                 }
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
                 actionBar = getSupportActionBar();
-
                 if (actionBar != null) {
                         actionBar.setDisplayHomeAsUpEnabled(true);
                         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
                         actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textInfo) + "</font>"));
                 }
-
                 btnInfo.setOnClickListener(v -> {
                         Intent intent = new Intent(InfomationActivity.this, SettingActivity.class);
                         intent.putExtra("nickname",mNickname);
                         startActivity(intent);
                 });
-
                 mLlAnalysis.setOnClickListener(v -> {
                         if (mEnvSensor == null) {
                                 showDialog(getResources().getString(R.string.textSensorAvailable));
@@ -111,12 +95,10 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                                 startActivity(intent);
                         }
                 });
-
                 mLlAppInfo.setOnClickListener(v -> {
                         Intent intent = new Intent(InfomationActivity.this, InfoAppInfoActivity.class);
                         startActivity(intent);
                 });
-
                 mLlChart.setOnClickListener(v -> {
                         if (mEnvSensor == null) {
                                 showDialog(getResources().getString(R.string.textSensorAvailable));
@@ -125,12 +107,10 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                                 startActivity(intent);
                         }
                 });
-
                 mLlMore.setOnClickListener(v -> {
                         Intent intent = new Intent(InfomationActivity.this, InfoMoreActivity.class);
                         startActivity(intent);
                 });
-
                 mLlMySensor.setOnClickListener(v -> {
                         if (mEnvSensor == null) {
                                 showDialog(getResources().getString(R.string.textSensorAvailable));
@@ -139,45 +119,32 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                                 startActivity(intent);
                         }
                 });
-
                 mLlNotice.setOnClickListener(v -> {
                         Intent intent = new Intent(InfomationActivity.this, InfoNoticeActivity.class);
                         startActivity(intent);
                 });
         }
 
-
         @Override
         public void onResponse(MessageHeader messageHeader, final byte[] bodyBuf) {
                 if(messageHeader == null) {
-                        Log.d("yot132", "packetType is null");
                         return;
                 }
                 switch (messageHeader.mPacketType) {
-
                         case 6: {
-                                Thread thread = new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                                try {
-                                                        Thread.sleep(1400);
+                                Thread thread = new Thread(() -> {
+                                        try {
+                                                Thread.sleep(1400);
 
-                                                } catch (InterruptedException e) {
-                                                        e.printStackTrace();
-                                                }
-                                                runOnUiThread(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                                mSwipeRefreshLayout.setRefreshing(false);
-                                                        }
-                                                });
+                                        } catch (InterruptedException e) {
+                                                e.printStackTrace();
                                         }
+                                        runOnUiThread(() -> mSwipeRefreshLayout.setRefreshing(false));
                                 });
                                 thread.start();
                                 break;
                         }
                         default: {
-                                Log.d("yot132","[onMessage] Unknown PacketType");
                                 break;
                         }
                 }
@@ -186,12 +153,9 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
 
         void getNickname() {
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-                httpClient.addInterceptor(new Interceptor() {
-                        @Override
-                        public okhttp3.Response intercept(Chain chain) throws IOException {
-                                Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).build();
-                                return chain.proceed(request);
-                        }
+                httpClient.addInterceptor(chain -> {
+                        Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).build();
+                        return chain.proceed(request);
                 });
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("http://1.246.219.189:20217")
@@ -250,7 +214,6 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
         public void onRefresh() {
                 envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
                 mCustomApplication.mServerSession.request(request);
-
         }
 
         public void showDialog(String message) {
