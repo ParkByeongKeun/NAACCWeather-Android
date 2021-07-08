@@ -300,7 +300,7 @@
     <string name="textNotice">공지사항</string>
     <string name="textConfirm">인증번호 확인</string>
     <string name="textDeleteSensor">센서를 삭제하시겠습니까?</string>
-    <string name="textSensorAvailable">연결가능한 센서가 없습니다.</string>
+    <string name="textSensorAvailable">연결가능한 센서가 없습니다. 센서를 등록 화면으로 이동할까요?</string>
     <string name="textApp">앱 정보 보기</string>
     <string name="textConfirmEmail">이메일 확인하기</string>
     <string name="textInputEmail">비밀번호 재설정할 이메일을 입력해주세요</string>
