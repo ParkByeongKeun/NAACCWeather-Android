@@ -115,7 +115,10 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
                 startActivity(intent);
                 return true;
             }
+            default: {
+                finish();
+                return true;
+            }
         }
-        return super.onOptionsItemSelected(item);
     }
 }
