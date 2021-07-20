@@ -7,26 +7,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.github.mikephil.charting.charts.CombinedChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.CombinedData;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.protobuf.InvalidProtocolBufferException;
-
 import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
@@ -34,7 +18,6 @@ import net.ijoon.ijoonweatherstation.util.ParallaxScollListView;
 import net.ijoon.ijoonweatherstation.util.SensorListViewAdapter;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +26,6 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
     CustomApplication mCustomApplication;
     ActionBar actionBar;
     private ParallaxScollListView mListView;
-    private ImageView mImageView;
     String mToken;
     List<envsensor.Sensor> mSensor;
     int MAXPING = 15;
@@ -53,7 +35,6 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mysensor);
         mCustomApplication = (CustomApplication) getApplicationContext();
-
         actionBar = this.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -67,20 +48,12 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
         mToken = preferences.getString("token","");
         envsensor.GetSensorListRequest getSensorRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
         mCustomApplication.mServerSession.request(getSensorRequest);
-        mListView = (ParallaxScollListView) findViewById(R.id.layout_listview);
-        View header = LayoutInflater.from(this).inflate(R.layout.listview_header, null);
-        mImageView = (ImageView) header.findViewById(R.id.layout_header_image);
-
+        mListView = findViewById(R.id.layout_listview);
         mListView.setZoomRatio(ParallaxScollListView.ZOOM_X2);
-        mListView.setParallaxImageView(mImageView);
-        mListView.addHeaderView(header);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mCustomApplication.setEnvSensor(mSensor.get(position -1));
-                Intent intent = new Intent(InfoMySensorActivity.this,ScrollingActivity.class);
-                startActivity(intent);
-            }
+        mListView.setOnItemClickListener((parent, view, position, id) -> {
+            mCustomApplication.setEnvSensor(mSensor.get(position -1));
+            Intent intent = new Intent(InfoMySensorActivity.this,ScrollingActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -88,8 +61,6 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.menu_list: {
-//                mCustomDialog.show();
-                //sensor list call
                 return true;
             }
             default: {
@@ -98,7 +69,6 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
             }
         }
     }
-
 
     @Override
     public void onResponse(MessageHeader messageHeader, final byte[] bodyBuf) {
