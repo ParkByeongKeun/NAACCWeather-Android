@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -58,19 +60,6 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.menu_list: {
-                return true;
-            }
-            default: {
-                finish();
-                return true;
-            }
-        }
-    }
-
-    @Override
     public void onResponse(MessageHeader messageHeader, final byte[] bodyBuf) {
         super.onResponse(messageHeader, bodyBuf);
         if (messageHeader == null) {
@@ -109,5 +98,24 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
                 break;
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_add,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.menu_add: {
+                Intent intent = new Intent(InfoMySensorActivity.this, SensorAddActivity.class);
+                startActivity(intent);
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
