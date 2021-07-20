@@ -51,7 +51,7 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
         mListView = findViewById(R.id.layout_listview);
         mListView.setZoomRatio(ParallaxScollListView.ZOOM_X2);
         mListView.setOnItemClickListener((parent, view, position, id) -> {
-            mCustomApplication.setEnvSensor(mSensor.get(position -1));
+            mCustomApplication.setEnvSensor(mSensor.get(position));
             Intent intent = new Intent(InfoMySensorActivity.this,ScrollingActivity.class);
             startActivity(intent);
         });
