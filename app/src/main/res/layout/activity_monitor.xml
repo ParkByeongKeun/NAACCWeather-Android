@@ -335,17 +335,22 @@
                 <RelativeLayout
                     android:id="@+id/rlWindDirection"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true">
+                    android:layout_height="170dp">
 
-
-                    <net.ijoon.ijoonweatherstation.compass.ChaosCompassView
-                        android:id="@+id/ccv"
-                        android:layout_width="111dp"
-                        android:layout_height="match_parent"
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_centerInParent="true"
-                        android:layout_marginTop="20dp"
-                        android:background="#00ffffff" />
+                        android:src="@drawable/compass_icon"
+                        android:id="@+id/ivCompass"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ivCompass"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/white"
+                        android:id="@+id/tvDirection"/>
                 </RelativeLayout>
             </RelativeLayout>
         </LinearLayout>
@@ -373,8 +378,8 @@
 
                 <ImageView
                     android:id="@+id/ivWeather"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="10dp"
                     android:src="@drawable/ic_cloud" />
@@ -388,10 +393,7 @@
                     android:text="-℃"
                     android:textColor="@color/white"
                     android:textSize="30dp" />
-
             </RelativeLayout>
-
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -402,22 +404,13 @@
                 android:textStyle="bold"
                 android:textSize="15dp"
                 android:lines="3"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/tvWeather"/>
         </RelativeLayout>
 
     </RelativeLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
-        android:text="ver"
-        android:id="@+id/tvVersion"
-        android:layout_below="@id/rlBottom"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
