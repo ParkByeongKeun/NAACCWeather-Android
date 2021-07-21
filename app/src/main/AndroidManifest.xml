@@ -61,12 +61,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".view.WindDirectionActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.MoniterActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.ScrollingActivity"
+        <activity android:name=".view.MonitorActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.MapsActivity"

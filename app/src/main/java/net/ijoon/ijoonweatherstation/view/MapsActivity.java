@@ -194,7 +194,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         mSweetSheet.setDelegate(customDelegate);
         tvName = view.findViewById(R.id.tvName);
         view.findViewById(R.id.rlBottom).setOnClickListener(v -> {
-            Intent intent = new Intent(MapsActivity.this,ScrollingActivity.class);
+            Intent intent = new Intent(MapsActivity.this, MonitorActivity.class);
             startActivity(intent);
         });
         view.findViewById(R.id.rlGPSSetting).setOnClickListener(v -> {
@@ -245,7 +245,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                         for(int i = 0 ; i < mSensor.size() ; i ++) {
                             if(mSensor.get(i).getName().equals(fixSensorName)) {
                                 mCustomApplication.setEnvSensor(mSensor.get(i));
-                                Intent intent = new Intent(MapsActivity.this,ScrollingActivity.class);
+                                Intent intent = new Intent(MapsActivity.this, MonitorActivity.class);
                                 startActivity(intent);
                             }
                         }

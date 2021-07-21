@@ -298,31 +298,4 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
     }
-
-
-    public void showCustomToast(String title, String message, int duration)
-    {
-        //Retrieve the layout inflator
-        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        //Assign the custom layout to view
-        //Parameter 1 - Custom layout XML
-        //Parameter 2 - Custom layout ID present in linearlayout tag of XML
-        View layout = inflater.inflate(R.layout.custom_toast,
-                null);
-        TextView tvTitle = (TextView)layout.findViewById(R.id.tvTitle);
-        tvTitle.setText(title);
-        TextView tvMessage = (TextView)layout.findViewById(R.id.tvMessage);
-        tvMessage.setText(message);
-
-        //Return the application context
-        Toast toast = new Toast(getApplicationContext());
-        //Set toast gravity to bottom
-        toast.setGravity(Gravity.TOP, 0, 100);
-        //Set toast duration
-        toast.setDuration(duration);
-        //Set the custom layout to Toast
-        toast.setView(layout);
-        //Display toast
-        toast.show();
-    }
 }
