@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <net.ijoon.ijoonweatherstation.util.ParallaxScollListView
+        android:id="@+id/layout_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="@null"
+        android:duplicateParentState="true"
+        android:scrollingCache="false"
+        android:headerDividersEnabled="false"
+        android:footerDividersEnabled="false"
+        android:divider="@color/zxing_transparent"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        />
+</RelativeLayout>

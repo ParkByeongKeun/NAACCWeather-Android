@@ -122,7 +122,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".view.InfoNoticeActivity"
             android:screenOrientation="portrait"/>
-
+        <activity android:name=".view.VelocityRecordActivity"
+            android:screenOrientation="portrait"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

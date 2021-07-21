@@ -326,8 +326,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 mCustomApplication.mServerSession.request(request);
                 return true;
             }
-            case android.R.id.home:
-            {
+            case android.R.id.home: {
                 if(mSensor.isEmpty()) {
                     Intent intent = new Intent(MapsActivity.this, InfomationActivity.class);
                     startActivity(intent);
@@ -339,7 +338,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 return true;
             }
             case R.id.action_add: {
-                Intent intent = new Intent(MapsActivity.this, SensorAddActivity.class);
+                Intent intent = new Intent(MapsActivity.this, VelocityRecordActivity.class);
                 startActivity(intent);
                 return true;
             }

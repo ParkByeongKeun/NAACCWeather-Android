@@ -242,7 +242,7 @@
     <string name="textAlreadyExistUser">Already shared user</string>
     <string name="textUserNotExist">User does not exist</string>
     <string name="textFailedLogin">Failed Login.</string>
-
+    <string name="textVelocityRecord">Velocity Log</string>
     <string name="textShare">Share</string>
     <string name="textHandOver">HandOver</string>
     <string name="textSharedUsers">Shared Users</string>
