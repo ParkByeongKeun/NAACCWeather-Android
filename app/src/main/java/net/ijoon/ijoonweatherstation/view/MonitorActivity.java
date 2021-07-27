@@ -133,8 +133,8 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
         params.width = screenWidth;
         mRlTopTemp.setLayoutParams(params);
         RelativeLayout.LayoutParams ivParams = (RelativeLayout.LayoutParams) mIvWeather.getLayoutParams();
-        ivParams.height = screenHeight/8;
-        ivParams.width = screenHeight/8;
+        ivParams.height = screenHeight/12;
+        ivParams.width = screenHeight/12;
         mIvWeather.setLayoutParams(ivParams);
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(Html.fromHtml("<font color='#FFFFFF'>" + mEnvSensor.getName() + "</font>"));
