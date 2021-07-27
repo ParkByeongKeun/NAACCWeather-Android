@@ -53,4 +53,11 @@
         android:layout_width="match_parent"
         android:layout_below="@+id/rlController"
         android:layout_height="match_parent"/>
+
+    <FrameLayout
+        android:id="@+id/flCalendar"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/rlController"/>
 </RelativeLayout>

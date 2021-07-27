@@ -1,6 +1,5 @@
 package net.ijoon.ijoonweatherstation.view;
 
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -10,11 +9,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;import com.github.mikephil.charting.charts.CombinedChart;
+import androidx.appcompat.app.ActionBar;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -24,6 +27,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.roomorama.caldroid.CaldroidFragment;
+import com.roomorama.caldroid.CaldroidListener;
 import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
@@ -32,6 +37,7 @@ import net.ijoon.ijoonweatherstation.util.ComputableDate;
 import net.ijoon.ijoonweatherstation.util.CustomDialog;
 import net.ijoon.scnet_android.MessageHeader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class InfoAnalysisActivity extends ChartAnalysisBase {
@@ -49,6 +55,9 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
     int position = 0;
     CustomDialog mCustomDialog;
     int MAXPING = 15;
+    ImageView mIvCalendar;
+    int MAXVELOCITY = 10;
+    CaldroidFragment caldroidFragment = new CaldroidFragment();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,9 +70,9 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
         mIvleft = findViewById(R.id.ivLeft);
         mIvRight = findViewById(R.id.ivRight);
         mTvCalendal = findViewById(R.id.tvCalendal);
+        mIvCalendar = findViewById(R.id.ivCenter);
         mComputableDate.setDateFormat("yyyy");
         mTvCalendal.setText(mComputableDate.getCurrentTimeText());
-
         actionBar = this.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -78,20 +87,15 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
         envsensor.StatisticalDataOfYearRequest yearRequest = envsensor.StatisticalDataOfYearRequest.newBuilder().setYear(mComputableDate.getYear()).setAccessToken(mToken)
                 .setSerial(mCustomApplication.getEnvSensor().getSerial()).setIsIntervalDay(true).build();
         mCustomApplication.mServerSession.request(yearRequest);
-
         envsensor.GetSensorListRequest getSensorRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
         mCustomApplication.mServerSession.request(getSensorRequest);
-
-        mCustomDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                mComputableDate.setDateFormat("yyyy");
-                actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + mSensor.get(mCustomDialog.getPosition()).getName() + "</font>"));
-                envsensor.StatisticalDataOfYearRequest request = envsensor.StatisticalDataOfYearRequest.newBuilder().setYear(mComputableDate.getYear()).setAccessToken(mToken)
-                        .setSerial(mSensor.get(mCustomDialog.getPosition()).getSerial()).setIsIntervalDay(true).build();
-                mCustomApplication.mServerSession.request(request);
-                position = mCustomDialog.getPosition();
-            }
+        mCustomDialog.setOnDismissListener(dialog -> {
+            mComputableDate.setDateFormat("yyyy");
+            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + mSensor.get(mCustomDialog.getPosition()).getName() + "</font>"));
+            envsensor.StatisticalDataOfYearRequest request = envsensor.StatisticalDataOfYearRequest.newBuilder().setYear(mComputableDate.getYear()).setAccessToken(mToken)
+                    .setSerial(mSensor.get(mCustomDialog.getPosition()).getSerial()).setIsIntervalDay(true).build();
+            mCustomApplication.mServerSession.request(request);
+            position = mCustomDialog.getPosition();
         });
 
         mIvleft.setOnClickListener(v -> {
@@ -111,11 +115,27 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
                     .setSerial(mSensor.get(mCustomDialog.getPosition()).getSerial()).setIsIntervalDay(true).build();
             mCustomApplication.mServerSession.request(request);
         });
+
+        mIvCalendar.setOnClickListener(v -> {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            if(caldroidFragment.isHidden()) {
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                        .show(caldroidFragment)
+                        .commit();
+            } else {
+                updateCalendar(); // update when open calendar
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                        .hide(caldroidFragment)
+                        .commit();
+            }
+        });
+        calendarSetting();
     }
 
     @Override
     protected void saveToGallery() {
-
     }
 
     @Override
@@ -158,83 +178,71 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
                         }else {
                             mCustomDialog.addItem(response.getSensor(i).getName(),true,"");
                         }
-
                         mSensor.add(response.getSensor(i));
                     }
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                 }
-
                 break;
             }
             case 30: {
                 //StatisticalDataOfYearResponse
-
                 try {
                     final envsensor.StatisticalDataOfYearResponse response = envsensor.StatisticalDataOfYearResponse.parseFrom(bodyBuf);
                     sensorVelocityList = response.getItemsList();
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            chart = findViewById(R.id.chart1);
-                            chart.getDescription().setEnabled(false);
-                            chart.setBackgroundColor(Color.WHITE);
-                            chart.setDrawGridBackground(false);
-                            chart.setDrawBarShadow(false);
-                            chart.setHighlightFullBarEnabled(false);
+                    runOnUiThread(() -> {
+                        chart = findViewById(R.id.chart1);
+                        chart.getDescription().setEnabled(false);
+                        chart.setBackgroundColor(Color.WHITE);
+                        chart.setDrawGridBackground(false);
+                        chart.setDrawBarShadow(false);
+                        chart.setHighlightFullBarEnabled(false);
+                        // draw bars behind lines
+                        chart.setDrawOrder(new CombinedChart.DrawOrder[]{
+                                CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.BUBBLE, CombinedChart.DrawOrder.CANDLE, CombinedChart.DrawOrder.LINE, CombinedChart.DrawOrder.SCATTER
+                        });
 
-                            // draw bars behind lines
-                            chart.setDrawOrder(new CombinedChart.DrawOrder[]{
-                                    CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.BUBBLE, CombinedChart.DrawOrder.CANDLE, CombinedChart.DrawOrder.LINE, CombinedChart.DrawOrder.SCATTER
-                            });
+                        Legend l = chart.getLegend();
+                        l.setWordWrapEnabled(true);
+                        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+                        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+                        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+                        l.setDrawInside(false);
 
-                            Legend l = chart.getLegend();
-                            l.setWordWrapEnabled(true);
-                            l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-                            l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-                            l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-                            l.setDrawInside(false);
+                        YAxis rightAxis = chart.getAxisRight();
+                        rightAxis.setDrawGridLines(false);
+                        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
-                            YAxis rightAxis = chart.getAxisRight();
-                            rightAxis.setDrawGridLines(false);
-                            rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+                        YAxis leftAxis = chart.getAxisLeft();
+                        leftAxis.setDrawGridLines(false);
+                        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
-                            YAxis leftAxis = chart.getAxisLeft();
-                            leftAxis.setDrawGridLines(false);
-                            leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+                        XAxis xAxis = chart.getXAxis();
+                        xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
+                        xAxis.setAxisMinimum(0f);
+                        xAxis.setGranularity(1f);
 
-                            XAxis xAxis = chart.getXAxis();
-                            xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
-                            xAxis.setAxisMinimum(0f);
-                            xAxis.setGranularity(1f);
+                        for(int i = 0 ; i < sensorVelocityList.size() ; i ++) {
+                            mComputableDate.setDateFormat("MM월dd일");
+                            mComputableDate.setDate(sensorVelocityList.get(i).getUtc());
+                            time[i] = mComputableDate.getCurrentTimeText();
 
-                            for(int i = 0 ; i < sensorVelocityList.size() ; i ++) {
-                                mComputableDate.setDateFormat("MM월dd일");
-                                mComputableDate.setDate(sensorVelocityList.get(i).getUtc());
-                                time[i] = mComputableDate.getCurrentTimeText();
-
-                            }
-
-                            xAxis.setValueFormatter(new ValueFormatter() {
-                                @Override
-                                public String getFormattedValue(float value) {
-                                    return time[(int) value % time.length];
-                                }
-                            });
-
-                            CombinedData data = new CombinedData();
-
-                            data.setData(generateLineData());
-                            data.setValueTypeface(null);
-
-                            xAxis.setAxisMaximum(data.getXMax() + 0.25f);
-
-                            chart.setData(data);
-                            chart.invalidate();
                         }
+                        xAxis.setValueFormatter(new ValueFormatter() {
+                            @Override
+                            public String getFormattedValue(float value) {
+                                return time[(int) value % time.length];
+                            }
+                        });
+                        CombinedData data = new CombinedData();
+                        data.setData(generateLineData());
+                        data.setValueTypeface(null);
+                        xAxis.setAxisMaximum(data.getXMax() + 0.25f);
+                        chart.setData(data);
+                        chart.invalidate();
                     });
-
+                    updateCalendar();
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                 }
@@ -247,15 +255,11 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
         }
     }
 
-
     private LineData generateLineData() {
-
         LineData d = new LineData();
-
         ArrayList<Entry> entries = new ArrayList<>();
         for (int index = 0; index < sensorVelocityList.size(); index++)
             entries.add(new Entry(index, sensorVelocityList.get(index).getAvgVelocity()));
-
         LineDataSet set = new LineDataSet(entries, getResources().getString(R.string.textAverageDailyVelocity));
         set.setColor(Color.rgb(170, 198, 30));
         set.setLineWidth(2.5f);
@@ -266,10 +270,37 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
         set.setDrawValues(true);
         set.setValueTextSize(10f);
         set.setValueTextColor(Color.rgb(0, 0, 0));
-
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         d.addDataSet(set);
-
         return d;
+    }
+
+    private void updateCalendar() {
+        for(int i = 0 ; i < sensorVelocityList.size() ; i ++) {
+            if(sensorVelocityList.get(i).getMaxVelocity() >= MAXVELOCITY) {
+                caldroidFragment.setBackgroundDrawableForDate(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_danger, null), mComputableDate.setDate(sensorVelocityList.get(i).getUtc()).getDate());
+            }else {
+                caldroidFragment.setBackgroundDrawableForDate(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_normal, null), mComputableDate.setDate(sensorVelocityList.get(i).getUtc()).getDate());
+            }
+        }
+        caldroidFragment.refreshView();
+    }
+
+    private void calendarSetting() {
+        FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+        t.add(R.id.flCalendar, caldroidFragment);
+        t.hide(caldroidFragment);
+        t.commit();
+        caldroidFragment.setCaldroidListener(new CaldroidListener() {
+            @Override
+            public void onSelectDate(Date date, View view) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                        .hide(caldroidFragment)
+                        .commit();
+                mComputableDate.setDate(date);
+            }
+        });
     }
 }
