@@ -39,6 +39,9 @@ enum PacketType {
   statisticalDataOfDayResponse = 28;
   statisticalDataOfYearRequest = 29;
   statisticalDataOfYearResponse = 30;
+
+  versionUpdateRequest = 31;
+  versionUpdateResponse = 32;
 }
 
 message StreamingStartRequest {
@@ -110,6 +113,7 @@ message Sensor {
 
   string address = 8;
   string version = 9;
+  string latestVersion = 14;
   uint32 ping = 10;
   string owner = 11;
   bool isPublic = 12;
@@ -372,3 +376,22 @@ message StatisticalDataOfYearResponse {
   repeated Item items = 5;
 }
 
+message VersionUpdateRequest {
+  string accessToken = 1;
+  string serial = 2;
+  string version = 3;
+}
+
+message VersionUpdateResponse {
+  enum Result {
+    success = 0;
+    expiredToken = 1;
+    unauthorized = 2;
+    invalidData = 3;
+    failed = 4;
+  }
+
+  Result result = 1;
+  string serial = 2;
+  string version = 3;
+}
