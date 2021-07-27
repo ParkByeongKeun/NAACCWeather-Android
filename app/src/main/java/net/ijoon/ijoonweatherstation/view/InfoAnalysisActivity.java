@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -58,6 +59,7 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
     ImageView mIvCalendar;
     int MAXVELOCITY = 10;
     CaldroidFragment caldroidFragment = new CaldroidFragment();
+    RelativeLayout rootView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +73,7 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
         mIvRight = findViewById(R.id.ivRight);
         mTvCalendal = findViewById(R.id.tvCalendal);
         mIvCalendar = findViewById(R.id.ivCenter);
+        rootView = findViewById(R.id.rootView);
         mComputableDate.setDateFormat("yyyy");
         mTvCalendal.setText(mComputableDate.getCurrentTimeText());
         actionBar = this.getSupportActionBar();
@@ -124,6 +127,17 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
                         .show(caldroidFragment)
                         .commit();
             } else {
+                updateCalendar(); // update when open calendar
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                        .hide(caldroidFragment)
+                        .commit();
+            }
+        });
+
+        rootView.setOnClickListener(v -> {
+            if(!caldroidFragment.isHidden()) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
                 updateCalendar(); // update when open calendar
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
