@@ -54,7 +54,8 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
         mListView.setZoomRatio(ParallaxScollListView.ZOOM_X2);
         mListView.setOnItemClickListener((parent, view, position, id) -> {
             mCustomApplication.setEnvSensor(mSensor.get(position));
-            Intent intent = new Intent(InfoMySensorActivity.this, MonitorActivity.class);
+            Intent intent = new Intent(InfoMySensorActivity.this, SensorSettingActivity.class);
+            intent.putExtra("nickname",mSensor.get(position).getName());
             startActivity(intent);
         });
     }
@@ -63,7 +64,6 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
     public void onResponse(MessageHeader messageHeader, final byte[] bodyBuf) {
         super.onResponse(messageHeader, bodyBuf);
         if (messageHeader == null) {
-            Log.d("yot132", "packetType is null");
             return;
         }
         switch (messageHeader.mPacketType) {
@@ -80,12 +80,7 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
                             adapter.addItem(R.drawable.logo_weather,mSensor.get(i).getName(),true,mSensor.get(i).getSerial());
                         }
                     }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mListView.setAdapter(adapter);
-                        }
-                    });
+                    runOnUiThread(() -> mListView.setAdapter(adapter));
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                 }

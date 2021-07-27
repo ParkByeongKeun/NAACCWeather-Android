@@ -6,27 +6,18 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.protobuf.MessageLite;
 import com.kakao.sdk.common.KakaoSdk;
-
 import net.ijoon.envsensor;
 import net.ijoon.scnet_android.Connection;
 import net.ijoon.scnet_android.GlobalApplication;
 import net.ijoon.scnet_android.Registry;
 import net.ijoon.scnet_android.RendezvousSession;
 import net.ijoon.scnet_android.ServerSession;
-
 import java.util.Stack;
-import java.util.UUID;
 
 public class CustomApplication extends GlobalApplication {
 
@@ -88,22 +79,22 @@ public class CustomApplication extends GlobalApplication {
         Registry.registMessage("StatisticalDataOfYearRequest", envsensor.PacketType.statisticalDataOfYearRequest.getNumber());
         Registry.registMessage("StatisticalDataOfYearResponse", envsensor.PacketType.statisticalDataOfYearResponse.getNumber());
 
+        Registry.registMessage("VersionUpdateRequest", envsensor.PacketType.versionUpdateRequest.getNumber());
+        Registry.registMessage("VersionUpdateResponse", envsensor.PacketType.versionUpdateResponse.getNumber());
+
         FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("yot132", "getInstanceId failed", task.getException());
-                            return;
-                        }
-
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-                        // Log and toast
-                        fcmToken = token;
-                        Log.d("yot132","fcmToken = " + fcmToken);
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w("yot132", "getInstanceId failed", task.getException());
+                        return;
                     }
+
+                    // Get new Instance ID token
+                    String token = task.getResult().getToken();
+
+                    // Log and toast
+                    fcmToken = token;
+                    Log.d("yot132","fcmToken = " + fcmToken);
                 });
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
@@ -187,8 +178,6 @@ public class CustomApplication extends GlobalApplication {
         @Override
         public void onActivityDestroyed(Activity activity) {
         }
-
-
     }
 
     @Override
@@ -221,7 +210,6 @@ public class CustomApplication extends GlobalApplication {
 
     }
 
-
     @Override
     public void onConnected(RendezvousSession rendezvousSession, Connection connection) {
         super.onConnected(rendezvousSession, connection);
@@ -230,7 +218,4 @@ public class CustomApplication extends GlobalApplication {
     public void request(MessageLite message) {
         throw new RuntimeException("call setUseAutoServerSession(true) if you want to use this method");
     }
-
-
-
 }
