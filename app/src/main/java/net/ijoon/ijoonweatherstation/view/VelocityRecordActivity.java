@@ -146,21 +146,33 @@ public class VelocityRecordActivity extends SCNetAppCompatActivity {
             @Override
             public void onResponse(Call<GetVelocityLogResponse> call, Response<GetVelocityLogResponse> response) {
                 if(response.isSuccessful()) {
-                    for(int i = 0 ; i < response.body().data.size() ; i ++) {
-                        VelocityRecord velocityRecord= new VelocityRecord();
-                        velocityRecord.setSerial(response.body().data.get(i).getSerial());
-                        velocityRecord.setSubTitle(response.body().data.get(i).getAt());
-                        velocityRecord.setTitle(response.body().data.get(i).getMsg());
-                        velocityRecord.setId(response.body().data.get(i).getId());
-                        mArrVelocityRecord.add(velocityRecord);
+                    if(response.body().data.isEmpty() && adapter.isEmpty()) {
                         computableDate.setDateFormat("yyyy/MM/dd a hh:mm:ss");
-                        computableDate.setDate(Integer.parseInt(response.body().data.get(i).getAt()));
-                        mCursor = response.body().data.get(i).getId();
                         adapter.addItem(R.drawable.logo_weather,
-                                response.body().data.get(i).getMsg(),
+                                "기록이 없습니다.",
                                 computableDate.getCurrentTimeText(),
                                 true);
+                    }else {
+                        for(int i = 0 ; i < response.body().data.size() ; i ++) {
+                            if(mArrVelocityRecord.isEmpty()) {
+                                adapter.clear();
+                            }
+                            VelocityRecord velocityRecord= new VelocityRecord();
+                            velocityRecord.setSerial(response.body().data.get(i).getSerial());
+                            velocityRecord.setSubTitle(response.body().data.get(i).getAt());
+                            velocityRecord.setTitle(response.body().data.get(i).getMsg());
+                            velocityRecord.setId(response.body().data.get(i).getId());
+                            mArrVelocityRecord.add(velocityRecord);
+                            computableDate.setDateFormat("yyyy/MM/dd a hh:mm:ss");
+                            computableDate.setDate(Integer.parseInt(response.body().data.get(i).getAt()));
+                            mCursor = response.body().data.get(i).getId();
+                            adapter.addItem(R.drawable.logo_weather,
+                                    response.body().data.get(i).getMsg(),
+                                    computableDate.getCurrentTimeText(),
+                                    true);
+                        }
                     }
+
                     adapter.notifyDataSetChanged();
                     isVRCountCheck = false;
                 }
