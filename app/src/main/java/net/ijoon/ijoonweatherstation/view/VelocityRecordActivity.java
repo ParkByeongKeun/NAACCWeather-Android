@@ -1,6 +1,6 @@
 package net.ijoon.ijoonweatherstation.view;
 
-import android.content.Intent;
+import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -8,27 +8,48 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
-
+import android.widget.AbsListView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
-import net.ijoon.ijoonweatherstation.util.ParallaxScollListView;
+import net.ijoon.ijoonweatherstation.login.DelVelocityLogRequest;
+import net.ijoon.ijoonweatherstation.login.DelVelocityLogResponse;
+import net.ijoon.ijoonweatherstation.login.GetVelocityLogRequest;
+import net.ijoon.ijoonweatherstation.login.GetVelocityLogResponse;
+import net.ijoon.ijoonweatherstation.login.AuthService;
+import net.ijoon.ijoonweatherstation.util.ComputableDate;
+import net.ijoon.ijoonweatherstation.util.PullToRefreshListView;
 import net.ijoon.ijoonweatherstation.util.RecordListViewAdapter;
+import net.ijoon.ijoonweatherstation.util.VelocityRecord;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class VelocityRecordActivity extends SCNetAppCompatActivity {
 
     CustomApplication mCustomApplication;
     ActionBar actionBar;
-    private ParallaxScollListView mListView;
+    private PullToRefreshListView mListView;
     String mToken;
-    List<envsensor.Sensor> mSensor;
+    List<VelocityRecord> mArrVelocityRecord;
+    ComputableDate computableDate;
+    final static String MAX_COUNT = "30";
+    String serial = "";
+    String mCursor = "0";
+    boolean isVRCountCheck;
+    RecordListViewAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +57,8 @@ public class VelocityRecordActivity extends SCNetAppCompatActivity {
         setContentView(R.layout.activity_velocity_record);
         mCustomApplication = (CustomApplication) getApplicationContext();
         actionBar = this.getSupportActionBar();
+        computableDate = new ComputableDate();
+        mArrVelocityRecord = new ArrayList<>();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
@@ -49,11 +72,37 @@ public class VelocityRecordActivity extends SCNetAppCompatActivity {
         envsensor.GetSensorListRequest getSensorRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
         mCustomApplication.mServerSession.request(getSensorRequest);
         mListView = findViewById(R.id.layout_listview);
-//        mListView.setOnItemClickListener((parent, view, position, id) -> {
-//            mCustomApplication.setEnvSensor(mSensor.get(position));
-//            Intent intent = new Intent(VelocityRecordActivity.this, MonitorActivity.class);
-//            startActivity(intent);
-//        });
+        adapter = new RecordListViewAdapter();
+        runOnUiThread(() -> mListView.setAdapter(adapter));
+
+        mListView.setOnItemClickListener((parent, view, position, id) -> {
+            showDeleteSuccessAlertDialog(getResources().getString(R.string.textDeleteTheSelectedRecord),
+                    mArrVelocityRecord.get(position).getSerial(),
+                    mArrVelocityRecord.get(position).getId());
+        });
+        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            boolean lastItemVisibleFlag = false;
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                lastItemVisibleFlag = (totalItemCount > 0) && (firstVisibleItem + visibleItemCount >= totalItemCount);
+                if(lastItemVisibleFlag) {
+                    if(!isVRCountCheck) {
+                        isVRCountCheck = true;
+                        getVelocityLogList(serial,mCursor);
+                    }
+                }
+            }
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+        });
+
+        mListView.setOnRefreshListener(() -> {
+            mArrVelocityRecord.clear();
+            adapter.clear();
+            mCursor = "0";
+            mListView.onRefreshComplete();
+        });
     }
 
     @Override
@@ -65,21 +114,6 @@ public class VelocityRecordActivity extends SCNetAppCompatActivity {
         }
         switch (messageHeader.mPacketType) {
             case 6: {
-                try {
-                    RecordListViewAdapter adapter = new RecordListViewAdapter();
-                    final envsensor.GetSensorListResponse response = envsensor.GetSensorListResponse.parseFrom(bodyBuf);
-                    mSensor = new ArrayList<>();
-                    for(int i = 0 ; i < response.getSensorCount() ; i ++) {
-                        mSensor.add(response.getSensor(i));
-                        String s = "4-1생 M4 극동건설: 16.0m/s 타워크레인의 설치, 수리, 점검 또는 해체작업을 중지해야합니다.";
-
-                        adapter.addItem(R.drawable.logo_weather,s,"2021/07/21(화) 오후 21:11",true);
-
-                    }
-                    runOnUiThread(() -> mListView.setAdapter(adapter));
-                } catch (InvalidProtocolBufferException e) {
-                    e.printStackTrace();
-                }
                 break;
             }
             default: {
@@ -92,5 +126,105 @@ public class VelocityRecordActivity extends SCNetAppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         finish();
         return true;
+    }
+
+    void getVelocityLogList(String serial, String cursor) {
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(chain -> {
+            Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).addHeader("Content-Type", "application/json").build();
+            return chain.proceed(request);
+        });
+        Gson gson = new GsonBuilder().setLenient().create();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://1.246.219.189:20217")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(httpClient.build())
+                .build();
+        AuthService service = retrofit.create(AuthService.class);
+        final Call<GetVelocityLogResponse> getVelocityResponseCall = service.getVelocityLog(new GetVelocityLogRequest(serial, cursor,MAX_COUNT));
+        getVelocityResponseCall.enqueue(new Callback<GetVelocityLogResponse>() {
+            @Override
+            public void onResponse(Call<GetVelocityLogResponse> call, Response<GetVelocityLogResponse> response) {
+                if(response.isSuccessful()) {
+                    for(int i = 0 ; i < response.body().data.size() ; i ++) {
+                        VelocityRecord velocityRecord= new VelocityRecord();
+                        velocityRecord.setSerial(response.body().data.get(i).getSerial());
+                        velocityRecord.setSubTitle(response.body().data.get(i).getAt());
+                        velocityRecord.setTitle(response.body().data.get(i).getMsg());
+                        velocityRecord.setId(response.body().data.get(i).getId());
+                        mArrVelocityRecord.add(velocityRecord);
+                        computableDate.setDateFormat("yyyy/MM/dd a hh:mm:ss");
+                        computableDate.setDate(Integer.parseInt(response.body().data.get(i).getAt()));
+                        mCursor = response.body().data.get(i).getId();
+                        adapter.addItem(R.drawable.logo_weather,
+                                response.body().data.get(i).getMsg(),
+                                computableDate.getCurrentTimeText(),
+                                true);
+                    }
+                    adapter.notifyDataSetChanged();
+                    isVRCountCheck = false;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetVelocityLogResponse> call, Throwable t) {
+                Log.d("logdinobei", "onFailure" + t.getMessage());
+            }
+        });
+    }
+
+    void delVelocityLogList(String serial, String id) {
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(chain -> {
+            Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).addHeader("Content-Type", "application/json").build();
+            return chain.proceed(request);
+        });
+        Gson gson = new GsonBuilder().setLenient().create();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://1.246.219.189:20217")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(httpClient.build())
+                .build();
+        AuthService service = retrofit.create(AuthService.class);
+        final Call<DelVelocityLogResponse> getVelocityResponseCall = service.delVelocityLog(new DelVelocityLogRequest(serial, id));
+        getVelocityResponseCall.enqueue(new Callback<DelVelocityLogResponse>() {
+            @Override
+            public void onResponse(Call<DelVelocityLogResponse> call, Response<DelVelocityLogResponse> response) {
+                if(response.isSuccessful()) {
+                    adapter.clear();
+                    for(int i = 0 ; i < mArrVelocityRecord.size() ; i ++) {
+                        if(id.equals(mArrVelocityRecord.get(i).getId())) {
+                            mArrVelocityRecord.remove(i);
+                        }
+                    }
+                    for(int i = 0 ; i < mArrVelocityRecord.size() ; i ++) {
+                            computableDate.setDateFormat("yyyy/MM/dd a hh:mm:ss");
+                            computableDate.setDate(Integer.parseInt(mArrVelocityRecord.get(i).getSubTitle()));
+                            adapter.addItem(R.drawable.logo_weather,
+                                    mArrVelocityRecord.get(i).getTitle(),
+                                    computableDate.getCurrentTimeText(),
+                                    true);
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DelVelocityLogResponse> call, Throwable t) {
+            }
+        });
+    }
+
+    public void showDeleteSuccessAlertDialog(String message,String serial, String id) {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                this);
+        alertDialog.setTitle(getResources().getString(R.string.textNotification));
+        alertDialog
+                .setMessage(message);
+        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
+                (dialog, which) -> {
+                    delVelocityLogList(serial, id);
+                });
+        runOnUiThread(() -> alertDialog.show());
     }
 }

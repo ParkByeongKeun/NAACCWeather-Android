@@ -37,5 +37,8 @@ public interface AuthService {
     Call<ResetPasswordCheckResponse> resetPassword(@Body ResetPasswordCheckRequest request);
     @PUT("/api/auth/updateToken")
     Call<UpdateTokenResponse> updateToken(@Body UpdateTokenRequest request);
-
+    @POST("/api/event/get/velocity")
+    Call<GetVelocityLogResponse> getVelocityLog(@Body GetVelocityLogRequest request);
+    @POST("/api/event/del/velocity")
+    Call<DelVelocityLogResponse> delVelocityLog(@Body DelVelocityLogRequest request);
 }
