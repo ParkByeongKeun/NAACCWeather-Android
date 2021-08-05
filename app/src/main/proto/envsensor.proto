@@ -42,11 +42,17 @@ enum PacketType {
 
   versionUpdateRequest = 31;
   versionUpdateResponse = 32;
+
+  streamingStartAllReq = 33;
+  streamingStartAllRes = 34;
+  streamingStopAllReq = 35;
+  streamingStopAllRes = 36;
 }
 
 message StreamingStartRequest {
   string serial = 1;
   string accessToken = 2;
+  bool clearPrevious = 3;
 }
 
 message StreamingStartResponse {
@@ -58,6 +64,7 @@ message StreamingStartResponse {
   Result result = 1;
   string serial = 2;
   EnvSensorData data = 3;
+  bool clearPrevious = 4;
 }
 
 message StreamingStopRequest {
@@ -73,6 +80,33 @@ message StreamingStopResponse {
 
   Result result = 1;
   string serial = 2;
+}
+
+message StreamingStartAllRequest {
+  string accessToken = 1;
+}
+
+message StreamingStartAllResponse {
+  enum Result {
+    success = 0;
+    failed = 1;
+  }
+
+  Result result = 1;
+  repeated EnvSensorData data = 2;
+}
+
+message StreamingStopAllRequest {
+  string accessToken = 1;
+}
+
+message StreamingStopAllResponse {
+  enum Result {
+    success = 0;
+    failed = 1;
+  }
+
+  Result result = 1;
 }
 
 message EnvSensorData {
