@@ -21,6 +21,7 @@ import net.ijoon.ijoonweatherstation.util.SensorListViewAdapter;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class InfoMySensorActivity extends SCNetAppCompatActivity {
@@ -72,8 +73,18 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
                     SensorListViewAdapter adapter = new SensorListViewAdapter();
                     final envsensor.GetSensorListResponse response = envsensor.GetSensorListResponse.parseFrom(bodyBuf);
                     mSensor = new ArrayList<>();
+                    ArrayList<envsensor.Sensor> tempArr1 = new ArrayList<>();
+                    ArrayList<envsensor.Sensor> tempArr2 = new ArrayList<>();
                     for(int i = 0 ; i < response.getSensorCount() ; i ++) {
-                        mSensor.add(response.getSensor(i));
+                        if(response.getSensor(i).getPing() < MAXPING) {
+                            tempArr1.add(response.getSensor(i));
+                        }else {
+                            tempArr2.add(response.getSensor(i));
+                        }
+                    }
+                    mSensor.addAll(tempArr1);
+                    mSensor.addAll(tempArr2);
+                    for(int i = 0 ; i < mSensor.size() ; i++) {
                         if(mSensor.get(i).getPing() > MAXPING) {
                             adapter.addItem(R.drawable.logo_weather_gray,mSensor.get(i).getName(),false,mSensor.get(i).getSerial());
                         }else {
