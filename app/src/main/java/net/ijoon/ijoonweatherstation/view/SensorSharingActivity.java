@@ -1,7 +1,5 @@
 package net.ijoon.ijoonweatherstation.view;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -17,20 +15,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-
+import android.widget.TextView;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.protobuf.InvalidProtocolBufferException;
-
 import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
@@ -41,14 +36,10 @@ import net.ijoon.ijoonweatherstation.util.UserList;
 import net.ijoon.ijoonweatherstation.util.UserListAdapter;
 import net.ijoon.scnet_android.Connection;
 import net.ijoon.scnet_android.MessageHeader;
-import net.ijoon.scnet_android.RendezvousClientCallback;
 import net.ijoon.scnet_android.RendezvousSession;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
-
-import java.io.IOException;
 import java.util.ArrayList;
-
-import okhttp3.Interceptor;
+import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
@@ -76,6 +67,8 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
     InputMethodManager imm;
     Handler handler;
     Runnable getNameRunnable;
+    List<String> data;
+    TextView tvSharing;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,18 +76,13 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
         setContentView(R.layout.activity_sharing);
         mCustomApplication = (CustomApplication)getApplication();
         handler = new Handler();
-        getNameRunnable = new Runnable() {
-            @Override
-            public void run() {
-                userList(mEtName.getText().toString());
-            }
-        };
-
+        getNameRunnable = () -> userList(mEtName.getText().toString());
         mBtnSuccess = findViewById(R.id.btnSuccess);
         mEtName = findViewById(R.id.etId);
         mUserListView = findViewById(R.id.list);
         mRlRoot = findViewById(R.id.rlRoot);
-
+        tvSharing = findViewById(R.id.tvSharing);
+        tvSharing.setVisibility(View.GONE);
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
         mSerial = mCustomApplication.getEnvSensor().getSerial();
@@ -115,28 +103,22 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textStationShare) + "</font>"));
+            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + mCustomApplication.getEnvSensor().getName() + "</font>"));
         }
-
-        mBtnSuccess.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                envsensor.Authority builder = envsensor.Authority.newBuilder().setName(true).setPosition(true).setSharing(true).setUpdate(true).setStatistic(true).build();
-                envsensor.ShareSensorRequest stationNameRequest = envsensor.ShareSensorRequest.newBuilder().setAuth(builder).setAccessToken(mToken).setSerial(mSerial).setUserId(mEtName.getText().toString()).build();
-                mCustomApplication.mServerSession.request(stationNameRequest);
-            }
+        envsensor.SharedUsersRequest registSensorRequest = envsensor.SharedUsersRequest.newBuilder().setAccessToken(mToken).setSerial(mCustomApplication.getEnvSensor().getSerial()).build();
+        mCustomApplication.mServerSession.request(registSensorRequest);
+        data = new ArrayList<>();
+        mBtnSuccess.setOnClickListener(v -> {
+            mUserListView.setVisibility(View.GONE);
+            envsensor.Authority builder = envsensor.Authority.newBuilder().setName(true).setPosition(true).setSharing(true).setUpdate(true).setStatistic(true).build();
+            envsensor.ShareSensorRequest stationNameRequest = envsensor.ShareSensorRequest.newBuilder().setAuth(builder).setAccessToken(mToken).setSerial(mSerial).setUserId(mEtName.getText().toString()).build();
+            mCustomApplication.mServerSession.request(stationNameRequest);
         });
-
-        mEtName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isBlockSearch = true;
-                mEtName.setText(mEtName.getText().toString());
-                mEtName.setSelection(mEtName.length());
-            }
+        mEtName.setOnClickListener(v -> {
+            isBlockSearch = false;
+            mEtName.setText("");
+            mEtName.setSelection(mEtName.length());
         });
-
-
         mEtName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -144,11 +126,11 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tvSharing.setVisibility(View.GONE);
                 if(isBlockSearch) {
                     isBlockSearch = false;
                     return;
                 }
-
                 handler.removeCallbacks(getNameRunnable);
                 handler.postDelayed(getNameRunnable, 500);
             }
@@ -156,39 +138,28 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
-
-        mUserListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                isBlockSearch = true;
-                imm.hideSoftInputFromWindow(mEtName.getWindowToken(), 0);
-                mEtName.setText(mArrUserList.get(position).getId());
-                mEtName.setSelection(mEtName.length());
-                mUserListView.setVisibility(View.GONE);
-            }
+        mUserListView.setOnItemClickListener((parent, view, position, id) -> {
+            isBlockSearch = true;
+            imm.hideSoftInputFromWindow(mEtName.getWindowToken(), 0);
+            mEtName.setText(mArrUserList.get(position).getId());
+            mEtName.setSelection(mEtName.length());
+            mUserListView.setVisibility(View.GONE);
         });
-        mRlRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imm.hideSoftInputFromWindow(mEtName.getWindowToken(), 0);
-                if(mUserListView.getVisibility() == View.VISIBLE) {
-                    mUserListView.setVisibility(View.GONE);
-                }
+        mRlRoot.setOnClickListener(v -> {
+            imm.hideSoftInputFromWindow(mEtName.getWindowToken(), 0);
+            if(mUserListView.getVisibility() == View.VISIBLE) {
+                mUserListView.setVisibility(View.GONE);
             }
         });
     }
 
     void userList(final String id) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).addHeader("Content-Type", "application/json").build();
-                return chain.proceed(request);
-            }
+        httpClient.addInterceptor(chain -> {
+            Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).addHeader("Content-Type", "application/json").build();
+            return chain.proceed(request);
         });
         Gson gson = new GsonBuilder().setLenient().create();
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://1.246.219.189:20217")
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -230,7 +201,6 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
             @Override
             public void onFailure(Call<UserListItem> call, Throwable t) {
                 Log.d("logdinobei", "onFailure" + t.getMessage());
-
             }
         });
     }
@@ -241,70 +211,40 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void showAlertDialog(String message) {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-                this);
-        alertDialog.setTitle(getResources().getString(R.string.textNotification));
-        alertDialog
-                .setMessage(message);
-        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int which) {
-                        dialog.cancel();
-                    }
-                });
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                alertDialog.show();
-            }
-        });
-    }
-
     @Override
     public void onConnectedToRendezvousServer(String myPublicIP, String myPublicPort) {
-
     }
 
     @Override
     public void onConnecting(int connectionID) {
-
     }
 
     @Override
     public void onConnected(RendezvousSession rendezvousSession, Connection connection) {
-
     }
 
     @Override
     public void onConnectionIDCreated(RendezvousSession rendezvousSession, String ip, int port) {
-
     }
 
     @Override
     public void onTargetInvalid(String ip, int port) {
-
     }
 
     @Override
     public void onConnectFailed(int connectionID) {
-
     }
 
     @Override
     public void onConnectionUpdate(RendezvousSession rendezvousSession, Connection connection) {
-
     }
 
     @Override
     public void onConnectionRemoved(RendezvousSession rendezvousSession, Connection connection) {
-
     }
 
     @Override
     public void onDisconnected(int connectionID) {
-
     }
 
     @Override
@@ -319,22 +259,60 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
                 try {
                     final envsensor.ShareSensorResponse response = envsensor.ShareSensorResponse.parseFrom(bodyBuf);
                     if(response.getResult() == envsensor.ShareSensorResponse.Result.success) {
-                        showAlertDialog(getResources().getString(R.string.textSharingSucceded));
+                        runOnUiThread(() -> {
+                            tvSharing.setVisibility(View.VISIBLE);
+                            tvSharing.setText(getResources().getString(R.string.textSharingSucceded));
+                            tvSharing.setTextColor(getResources().getColor(R.color.color_share_success));
+                            envsensor.SharedUsersRequest registSensorRequest = envsensor.SharedUsersRequest.newBuilder().setAccessToken(mToken).setSerial(mCustomApplication.getEnvSensor().getSerial()).build();
+                            mCustomApplication.mServerSession.request(registSensorRequest);
+                        });
                     }else if(response.getResult() == envsensor.ShareSensorResponse.Result.unauthorized) {
-                        showAlertDialog(getResources().getString(R.string.textNotPermi));
+                        runOnUiThread(() -> {
+                            tvSharing.setVisibility(View.VISIBLE);
+                            tvSharing.setText(getResources().getString(R.string.textNotPermi));
+                            tvSharing.setTextColor(getResources().getColor(R.color.color_share_fail));
+                        });
                     }else if(response.getResult() == envsensor.ShareSensorResponse.Result.expiredToken) {
-                        showAlertDialog(getResources().getString(R.string.textTokenExpires));
-                        SensorSharingActivity.super.activityFinish();
-                        Intent intent = new Intent(SensorSharingActivity.this, DefaultActivity.class);
-                        startActivity(intent);
+                        runOnUiThread(() -> {
+                            SensorSharingActivity.super.activityFinish();
+                            Intent intent = new Intent(SensorSharingActivity.this, DefaultActivity.class);
+                            startActivity(intent);
+                        });
                     }else if(response.getResult() == envsensor.ShareSensorResponse.Result.userNotExist) {
-                        showAlertDialog(getResources().getString(R.string.textUserNotExist));
+                        runOnUiThread(() -> {
+                            tvSharing.setVisibility(View.VISIBLE);
+                            tvSharing.setText(getResources().getString(R.string.textUserNotExist));
+                            tvSharing.setTextColor(getResources().getColor(R.color.color_share_fail));
+                        });
                     }else {
-                        showAlertDialog(getResources().getString(R.string.textCheckInfomation));
+                        runOnUiThread(() -> {
+                            tvSharing.setVisibility(View.VISIBLE);
+                            tvSharing.setText(getResources().getString(R.string.textCheckInfomation));
+                            tvSharing.setTextColor(getResources().getColor(R.color.color_share_fail));
+                        });
                     }
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                 }
+                break;
+            }
+            case 17 : {//sharedUsers
+                runOnUiThread(() -> {
+                    try {
+                        final envsensor.SharedUsersResponse response = envsensor.SharedUsersResponse.parseFrom(bodyBuf);
+                        if(response.getResult() == envsensor.SharedUsersResponse.Result.success) {
+                            data = response.getSharedUsersList();
+                            ArrayAdapter adapter = new ArrayAdapter(
+                                    getApplicationContext(),
+                                    R.layout.myrow,
+                                    data);
+                            ListView lv = findViewById(R.id.listView1);
+                            lv.setAdapter(adapter);
+                        }
+                    } catch (InvalidProtocolBufferException e) {
+                        e.printStackTrace();
+                    }
+                });
                 break;
             }
             default: {

@@ -218,10 +218,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             startActivity(intent);
 
         });
-        view.findViewById(R.id.rlSharedUsers).setOnClickListener(v -> {
-            Intent intent = new Intent(MapsActivity.this,SharedUsersActivity.class);
-            startActivity(intent);
-        });
         view.findViewById(R.id.rlUnRegist).setOnClickListener(v -> {
             showUnRegistDialog(mSensor.get(mPosition).getName() + getResources().getString(R.string.textDeleteSensor));
         });

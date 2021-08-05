@@ -99,8 +99,6 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".view.StationHandOfOutActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".view.SharedUsersActivity"
-            android:screenOrientation="portrait"/>
         <activity android:name=".view.EmailConfirmActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.ForgotPWActivity"

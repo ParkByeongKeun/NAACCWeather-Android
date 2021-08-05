@@ -185,36 +185,10 @@
         android:id="@+id/tvLine7"
         android:layout_below="@+id/rlHandOver"/>
 
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvLine7"
-        android:id="@+id/rlSharedUsers">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/textSharedUsers"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="18dp"
-            android:layout_marginBottom="18dp"
-            android:textStyle="bold"
-            android:textColor="#1178ff"/>
-
-    </RelativeLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#cccccc"
-        android:id="@+id/tvLine8"
-        android:layout_below="@+id/rlSharedUsers"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvLine8"
         android:id="@+id/rlUnRegist">
 
         <TextView
