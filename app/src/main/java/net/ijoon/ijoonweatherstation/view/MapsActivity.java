@@ -33,6 +33,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -47,7 +48,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.kakao.sdk.common.util.Utility;
 import com.mingle.sweetpick.CustomDelegate;
 import com.mingle.sweetpick.SweetSheet;
 import net.ijoon.envsensor;
@@ -129,10 +129,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         setContentView(R.layout.activity_maps);
         setPermission();
         brManager();
-        String keyHash = Utility.INSTANCE.getKeyHash(this);
         handler = new Handler();
         connCheckRunnable = () -> {
-            mSweetSheet.setBackgroundClickEnable(true);
             isMarkerClicked = true;
         };
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -270,7 +268,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                     mPosition = i;
                 }
             }
-            mSweetSheet.setBackgroundClickEnable(false);
             if(isMarkerClicked) {
                 changConnectingUI(true);
                 setupCustomView();
@@ -338,7 +335,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                     startActivity(intent);
                     return true;
                 }
-                mCustomApplication.setEnvSensor(mSensor.get(mPosition));
                 Intent intent = new Intent(MapsActivity.this, InfomationActivity.class);
                 startActivity(intent);
                 return true;
@@ -456,6 +452,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                 showDialog(getResources().getString(R.string.textSensorAvailable));
                             });
                         } else {
+                            mCustomApplication.setEnvSensor(mSensor.get(0));
                             for(int i = 0 ; i < response.getSensorCount() ; i ++) {
                                 if(mSensor.get(i).getPing() >= ALIVEPING) {
                                     rl_message.setBackgroundResource(R.drawable.ic_message_ping);
@@ -543,7 +540,12 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 try {
                     final envsensor.UnregistSensorResponse response = envsensor.UnregistSensorResponse.parseFrom(bodyBuf);
                     if(response.getResult() == envsensor.UnregistSensorResponse.Result.success) {
-                        showDeleteSuccessAlertDialog(getResources().getString(R.string.textDelete));
+                        envsensor.GetSensorListRequest stationRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+                        mCustomApplication.mServerSession.request(stationRequest);
+                        runOnUiThread(() -> {
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.textDelete), Toast.LENGTH_SHORT).show();
+                            mSweetSheet.dismiss();
+                        });
                     }else {
                         runOnUiThread(() -> {
                             showDialog(getResources().getString(R.string.textServerError));
@@ -578,7 +580,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 mSwitch.setChecked(false);
             }
         }
-        mSweetSheet.setBackgroundClickEnable(false);
         if(isMarkerClicked) {
             changConnectingUI(true);
             setupCustomView();
@@ -787,21 +788,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         runOnUiThread(() -> alertDialog.show());
     }
 
-    public void showDeleteSuccessAlertDialog(String message) {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-                this);
-        alertDialog.setTitle(getResources().getString(R.string.textNotification));
-        alertDialog
-                .setMessage(message);
-        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                (dialog, which) -> {
-                    envsensor.GetSensorListRequest stationRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
-                    mCustomApplication.mServerSession.request(stationRequest);
-                    dialog.cancel();
-                });
-        runOnUiThread(() -> alertDialog.show());
-    }
-
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -843,7 +829,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                     markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), marker_root_view)));
                     Marker marker = mMap.addMarker(mArrMarkerOptions.get(finalI));
                     float value = 0;
-                    if(mSensor.get(finalI).getPing() < 15) {
+                    if(mSensor.get(finalI).getPing() < ALIVEPING) {
                         value = (1 + value) * mSensor.get(finalI).getMaxVelocity();
                     }
                     marker.setZIndex(value);

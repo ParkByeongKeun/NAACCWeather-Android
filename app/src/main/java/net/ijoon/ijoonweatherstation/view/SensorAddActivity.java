@@ -73,7 +73,9 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
             mEtSerial.getText().toString();
             mEtAuth.getText().toString();
             if(mEtSerial.getText().toString().equals("")  || mEtAuth.getText().toString().equals("")) {
-                Toast.makeText(getApplicationContext(),getResources().getString(R.string.textCheckInformation),Toast.LENGTH_SHORT).show();
+                runOnUiThread(() -> {
+                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.textCheckInformation),Toast.LENGTH_SHORT).show();
+                });
             }else {
                 float lat = 36;
                 float lng = 127;
@@ -97,9 +99,13 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
                 try {
                     final envsensor.RegistSensorResponse response = envsensor.RegistSensorResponse.parseFrom(bodyBuf);
                     if (response.getResult() == envsensor.RegistSensorResponse.Result.success) {
-                        Toast.makeText(getApplicationContext(),getResources().getString(R.string.textRegistSuccess),Toast.LENGTH_SHORT).show();
+                        runOnUiThread(() -> {
+                            Toast.makeText(getApplicationContext(),getResources().getString(R.string.textRegistSuccess),Toast.LENGTH_SHORT).show();
+                        });
                     }else {
-                        Toast.makeText(getApplicationContext(),getResources().getString(R.string.textRegistFaile),Toast.LENGTH_SHORT).show();
+                        runOnUiThread(() -> {
+                            Toast.makeText(getApplicationContext(),getResources().getString(R.string.textRegistFaile),Toast.LENGTH_SHORT).show();
+                        });
                     }
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
