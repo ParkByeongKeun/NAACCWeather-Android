@@ -133,7 +133,7 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_qrcode, menu);
+//        getMenuInflater().inflate(R.menu.menu_qrcode, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
