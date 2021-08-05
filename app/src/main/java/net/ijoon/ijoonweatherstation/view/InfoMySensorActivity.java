@@ -49,8 +49,6 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
         }
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
-        envsensor.GetSensorListRequest getSensorRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
-        mCustomApplication.mServerSession.request(getSensorRequest);
         mListView = findViewById(R.id.layout_listview);
         mListView.setZoomRatio(ParallaxScollListView.ZOOM_X2);
         mListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -59,6 +57,13 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
             intent.putExtra("nickname",mSensor.get(position).getName());
             startActivity(intent);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        envsensor.GetSensorListRequest getSensorRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+        mCustomApplication.mServerSession.request(getSensorRequest);
     }
 
     @Override

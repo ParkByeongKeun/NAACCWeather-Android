@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -185,21 +187,6 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
         runOnUiThread(() -> alertDialog.show());
     }
 
-    public void showDeleteSuccessAlertDialog(String message) {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-                this);
-        alertDialog.setTitle(getResources().getString(R.string.textNotification));
-        alertDialog
-                .setMessage(message);
-        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                (dialog, which) -> {
-                    envsensor.GetSensorListRequest stationRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
-                    mCustomApplication.mServerSession.request(stationRequest);
-                    dialog.cancel();
-                });
-        runOnUiThread(() -> alertDialog.show());
-    }
-
     public void showDialog(String message) {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
                 this);
@@ -271,7 +258,10 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
                 try {
                     final envsensor.UnregistSensorResponse response = envsensor.UnregistSensorResponse.parseFrom(bodyBuf);
                     if(response.getResult() == envsensor.UnregistSensorResponse.Result.success) {
-                        showDeleteSuccessAlertDialog(getResources().getString(R.string.textDelete));
+                        runOnUiThread(() -> {
+                            Toast.makeText(getApplicationContext(),getResources().getString(R.string.textDelete),Toast.LENGTH_SHORT).show();
+                            finish();
+                        });
                     }else {
                         runOnUiThread(() -> {
                             showDialog(getResources().getString(R.string.textServerError));
