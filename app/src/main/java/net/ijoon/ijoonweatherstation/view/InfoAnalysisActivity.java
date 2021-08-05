@@ -186,13 +186,24 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
                 try {
                     final envsensor.GetSensorListResponse response = envsensor.GetSensorListResponse.parseFrom(bodyBuf);
                     mSensor = new ArrayList<>();
+
+                    ArrayList<envsensor.Sensor> tempArr1 = new ArrayList<>();
+                    ArrayList<envsensor.Sensor> tempArr2 = new ArrayList<>();
                     for(int i = 0 ; i < response.getSensorCount() ; i ++) {
-                        if(response.getSensor(i).getPing() > MAXPING) {
-                            mCustomDialog.addItem(response.getSensor(i).getName(),false,"");
+                        if(response.getSensor(i).getPing() < MAXPING) {
+                            tempArr1.add(response.getSensor(i));
                         }else {
-                            mCustomDialog.addItem(response.getSensor(i).getName(),true,"");
+                            tempArr2.add(response.getSensor(i));
                         }
-                        mSensor.add(response.getSensor(i));
+                    }
+                    mSensor.addAll(tempArr1);
+                    mSensor.addAll(tempArr2);
+                    for(int i = 0 ; i < mSensor.size() ; i++) {
+                        if(mSensor.get(i).getPing() > MAXPING) {
+                            mCustomDialog.addItem(mSensor.get(i).getName(),false,"");
+                        }else {
+                            mCustomDialog.addItem(mSensor.get(i).getName(),true,"");
+                        }
                     }
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
