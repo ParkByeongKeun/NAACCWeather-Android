@@ -1,6 +1,5 @@
 package net.ijoon.ijoonweatherstation.view;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -17,15 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
-
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-
 import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
@@ -44,7 +39,6 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
     RelativeLayout mRlRoot;
     String mToken;
     InputMethodManager imm;
-    ActionBar actionBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,29 +67,21 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
 
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        mRlRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imm.hideSoftInputFromWindow(mEtSerial.getWindowToken(), 0);
-            }
-        });
+        mRlRoot.setOnClickListener(v -> imm.hideSoftInputFromWindow(mEtSerial.getWindowToken(), 0));
 
-        mBtnRegist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEtSerial.getText().toString();
-                mEtAuth.getText().toString();
-                if(mEtSerial.getText().toString().equals("")  || mEtAuth.getText().toString().equals("")) {
-                    showAlertDialog(getResources().getString(R.string.textCheckInformation));
-                }else {
-                    float lat = 36;
-                    float lng = 127;
-                    GlobalApplication globalApplication = (GlobalApplication)getApplicationContext();
-                    globalApplication.mCallback = SensorAddActivity.this;//testClass;
+        mBtnRegist.setOnClickListener(v -> {
+            mEtSerial.getText().toString();
+            mEtAuth.getText().toString();
+            if(mEtSerial.getText().toString().equals("")  || mEtAuth.getText().toString().equals("")) {
+                Toast.makeText(getApplicationContext(),getResources().getString(R.string.textCheckInformation),Toast.LENGTH_SHORT).show();
+            }else {
+                float lat = 36;
+                float lng = 127;
+                GlobalApplication globalApplication = (GlobalApplication)getApplicationContext();
+                globalApplication.mCallback = SensorAddActivity.this;//testClass;
 
-                    envsensor.RegistSensorRequest registSensorRequest = envsensor.RegistSensorRequest.newBuilder().setLatitude(lat).setLongitude(lng).setAccessToken(mToken).setSerial(mEtSerial.getText().toString()).setAuth(mEtAuth.getText().toString()).build();
-                    mCustomApplication.mServerSession.request(registSensorRequest);
-                }
+                envsensor.RegistSensorRequest registSensorRequest = envsensor.RegistSensorRequest.newBuilder().setLatitude(lat).setLongitude(lng).setAccessToken(mToken).setSerial(mEtSerial.getText().toString()).setAuth(mEtAuth.getText().toString()).build();
+                mCustomApplication.mServerSession.request(registSensorRequest);
             }
         });
     }
@@ -111,14 +97,13 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
                 try {
                     final envsensor.RegistSensorResponse response = envsensor.RegistSensorResponse.parseFrom(bodyBuf);
                     if (response.getResult() == envsensor.RegistSensorResponse.Result.success) {
-                        showAlertDialog(getResources().getString(R.string.textRegistSuccess));
+                        Toast.makeText(getApplicationContext(),getResources().getString(R.string.textRegistSuccess),Toast.LENGTH_SHORT).show();
                     }else {
-                        showAlertDialog(getResources().getString(R.string.textRegistFaile));
+                        Toast.makeText(getApplicationContext(),getResources().getString(R.string.textRegistFaile),Toast.LENGTH_SHORT).show();
                     }
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                 }
-
                 break;
             }
             case 2 : {
@@ -135,27 +120,6 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 //        getMenuInflater().inflate(R.menu.menu_qrcode, menu);
         return super.onCreateOptionsMenu(menu);
-    }
-
-    public void showAlertDialog(String message) {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-                this);
-        alertDialog.setTitle(getResources().getString(R.string.textNotification));
-        alertDialog
-                .setMessage(message);
-        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int which) {
-                        dialog.cancel();
-                    }
-                });
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                alertDialog.show();
-            }
-        });
     }
 
     @Override
