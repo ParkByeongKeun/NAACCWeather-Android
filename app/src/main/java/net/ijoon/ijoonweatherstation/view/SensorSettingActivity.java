@@ -71,7 +71,7 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textSetting) + "</font>"));
+            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + mNickname + "</font>"));
         }
         mRlModifySensorName.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
