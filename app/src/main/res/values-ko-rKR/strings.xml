@@ -313,4 +313,14 @@
     <string name="textWelcome">NAACC Weather 가입을 환영합니다.</string>
     <string name="textRealtimeMonitoring">실시간 환경 모니터링 시스템</string>
 
+    <string name="textFirmware">펌웨어 정보</string>
+    <string name="textRecord">기록</string>
+    <string name="textVelocityAlarm">풍속 알림</string>
+    <string name="textDefault">일반</string>
+    <string name="textDeleteTheSelectedRecord">선택한 기록을 삭제하시겠습니까?</string>
+
+    <string name="ptr_pull_to_refresh">새로고침</string>
+    <string name="ptr_release_to_refresh">새로고침</string>
+    <string name="ptr_refreshing">새로고침…</string>
+    <string name="ptr_last_updated">Updated: %1$s</string>
 </resources>
