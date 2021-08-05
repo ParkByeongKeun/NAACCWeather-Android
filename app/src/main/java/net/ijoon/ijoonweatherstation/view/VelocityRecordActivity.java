@@ -1,6 +1,7 @@
 package net.ijoon.ijoonweatherstation.view;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -46,7 +47,7 @@ public class VelocityRecordActivity extends SCNetAppCompatActivity {
     List<VelocityRecord> mArrVelocityRecord;
     ComputableDate computableDate;
     final static String MAX_COUNT = "30";
-    String serial = "";
+    String serial;
     String mCursor = "0";
     boolean isVRCountCheck;
     RecordListViewAdapter adapter;
@@ -56,6 +57,8 @@ public class VelocityRecordActivity extends SCNetAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_velocity_record);
         mCustomApplication = (CustomApplication) getApplicationContext();
+        Intent intent = getIntent();
+        serial = intent.getStringExtra("serial");
         actionBar = this.getSupportActionBar();
         computableDate = new ComputableDate();
         mArrVelocityRecord = new ArrayList<>();

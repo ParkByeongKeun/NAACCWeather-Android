@@ -114,6 +114,7 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
         });
         mRlRecord.setOnClickListener(v -> {
             Intent intentRecord = new Intent(SensorSettingActivity.this, VelocityRecordActivity.class);
+            intentRecord.putExtra("serial",mCustomApplication.getEnvSensor().getSerial());
             startActivity(intentRecord);
         });
     }

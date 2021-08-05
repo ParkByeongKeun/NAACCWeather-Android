@@ -345,6 +345,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             }
             case R.id.action_add: {
                 Intent intent = new Intent(MapsActivity.this, VelocityRecordActivity.class);
+                intent.putExtra("serial","");
                 startActivity(intent);
                 return true;
             }
