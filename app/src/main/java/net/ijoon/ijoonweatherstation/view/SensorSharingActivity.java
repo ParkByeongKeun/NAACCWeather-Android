@@ -1,5 +1,6 @@
 package net.ijoon.ijoonweatherstation.view;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -21,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import com.google.gson.Gson;
@@ -69,6 +71,7 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
     Runnable getNameRunnable;
     List<String> data;
     TextView tvSharing;
+    ListView lvUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,6 +86,7 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
         mRlRoot = findViewById(R.id.rlRoot);
         tvSharing = findViewById(R.id.tvSharing);
         tvSharing.setVisibility(View.GONE);
+        lvUser = findViewById(R.id.listView1);
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
         mSerial = mCustomApplication.getEnvSensor().getSerial();
@@ -150,6 +154,9 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
             if(mUserListView.getVisibility() == View.VISIBLE) {
                 mUserListView.setVisibility(View.GONE);
             }
+        });
+        lvUser.setOnItemClickListener((parent, view, position, id) -> {
+            showAlertDialog(data.get(position) + "님과의 공유를 해제하시겠습니까?",position);
         });
     }
 
@@ -296,6 +303,23 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
                 }
                 break;
             }
+            case 15 : {
+                runOnUiThread(() -> {
+                    try {
+                        final envsensor.ShareSensorCancelResponse response = envsensor.ShareSensorCancelResponse.parseFrom(bodyBuf);
+                        if(response.getResult() == envsensor.ShareSensorCancelResponse.Result.success) {
+                            Toast.makeText(getApplicationContext(),"삭제되었습니다.",Toast.LENGTH_SHORT).show();
+                            envsensor.SharedUsersRequest registSensorRequest = envsensor.SharedUsersRequest.newBuilder().setAccessToken(mToken).setSerial(mCustomApplication.getEnvSensor().getSerial()).build();
+                            mCustomApplication.mServerSession.request(registSensorRequest);
+                        }else {
+                            Toast.makeText(getApplicationContext(),"다시 시도해주세요.",Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (InvalidProtocolBufferException e) {
+                        e.printStackTrace();
+                    }
+                });
+                break;
+            }
             case 17 : {//sharedUsers
                 runOnUiThread(() -> {
                     try {
@@ -306,8 +330,8 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
                                     getApplicationContext(),
                                     R.layout.myrow,
                                     data);
-                            ListView lv = findViewById(R.id.listView1);
-                            lv.setAdapter(adapter);
+                            lvUser.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
                         }
                     } catch (InvalidProtocolBufferException e) {
                         e.printStackTrace();
@@ -320,5 +344,20 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
                 break;
             }
         }
+    }
+
+    public void showAlertDialog(String message, int position) {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                this);
+        alertDialog.setTitle(getResources().getString(R.string.textNotification));
+        alertDialog
+                .setMessage(message);
+        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
+                (dialog, which) -> {
+                    envsensor.ShareSensorCancelRequest shareSensorCancelRequest = envsensor.ShareSensorCancelRequest.newBuilder().setAccessToken(mToken).setSerial(mCustomApplication.getEnvSensor().getSerial()).setUserId(String.valueOf(data.get(position))).build();
+                    mCustomApplication.mServerSession.request(shareSensorCancelRequest);
+                    dialog.cancel();
+                });
+        runOnUiThread(() -> alertDialog.show());
     }
 }
