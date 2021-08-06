@@ -82,6 +82,11 @@ public class CustomApplication extends GlobalApplication {
         Registry.registMessage("VersionUpdateRequest", envsensor.PacketType.versionUpdateRequest.getNumber());
         Registry.registMessage("VersionUpdateResponse", envsensor.PacketType.versionUpdateResponse.getNumber());
 
+        Registry.registMessage("StreamingStartAllRequest", envsensor.PacketType.streamingStartAllReq.getNumber());
+        Registry.registMessage("StreamingStartAllResponse", envsensor.PacketType.streamingStartAllRes.getNumber());
+        Registry.registMessage("StreamingStopAllRequest", envsensor.PacketType.streamingStopAllReq.getNumber());
+        Registry.registMessage("StreamingStopAllResponse", envsensor.PacketType.streamingStopAllRes.getNumber());
+
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {

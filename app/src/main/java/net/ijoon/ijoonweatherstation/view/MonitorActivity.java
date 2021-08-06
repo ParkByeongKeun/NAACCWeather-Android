@@ -169,10 +169,8 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
         mSwipeRefreshLayout.setRefreshing(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-        envsensor.StreamingStopRequest request = envsensor.StreamingStopRequest.newBuilder().setAccessToken(mToken).setSerial(mEnvSensor.getSerial()).build();
+        envsensor.StreamingStartRequest request = envsensor.StreamingStartRequest.newBuilder().setAccessToken(mToken).setSerial(mEnvSensor.getSerial()).setClearPrevious(true).build();
         mCustomApplication.mServerSession.request(request);
-        envsensor.StreamingStartRequest request1 = envsensor.StreamingStartRequest.newBuilder().setAccessToken(mToken).setSerial(mEnvSensor.getSerial()).build();
-        mCustomApplication.mServerSession.request(request1);
         mSweetSheet = new SweetSheet(rl);
         mRootView.setOnClickListener(v -> {
             if(mSweetSheet.isShow()){
