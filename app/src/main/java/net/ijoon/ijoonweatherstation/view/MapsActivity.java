@@ -449,7 +449,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                             envsensor.StreamingStartAllRequest request = envsensor.StreamingStartAllRequest.newBuilder().setAccessToken(mToken).build();
                             mCustomApplication.mServerSession.request(request);
 
-                            mCustomApplication.setEnvSensor(mSensor.get(0));
+                            mCustomApplication.setEnvSensor(mSensor.get(mPosition));
                             for(int i = 0 ; i < response.getSensorCount() ; i ++) {
                                 if(mSensor.get(i).getPing() >= ALIVEPING) {
                                     rl_message.setBackgroundResource(R.drawable.ic_message_ping);
