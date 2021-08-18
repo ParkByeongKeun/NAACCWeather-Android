@@ -533,6 +533,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 try {
                     final envsensor.UnregistSensorResponse response = envsensor.UnregistSensorResponse.parseFrom(bodyBuf);
                     if(response.getResult() == envsensor.UnregistSensorResponse.Result.success) {
+                        mPosition = 0;
                         envsensor.GetSensorListRequest stationRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
                         mCustomApplication.mServerSession.request(stationRequest);
                         runOnUiThread(() -> {
