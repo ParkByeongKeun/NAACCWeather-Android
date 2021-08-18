@@ -27,7 +27,8 @@ import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.scnet_android.GlobalApplication;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
-import net.ijoon.scnet_android.SCNetClientCallback;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SensorAddActivity extends SCNetAppCompatActivity {
 
@@ -39,6 +40,9 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
     RelativeLayout mRlRoot;
     String mToken;
     InputMethodManager imm;
+    List<envsensor.Sensor> mSensor;
+    boolean isGPS;
+    int MAXPING = 15;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,15 +81,40 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
                     Toast.makeText(getApplicationContext(),getResources().getString(R.string.textCheckInformation),Toast.LENGTH_SHORT).show();
                 });
             }else {
-                float lat = 36;
-                float lng = 127;
+                float lat = (float)36.526803;
+                float lng = (float)127.293589;
                 GlobalApplication globalApplication = (GlobalApplication)getApplicationContext();
-                globalApplication.mCallback = SensorAddActivity.this;//testClass;
-
+                globalApplication.mCallback = SensorAddActivity.this;
+                isGPS = calcGPS(lat,lng);
+                while (isGPS) {
+                    isGPS = false;
+                    lat = lat + (float)0.005;
+                    lng = lng + (float)0.005;
+                    isGPS = calcGPS(lat,lng);
+                }
                 envsensor.RegistSensorRequest registSensorRequest = envsensor.RegistSensorRequest.newBuilder().setLatitude(lat).setLongitude(lng).setAccessToken(mToken).setSerial(mEtSerial.getText().toString()).setAuth(mEtAuth.getText().toString()).build();
                 mCustomApplication.mServerSession.request(registSensorRequest);
             }
         });
+    }
+    
+    public boolean calcGPS(float lat, float lon) {
+        boolean tempGPS = false;
+        for(int i = 0 ; i < mSensor.size() ; i ++) {
+            if(mSensor.get(i).getLatitude() == lat) {
+                if(mSensor.get(i).getLongitude() == lon) {
+                    tempGPS = true;
+                }
+            }
+        }
+        return tempGPS;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        envsensor.GetSensorListRequest getSensorRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+        mCustomApplication.mServerSession.request(getSensorRequest);
     }
 
     @Override
@@ -99,6 +128,8 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
                 try {
                     final envsensor.RegistSensorResponse response = envsensor.RegistSensorResponse.parseFrom(bodyBuf);
                     if (response.getResult() == envsensor.RegistSensorResponse.Result.success) {
+                        envsensor.GetSensorListRequest getSensorRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+                        mCustomApplication.mServerSession.request(getSensorRequest);
                         runOnUiThread(() -> {
                             Toast.makeText(getApplicationContext(),getResources().getString(R.string.textRegistSuccess),Toast.LENGTH_SHORT).show();
                         });
@@ -115,8 +146,27 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
             case 2 : {
                 break;
             }
+            case 6: {
+                try {
+                    final envsensor.GetSensorListResponse response = envsensor.GetSensorListResponse.parseFrom(bodyBuf);
+                    mSensor = new ArrayList<>();
+                    ArrayList<envsensor.Sensor> tempArr1 = new ArrayList<>();
+                    ArrayList<envsensor.Sensor> tempArr2 = new ArrayList<>();
+                    for(int i = 0 ; i < response.getSensorCount() ; i ++) {
+                        if(response.getSensor(i).getPing() < MAXPING) {
+                            tempArr1.add(response.getSensor(i));
+                        }else {
+                            tempArr2.add(response.getSensor(i));
+                        }
+                    }
+                    mSensor.addAll(tempArr1);
+                    mSensor.addAll(tempArr2);
+                } catch (InvalidProtocolBufferException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
             default: {
-                Log.d("yot132","[onMessage] Unknown PacketType");
                 break;
             }
         }
@@ -143,8 +193,6 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
                 finish();
             }
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -167,41 +215,6 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    class TestClass implements SCNetClientCallback {
-
-        public TestClass () {
-
-        }
-        @Override
-        public void onAttaching() {
-
-        }
-
-        @Override
-        public void onAttached() {
-
-        }
-
-        @Override
-        public void onAttachFailed() {
-
-        }
-
-        @Override
-        public void onDetach() {
-
-        }
-
-        @Override
-        public void onTimedOut() {
-
-        }
-
-        @Override
-        public void onResponse(MessageHeader messageHeader, byte[] bodyBuf) {
         }
     }
 }
