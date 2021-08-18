@@ -97,7 +97,6 @@
     <string name= "textConfirmPassword">비밀번호 확인</string>
     <string name= "textNickname">닉네임</string>
     <string name= "textPasswordFormatNotMatch">비밀번호 형식이 맞지 않습니다.</string>
-    <string name= "textPleaseEnterpasswordCharacters">암호를 7자 이상 20자 이하로 입력하십시오.</string>
     <string name= "textNotEmailFormat">이메일 형식이 맞지 않습니다.</string>
     <string name= "textExpiredToken">마지막 로그인 후 일주일이 경과되어 로그아웃 되었습니다.</string>
     <string name= "textAvailableAfterLoggingIn">로그인 후 사용가능합니다.</string>
@@ -107,7 +106,6 @@
     <string name= "textNotification">알림</string>
     <string name= "textOk">확인</string>
     <string name="textNicknameEmpty">닉네임은 비워둘 수 없습니다.</string>
-    <string name="textPasswordMustSixCharacters">비밀번호는 7글자 이상 입력해주세요.</string>
     <string name="textPasswordNotMatch">비밀번호가 일치하지않습니다.\n비밀번호를 확인해주세요.</string>
     <string name="textUsing">이미사용중이신가요？　　　　　　로그인</string>
     <string name="textEmailAuthSent">입력하신 이메일로 인증메일을 보냈습니다. 인증 확인 후 로그인 할 수 있습니다.</string>

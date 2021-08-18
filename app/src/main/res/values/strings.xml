@@ -117,7 +117,6 @@
     <string name= "textConfirmPassword">Confirm Password</string>
     <string name= "textNickname">Nickname</string>
     <string name= "textPasswordFormatNotMatch">Password format does not match.</string>
-    <string name= "textPleaseEnterpasswordCharacters">Please enter a password of not less than 7 characters and not more than 20 characters.</string>
     <string name= "textNotEmailFormat">It is not in email format.</string>
     <string name= "textExpiredToken">Expired token.</string>
     <string name= "textAvailableAfterLoggingIn">Available after logging in.</string>
@@ -197,7 +196,6 @@
     <string name="textMyStation">My Station</string>
     <string name="textPerson">person</string>
     <string name="textNicknameEmpty">Nickname can not be empty</string>
-    <string name="textPasswordMustSixCharacters">Password must be at least 7 characters long.</string>
     <string name="textPasswordNotMatch">Passwords do not match \nPlease check your password.</string>
     <string name="textJoinFailed">Join failed.</string>
     <string name="textEmailResent">The email has been resent.</string>

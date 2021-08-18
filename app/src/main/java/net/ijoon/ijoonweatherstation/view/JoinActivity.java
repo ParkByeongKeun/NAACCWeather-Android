@@ -78,7 +78,7 @@ public class JoinActivity extends AppCompatActivity {
             mStrName = mEtNickName.getText().toString();
             if(android.util.Patterns.EMAIL_ADDRESS.matcher(mStrId).matches()) {
                 if(mStrPassword.equals(mStrRePassword)) {
-                    if (mStrPassword.length() >6) {
+                    if (mStrPassword.length() >= 6 && mStrPassword.length() <= 15) {
                         if(!mEtNickName.equals("")) {
                             SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
                             preferences.edit().putString("nickname","");
@@ -88,7 +88,7 @@ public class JoinActivity extends AppCompatActivity {
                             showAlertDialog(getResources().getString(R.string.textNicknameEmpty));
                         }
                     }else {
-                        showAlertDialog(getResources().getString(R.string.textPasswordMustSixCharacters));
+                        showAlertDialog(getResources().getString(R.string.text_characters_count));
                     }
                 }else {
                     showAlertDialog(getResources().getString(R.string.textPasswordNotMatch));
