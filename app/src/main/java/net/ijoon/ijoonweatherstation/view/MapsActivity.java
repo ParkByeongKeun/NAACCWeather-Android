@@ -290,7 +290,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         editor.putFloat("long", saveLong);
         editor.putFloat("zoom", saveZoom);
         editor.apply();
-        if(!mSensor.isEmpty()) {
+        if(mSensor != null) {
             envsensor.StreamingStopAllRequest request = envsensor.StreamingStopAllRequest.newBuilder().setAccessToken(mToken).build();
             mCustomApplication.mServerSession.request(request);
         }
