@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -61,7 +60,6 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
         mRlFirmware = findViewById(R.id.rlFirmware);
         mRlDeleteSensor = findViewById(R.id.rlDeleteSensor);
         mRlRecord = findViewById(R.id.rlRecord);
-      
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -104,7 +102,7 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
             }
             mLastClickTime = SystemClock.elapsedRealtime();
             Intent intentHandover = new Intent(SensorSettingActivity.this,StationHandOfOutActivity.class);
-            startActivity(intent);
+            startActivity(intentHandover);
         });
         mRlDeleteSensor.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
@@ -112,7 +110,6 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
             }
             mLastClickTime = SystemClock.elapsedRealtime();
             showUnRegistDialog(mNickname + getResources().getString(R.string.textDeleteSensor));
-
         });
         mRlRecord.setOnClickListener(v -> {
             Intent intentRecord = new Intent(SensorSettingActivity.this, VelocityRecordActivity.class);
@@ -122,8 +119,7 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
     }
 
     public void showUnRegistDialog(String message) {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-                this);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle(getResources().getString(R.string.textNotification));
         alertDialog.setMessage(message);
         alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
@@ -133,7 +129,6 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
                 });
         runOnUiThread(() -> alertDialog.show());
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -146,7 +141,6 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
         Thread thread = new Thread(() -> {
             try {
                 Thread.sleep(1400);
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -228,8 +222,7 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
                             envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
                             mCustomApplication.mServerSession.request(request);
                             showSuccessAlertDialog(getResources().getString(R.string.text_changed_sensor_position_success));
-                        }else {
-                            //set sensor position failed
+                        }else {//set sensor position failed
                         }
                     } catch (InvalidProtocolBufferException e) {
                         e.printStackTrace();
@@ -237,8 +230,7 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
                 });
                 break;
             }
-            case 11 : {
-                //SetSensorNameRes
+            case 11 : {//SetSensorNameRes
                 runOnUiThread(() -> {
                     try {
                         final envsensor.SetSensorNameResponse response = envsensor.SetSensorNameResponse.parseFrom(bodyBuf);
@@ -253,8 +245,7 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
                 });
                 break;
             }
-            case 25 : {
-                //unregist
+            case 25 : {//unregist
                 try {
                     final envsensor.UnregistSensorResponse response = envsensor.UnregistSensorResponse.parseFrom(bodyBuf);
                     if(response.getResult() == envsensor.UnregistSensorResponse.Result.success) {

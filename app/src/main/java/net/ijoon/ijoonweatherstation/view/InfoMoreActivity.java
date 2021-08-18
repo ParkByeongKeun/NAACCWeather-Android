@@ -5,11 +5,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.MenuItem;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
 
@@ -32,15 +30,12 @@ public class InfoMoreActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
         }
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.menu_list: {
-//                mCustomDialog.show();
-                //sensor list call
                 return true;
             }
             default: {

@@ -1,7 +1,6 @@
 package net.ijoon.ijoonweatherstation.view;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -14,25 +13,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.ijoonweatherstation.login.AuthService;
-import net.ijoon.ijoonweatherstation.login.ResetPasswordAuthRequest;
-import net.ijoon.ijoonweatherstation.login.ResetPasswordAuthResponse;
 import net.ijoon.ijoonweatherstation.login.ResetPasswordCheckRequest;
 import net.ijoon.ijoonweatherstation.login.ResetPasswordCheckResponse;
-
-import java.io.IOException;
-
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
@@ -57,9 +46,7 @@ public class ForgotPWAuthenticationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_pw_authentication);
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
         mStrUserId = getIntent().getStringExtra("userId");
-
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -72,34 +59,21 @@ public class ForgotPWAuthenticationActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
             actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textChangePassword) + "</font>"));
         }
-
         mBtnOk = findViewById(R.id.btnOk);
         mEtAuth = findViewById(R.id.etAuth);
         mRlRoot = findViewById(R.id.rlRoot);
-        mBtnOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mStrAuth = mEtAuth.getText().toString();
-                checkResetPassword(mStrUserId, mStrAuth);
-            }
+        mBtnOk.setOnClickListener(v -> {
+            mStrAuth = mEtAuth.getText().toString();
+            checkResetPassword(mStrUserId, mStrAuth);
         });
-
-        mRlRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imm.hideSoftInputFromWindow(mEtAuth.getWindowToken(), 0);
-            }
-        });
+        mRlRoot.setOnClickListener(v -> imm.hideSoftInputFromWindow(mEtAuth.getWindowToken(), 0));
     }
 
     void checkResetPassword(String userId, String verificationCode) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request request = chain.request().newBuilder().addHeader("Content-Type", "application/json").build();
-                return chain.proceed(request);
-            }
+        httpClient.addInterceptor(chain -> {
+            Request request = chain.request().newBuilder().addHeader("Content-Type", "application/json").build();
+            return chain.proceed(request);
         });
 
         Gson gson = new GsonBuilder().setLenient().create();
@@ -114,13 +88,9 @@ public class ForgotPWAuthenticationActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResetPasswordCheckResponse> call, Response<ResetPasswordCheckResponse> response) {
                 ResetPasswordCheckResponse body = response.body();
-
                 if(body == null) {
-
-                    Log.d("yot132","res = " + response);
                     return;
                 }
-
                 if(body.getSuccess()) {
                     switch (body.getErrNo()) {
                         case -1 : {
@@ -163,7 +133,6 @@ public class ForgotPWAuthenticationActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         finish();
         overridePendingTransition(0,0);
         return super.onOptionsItemSelected(item);
@@ -176,17 +145,7 @@ public class ForgotPWAuthenticationActivity extends AppCompatActivity {
         alertDialog
                 .setMessage(message);
         alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int which) {
-                        dialog.cancel();
-                    }
-                });
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                alertDialog.show();
-            }
-        });
+                (dialog, which) -> dialog.cancel());
+        runOnUiThread(() -> alertDialog.show());
     }
 }

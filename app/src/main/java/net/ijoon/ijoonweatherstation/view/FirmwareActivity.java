@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -127,7 +126,6 @@ public class FirmwareActivity extends SCNetAppCompatActivity {
             case 32: {
                 try {
                     final envsensor.VersionUpdateResponse response = envsensor.VersionUpdateResponse.parseFrom(bodyBuf);
-                    Log.d("yot132","test = " + response.getResult());
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                 }

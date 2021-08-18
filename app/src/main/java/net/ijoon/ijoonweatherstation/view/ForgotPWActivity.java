@@ -1,7 +1,6 @@
 package net.ijoon.ijoonweatherstation.view;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -14,24 +13,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.ijoonweatherstation.login.AuthService;
 import net.ijoon.ijoonweatherstation.login.ResetPasswordRequest;
 import net.ijoon.ijoonweatherstation.login.ResetPasswordResponse;
 import net.ijoon.ijoonweatherstation.util.UUIDManager;
-
-import java.io.IOException;
-
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
@@ -48,18 +39,14 @@ public class ForgotPWActivity extends AppCompatActivity {
     String mStrId;
     CustomApplication mCustomApplication;
     View view;
-    boolean isLoginSuccess;
     InputMethodManager imm;
-    long mLastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_pw);
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
         UUIDManager.getDeviceUUID(this);
-
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -72,37 +59,21 @@ public class ForgotPWActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
             actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textChangePassword) + "</font>"));
         }
-
         mBtnOk = findViewById(R.id.btnOk);
         mEtId = findViewById(R.id.etId);
         mRlRoot = findViewById(R.id.rlRoot);
-        mBtnOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mStrId = mEtId.getText().toString();
-
-                resetPW(mStrId);
-
-            }
+        mBtnOk.setOnClickListener(v -> {
+            mStrId = mEtId.getText().toString();
+            resetPW(mStrId);
         });
-
-        mRlRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imm.hideSoftInputFromWindow(mEtId.getWindowToken(), 0);
-
-            }
-        });
+        mRlRoot.setOnClickListener(v -> imm.hideSoftInputFromWindow(mEtId.getWindowToken(), 0));
     }
 
     void resetPW(String userId) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request request = chain.request().newBuilder().addHeader("Content-Type", "application/json").build();
-                return chain.proceed(request);
-            }
+        httpClient.addInterceptor(chain -> {
+            Request request = chain.request().newBuilder().addHeader("Content-Type", "application/json").build();
+            return chain.proceed(request);
         });
         Gson gson = new GsonBuilder().setLenient().create();
         Retrofit retrofit = new Retrofit.Builder()
@@ -116,8 +87,6 @@ public class ForgotPWActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResetPasswordResponse> call, Response<ResetPasswordResponse> response) {
                 ResetPasswordResponse body = response.body();
-                Log.d("yot132","res = " + response.isSuccessful());
-
                 if(body == null) {
                     showAlertDialog(getResources().getString(R.string.textFailed));
                     return;
@@ -163,7 +132,6 @@ public class ForgotPWActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         finish();
         overridePendingTransition(0,0);
         return super.onOptionsItemSelected(item);
@@ -176,17 +144,7 @@ public class ForgotPWActivity extends AppCompatActivity {
         alertDialog
                 .setMessage(message);
         alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int which) {
-                        dialog.cancel();
-                    }
-                });
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                alertDialog.show();
-            }
-        });
+                (dialog, which) -> dialog.cancel());
+        runOnUiThread(() -> alertDialog.show());
     }
 }

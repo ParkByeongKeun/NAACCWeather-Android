@@ -1,7 +1,6 @@
 package net.ijoon.ijoonweatherstation.view;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,27 +12,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.ijoonweatherstation.login.AuthService;
 import net.ijoon.ijoonweatherstation.login.ResetPasswordAuthRequest;
 import net.ijoon.ijoonweatherstation.login.ResetPasswordAuthResponse;
-import net.ijoon.scnet_android.Connection;
-import net.ijoon.scnet_android.MessageHeader;
-import net.ijoon.scnet_android.RendezvousSession;
-import net.ijoon.scnet_android.SCNetAppCompatActivity;
-
-import java.io.IOException;
-
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
@@ -63,7 +50,6 @@ public class ForgotPWConfirmActivity extends AppCompatActivity {
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         mStrUserId = getIntent().getStringExtra("userId");
         mStrAuth = getIntent().getStringExtra("auth");
-
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -76,7 +62,6 @@ public class ForgotPWConfirmActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
             actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textChangePassword) + "</font>"));
         }
-
         mBtnOk = findViewById(R.id.btnOk);
         mEtPassword = findViewById(R.id.etPassword);
         mEtRePassword = findViewById(R.id.etRePassword);
@@ -91,29 +76,23 @@ public class ForgotPWConfirmActivity extends AppCompatActivity {
                     }else {
                         showAlertDialog(getResources().getString(R.string.textCheckInfomation));
                     }
-                }else {
-                    //6~15
+                }else {//6~15
                     showAlertDialog(getResources().getString(R.string.text_characters_count));
                 }
             }else {
                 showAlertDialog(getResources().getString(R.string.textCheckInfomation));
             }
         });
-
         mRlRoot.setOnClickListener(v -> imm.hideSoftInputFromWindow(mEtPassword.getWindowToken(), 0));
     }
 
     void changePassword(String userId, String password, String verificationCode) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(new Interceptor()    {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request request = chain.request().newBuilder().addHeader("Content-Type", "application/json").build();
-                return chain.proceed(request);
-            }
+        httpClient.addInterceptor(chain -> {
+            Request request = chain.request().newBuilder().addHeader("Content-Type", "application/json").build();
+            return chain.proceed(request);
         });
         Gson gson = new GsonBuilder().setLenient().create();
-
         Retrofit retrofit = new Retrofit.Builder()
                 .client(httpClient.build())
                 .baseUrl("http://1.246.219.189:20217")
@@ -125,12 +104,10 @@ public class ForgotPWConfirmActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResetPasswordAuthResponse> call, Response<ResetPasswordAuthResponse> response) {
                 ResetPasswordAuthResponse body = response.body();
-
                 if(body == null) {
                     showAlertDialog("error : 304");
                     return;
                 }
-
                 if(body.getSuccess()) {
                     switch (body.getErrNo()) {
                         case -1 : {
@@ -169,7 +146,6 @@ public class ForgotPWConfirmActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         finish();
         overridePendingTransition(0,0);
         return super.onOptionsItemSelected(item);

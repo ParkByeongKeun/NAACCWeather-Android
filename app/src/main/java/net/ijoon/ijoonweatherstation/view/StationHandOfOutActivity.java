@@ -1,7 +1,6 @@
 package net.ijoon.ijoonweatherstation.view;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -17,18 +16,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
-
 import com.google.protobuf.InvalidProtocolBufferException;
-
 import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
@@ -39,12 +33,9 @@ import net.ijoon.ijoonweatherstation.util.UserList;
 import net.ijoon.ijoonweatherstation.util.UserListAdapter;
 import net.ijoon.scnet_android.Connection;
 import net.ijoon.scnet_android.MessageHeader;
-import net.ijoon.scnet_android.RendezvousClientCallback;
 import net.ijoon.scnet_android.RendezvousSession;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
-import java.io.IOException;
 import java.util.ArrayList;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
@@ -79,13 +70,7 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity {
         setContentView(R.layout.activity_handofout);
         mCustomApplication = (CustomApplication)getApplication();
         handler = new Handler();
-        getNameRunnable = new Runnable() {
-            @Override
-            public void run() {
-                userList(mEtName.getText().toString());
-            }
-        };
-
+        getNameRunnable = () -> userList(mEtName.getText().toString());
         mBtnSuccess = findViewById(R.id.btnSuccess);
         mEtName = findViewById(R.id.etStationName);
         mUserListView = findViewById(R.id.list);
@@ -112,24 +97,15 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
             actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textStationTransfer) + "</font>"));
         }
-
-        mBtnSuccess.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                envsensor.HandoverSensorRequest handoverRequest = envsensor.HandoverSensorRequest.newBuilder().setAccessToken(mToken).setSerial(mSerial).setAssigneeId(mEtName.getText().toString()).build();
-                mCustomApplication.mServerSession.request(handoverRequest);
-            }
+        mBtnSuccess.setOnClickListener(v -> {
+            envsensor.HandoverSensorRequest handoverRequest = envsensor.HandoverSensorRequest.newBuilder().setAccessToken(mToken).setSerial(mSerial).setAssigneeId(mEtName.getText().toString()).build();
+            mCustomApplication.mServerSession.request(handoverRequest);
         });
-
-        mEtName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isBlockSearch = true;
-                mEtName.setText(mEtName.getText().toString());
-                mEtName.setSelection(mEtName.length());
-            }
+        mEtName.setOnClickListener(v -> {
+            isBlockSearch = true;
+            mEtName.setText(mEtName.getText().toString());
+            mEtName.setSelection(mEtName.length());
         });
-
         mEtName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -141,7 +117,6 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity {
                     isBlockSearch = false;
                     return;
                 }
-
                 handler.removeCallbacks(getNameRunnable);
                 handler.postDelayed(getNameRunnable, 500);
             }
@@ -150,39 +125,27 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity {
             }
         });
 
-        mUserListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                isBlockSearch = true;
-                imm.hideSoftInputFromWindow(mEtName.getWindowToken(), 0);
-                mEtName.setText(mArrUserList.get(position).getId());
-                mEtName.setSelection(mEtName.length());
-                mUserListView.setVisibility(View.GONE);
-            }
+        mUserListView.setOnItemClickListener((parent, view, position, id) -> {
+            isBlockSearch = true;
+            imm.hideSoftInputFromWindow(mEtName.getWindowToken(), 0);
+            mEtName.setText(mArrUserList.get(position).getId());
+            mEtName.setSelection(mEtName.length());
+            mUserListView.setVisibility(View.GONE);
         });
-        mRlRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imm.hideSoftInputFromWindow(mEtName.getWindowToken(), 0);
-
-                if(mUserListView.getVisibility() == View.VISIBLE) {
-                    mUserListView.setVisibility(View.GONE);
-
-                }
+        mRlRoot.setOnClickListener(v -> {
+            imm.hideSoftInputFromWindow(mEtName.getWindowToken(), 0);
+            if(mUserListView.getVisibility() == View.VISIBLE) {
+                mUserListView.setVisibility(View.GONE);
             }
         });
     }
 
     void userList(final String id) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).build();
-                return chain.proceed(request);
-            }
+        httpClient.addInterceptor(chain -> {
+            Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).build();
+            return chain.proceed(request);
         });
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://1.246.219.189:20217")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -224,7 +187,6 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity {
             @Override
             public void onFailure(Call<UserListItem> call, Throwable t) {
                 Log.d("logdinobei", "onFailure" + t.getMessage());
-
             }
         });
     }
@@ -236,69 +198,47 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity {
     }
 
     public void showAlertDialog(String message) {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-                this);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle(getResources().getString(R.string.textNotification));
-        alertDialog
-                .setMessage(message);
-        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int which) {
-                        dialog.cancel();
-                    }
-                });
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                alertDialog.show();
-            }
-        });
+        alertDialog.setMessage(message);
+        alertDialog.setPositiveButton(getResources().getString(R.string.textOk), (dialog, which) -> dialog.cancel());
+        runOnUiThread(() -> alertDialog.show());
     }
 
     @Override
     public void onConnectedToRendezvousServer(String myPublicIP, String myPublicPort) {
-
     }
 
     @Override
     public void onConnecting(int connectionID) {
-
     }
 
     @Override
     public void onConnected(RendezvousSession rendezvousSession, Connection connection) {
-
     }
 
     @Override
     public void onConnectionIDCreated(RendezvousSession rendezvousSession, String ip, int port) {
-
     }
 
     @Override
     public void onTargetInvalid(String ip, int port) {
-
     }
 
     @Override
     public void onConnectFailed(int connectionID) {
-
     }
 
     @Override
     public void onConnectionUpdate(RendezvousSession rendezvousSession, Connection connection) {
-
     }
 
     @Override
     public void onConnectionRemoved(RendezvousSession rendezvousSession, Connection connection) {
-
     }
 
     @Override
     public void onDisconnected(int connectionID) {
-
     }
 
     @Override
@@ -337,5 +277,4 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity {
             }
         }
     }
-
 }

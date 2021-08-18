@@ -7,13 +7,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-
-import androidx.annotation.RequiresApi;
-
 import net.ijoon.ijoonweatherstation.R;
 
 public class DefaultActivity extends Activity {
@@ -34,22 +30,16 @@ public class DefaultActivity extends Activity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));
         }
-        mBtnJoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DefaultActivity.this,JoinActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        mBtnJoin.setOnClickListener(v -> {
+            Intent intent = new Intent(DefaultActivity.this,JoinActivity.class);
+            startActivity(intent);
+            finish();
         });
 
-        mBtnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DefaultActivity.this,LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        mBtnLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(DefaultActivity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
         });
 
         mTvVersion.setText(getAppVersionName());

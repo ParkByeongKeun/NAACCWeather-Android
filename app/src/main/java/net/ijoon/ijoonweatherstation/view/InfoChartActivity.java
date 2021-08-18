@@ -94,14 +94,11 @@ public class InfoChartActivity extends ChartBase {
         envsensor.StatisticalDataOfYearRequest yearRequest = envsensor.StatisticalDataOfYearRequest.newBuilder().setYear(mComputableDate.getYear()).setAccessToken(mToken)
                 .setSerial(mCustomApplication.getEnvSensor().getSerial()).setIsIntervalDay(true).build();
         mCustomApplication.mServerSession.request(yearRequest);
-
         envsensor.StatisticalDataOfDayRequest request = envsensor.StatisticalDataOfDayRequest.newBuilder().setAccessToken(mToken).setDate(mComputableDate.getCurrentTimeText())
                 .setSerial(mCustomApplication.getEnvSensor().getSerial()).setIntervalMin(INTERVAL).build();
         mCustomApplication.mServerSession.request(request);
-
         envsensor.GetSensorListRequest getSensorRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
         mCustomApplication.mServerSession.request(getSensorRequest);
-
         mCustomDialog.setOnDismissListener(dialog -> {
             actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + mSensor.get(mCustomDialog.getPosition()).getName() + "</font>"));
             envsensor.StatisticalDataOfDayRequest request1 = envsensor.StatisticalDataOfDayRequest.newBuilder().setAccessToken(mToken).setDate(mComputableDate.getCurrentTimeText())
@@ -109,7 +106,6 @@ public class InfoChartActivity extends ChartBase {
             mCustomApplication.mServerSession.request(request1);
             position = mCustomDialog.getPosition();
         });
-
         mIvleft.setOnClickListener(v -> {
             mComputableDate.addDayOfMonth(-1);
             mTvCalendal.setText(mComputableDate.getCurrentTimeText());
@@ -117,7 +113,6 @@ public class InfoChartActivity extends ChartBase {
                     .setSerial(mSensor.get(position).getSerial()).setIntervalMin(INTERVAL).build();
             mCustomApplication.mServerSession.request(requestLeft);
         });
-
         mIvRight.setOnClickListener(v -> {
             mComputableDate.addDayOfMonth(1);
             mTvCalendal.setText(mComputableDate.getCurrentTimeText());
@@ -125,7 +120,6 @@ public class InfoChartActivity extends ChartBase {
                     .setSerial(mSensor.get(position).getSerial()).setIntervalMin(INTERVAL).build();
             mCustomApplication.mServerSession.request(requestRight);
         });
-
         mIvCalendar.setOnClickListener(v -> {
             FragmentManager fragmentManager = getSupportFragmentManager();
             if(caldroidFragment.isHidden()) {
@@ -159,8 +153,7 @@ public class InfoChartActivity extends ChartBase {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.menu_list: {
-                mCustomDialog.show();
-                //sensor list call
+                mCustomDialog.show();//sensor list call
                 return true;
             }
             default: {
@@ -182,7 +175,6 @@ public class InfoChartActivity extends ChartBase {
         ArrayList<Entry> entries = new ArrayList<>();
         for (int index = 0; index < sensorVelocityList.size(); index++)
             entries.add(new Entry(index + 0.5f, sensorVelocityList.get(index).getAvgVelocity()));
-
         LineDataSet set = new LineDataSet(entries, getResources().getString(R.string.textAverageVelocity));
         set.setColor(Color.rgb(210, 198, 90));
         set.setLineWidth(2.5f);
@@ -195,45 +187,33 @@ public class InfoChartActivity extends ChartBase {
         set.setValueTextColor(Color.rgb(0, 0, 0));
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         d.addDataSet(set);
-
         return d;
     }
 
     private BarData generateBarData() {
-
         ArrayList<BarEntry> entries1 = new ArrayList<>();
         ArrayList<BarEntry> entries2 = new ArrayList<>();
-
         for (int index = 0; index < sensorVelocityList.size(); index++) {
             entries1.add(new BarEntry(0, sensorVelocityList.get(index).getMaxVelocity()));
-
-            // stacked
-            entries2.add(new BarEntry(0, 0, 0));
+            entries2.add(new BarEntry(0, 0, 0));// stacked
         }
-
         BarDataSet set1 = new BarDataSet(entries1, getResources().getString(R.string.textMaxVelocity));
         set1.setColor(Color.rgb(23, 197, 255));
         set1.setValueTextColor(Color.rgb(61, 165, 255));
         set1.setValueTextSize(10f);
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-
         BarDataSet set2 = new BarDataSet(entries2, "");
         set2.setColor(Color.rgb(255, 255, 255));
         set2.setValueTextColor(Color.rgb(255, 255, 255));
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-
         float groupSpace = 0.06f;
         float barSpace = 0.02f; // x2 dataset
         float barWidth = 0.45f; // x2 dataset
         // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
-
         BarData d = new BarData(set1,set2);
-
         d.setBarWidth(barWidth);
-
         // make this BarData object grouped
         d.groupBars(0, groupSpace, barSpace); // start at x = 0
-
         return d;
     }
 
@@ -270,17 +250,12 @@ public class InfoChartActivity extends ChartBase {
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                 }
-
                 break;
             }
-            case 28: {
-                //StatisticalDataOfDayResponse
-
+            case 28: {//StatisticalDataOfDayResponse
                 try {
                     final envsensor.StatisticalDataOfDayResponse response = envsensor.StatisticalDataOfDayResponse.parseFrom(bodyBuf);
-
                     sensorVelocityList = response.getItemsList();
-
                     runOnUiThread(() -> {
                         chart = findViewById(R.id.chart1);
                         chart.getDescription().setEnabled(false);
@@ -288,27 +263,21 @@ public class InfoChartActivity extends ChartBase {
                         chart.setDrawGridBackground(false);
                         chart.setDrawBarShadow(false);
                         chart.setHighlightFullBarEnabled(false);
-
-                        // draw bars behind lines
-                        chart.setDrawOrder(new CombinedChart.DrawOrder[]{
+                        chart.setDrawOrder(new CombinedChart.DrawOrder[]{ // draw bars behind lines
                                 CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.BUBBLE, CombinedChart.DrawOrder.CANDLE, CombinedChart.DrawOrder.LINE, CombinedChart.DrawOrder.SCATTER
                         });
-
                         Legend l = chart.getLegend();
                         l.setWordWrapEnabled(true);
                         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
                         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
                         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
                         l.setDrawInside(false);
-
                         YAxis rightAxis = chart.getAxisRight();
                         rightAxis.setDrawGridLines(false);
                         rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
                         YAxis leftAxis = chart.getAxisLeft();
                         leftAxis.setDrawGridLines(false);
                         leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
                         XAxis xAxis = chart.getXAxis();
                         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
                         xAxis.setAxisMinimum(0f);
@@ -319,27 +288,20 @@ public class InfoChartActivity extends ChartBase {
                                 return time[(int) value % time.length];
                             }
                         });
-
                         CombinedData data = new CombinedData();
-
                         data.setData(generateLineData());
                         data.setData(generateBarData());
                         data.setValueTypeface(null);
-
                         xAxis.setAxisMaximum(data.getXMax() + 0.25f);
-
                         chart.setData(data);
                         chart.invalidate();
                     });
-
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                 }
                 break;
             }
-            case 30: {
-                //StatisticalDataOfYearResponse
-
+            case 30: {//StatisticalDataOfYearResponse
                 try {
                     final envsensor.StatisticalDataOfYearResponse response = envsensor.StatisticalDataOfYearResponse.parseFrom(bodyBuf);
                     yearSensorVelocityList = response.getItemsList();
@@ -375,7 +337,6 @@ public class InfoChartActivity extends ChartBase {
         t.add(R.id.flCalendar, caldroidFragment);
         t.hide(caldroidFragment);
         t.commit();
-
         caldroidFragment.setCaldroidListener(new CaldroidListener() {
             @Override
             public void onSelectDate(Date date, View view) {

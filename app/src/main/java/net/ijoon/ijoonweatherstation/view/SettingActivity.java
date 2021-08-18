@@ -1,7 +1,6 @@
 package net.ijoon.ijoonweatherstation.view;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -21,18 +20,12 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.kakao.sdk.user.UserApiClient;
-
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
-import net.ijoon.ijoonweatherstation.RestApi.RegPushTokenRequest;
-import net.ijoon.ijoonweatherstation.RestApi.RegPushTokenResponse;
 import net.ijoon.ijoonweatherstation.RestApi.RetrofitClient;
 import net.ijoon.ijoonweatherstation.RestApi.UnRegPushTokenRequest;
 import net.ijoon.ijoonweatherstation.RestApi.UnRegPushTokenResponse;
@@ -45,8 +38,6 @@ import net.ijoon.ijoonweatherstation.login.UpdatePasswordRequest;
 import net.ijoon.ijoonweatherstation.login.UpdatePasswordResponse;
 import net.ijoon.ijoonweatherstation.util.UUIDManager;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
-import java.io.IOException;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
@@ -79,12 +70,10 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         mCustomApplication = (CustomApplication) getApplicationContext();
-
         Intent intent = getIntent();
         mNickname = intent.getStringExtra("nickname");
         mSwipeRefreshLayout = findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
         mId = preferences.getString("id","");
@@ -117,79 +106,63 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
             actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textSetting) + "</font>"));
         }
-        mRlLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                showLogoutAlertDialog(getResources().getString(R.string.textAreYouSureWantToLogout));
+        mRlLogout.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                return;
             }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            showLogoutAlertDialog(getResources().getString(R.string.textAreYouSureWantToLogout));
         });
-        mRlNickname.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                showNicknameChangeDialog();
+        mRlNickname.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                return;
             }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            showNicknameChangeDialog();
         });
-        mRlPasswordChange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                showPasswordChangeEditTextAlertDialog(getResources().getString(R.string.textEditPasswordChange));
+        mRlPasswordChange.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                return;
             }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            showPasswordChangeEditTextAlertDialog(getResources().getString(R.string.textEditPasswordChange));
         });
-        mRlWithdrawal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                showWidthdrawalEditTextAlertDialog(getResources().getString(R.string.textCancelCircularMembership));
+        mRlWithdrawal.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                return;
             }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            showWidthdrawalEditTextAlertDialog(getResources().getString(R.string.textCancelCircularMembership));
         });
-        mRlKakaoSharing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
-
-                if(preferences.getString("kakao","").equals("")) {
-                    if(UserApiClient.getInstance().isKakaoTalkLoginAvailable(getApplicationContext())) {
-                        UserApiClient.getInstance().loginWithKakaoTalk(getApplicationContext(), (oAuthToken, throwable) -> {
-                            if(throwable != null) {
-                                UserApiClient.getInstance().loginWithKakaoAccount(getApplicationContext(), (oAuthToken1, throwable1) -> {
-                                    if(throwable1 != null) {
-                                    } else if(oAuthToken1 != null) {
-                                        preferences.edit().putString("kakao",String.valueOf(oAuthToken1));
-                                        preferences.edit().apply();
-                                    }
-                                    return null;
-                                });
-                            } else if(oAuthToken != null) {
-                                preferences.edit().putString("kakao",String.valueOf(oAuthToken));
-                                preferences.edit().apply();
-                            }
-                            return null;
-                        });
-                    } else {
-                        UserApiClient.getInstance().loginWithKakaoAccount(getApplicationContext(), (oAuthToken, throwable) -> {
-                            if(throwable != null) {
-                            } else if(oAuthToken != null) {
-                                preferences.edit().putString("kakao",String.valueOf(oAuthToken));
-                                preferences.edit().apply();
-                            }
-                            return null;
-                        });
-                    }
+        mRlKakaoSharing.setOnClickListener(v -> {
+            SharedPreferences preferences1 = getSharedPreferences("preferences",MODE_PRIVATE);
+            if(preferences1.getString("kakao","").equals("")) {
+                if(UserApiClient.getInstance().isKakaoTalkLoginAvailable(getApplicationContext())) {
+                    UserApiClient.getInstance().loginWithKakaoTalk(getApplicationContext(), (oAuthToken, throwable) -> {
+                        if(throwable != null) {
+                            UserApiClient.getInstance().loginWithKakaoAccount(getApplicationContext(), (oAuthToken1, throwable1) -> {
+                                if(throwable1 != null) {
+                                } else if(oAuthToken1 != null) {
+                                    preferences1.edit().putString("kakao",String.valueOf(oAuthToken1));
+                                    preferences1.edit().apply();
+                                }
+                                return null;
+                            });
+                        } else if(oAuthToken != null) {
+                            preferences1.edit().putString("kakao",String.valueOf(oAuthToken));
+                            preferences1.edit().apply();
+                        }
+                        return null;
+                    });
+                } else {
+                    UserApiClient.getInstance().loginWithKakaoAccount(getApplicationContext(), (oAuthToken, throwable) -> {
+                        if(throwable != null) {
+                        } else if(oAuthToken != null) {
+                            preferences1.edit().putString("kakao",String.valueOf(oAuthToken));
+                            preferences1.edit().apply();
+                        }
+                        return null;
+                    });
                 }
             }
         });
@@ -197,12 +170,9 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
 
     void delete(String pw) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).build();
-                return chain.proceed(request);
-            }
+        httpClient.addInterceptor(chain -> {
+            Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).build();
+            return chain.proceed(request);
         });
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://1.246.219.189:20217")
@@ -215,7 +185,6 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
             @Override
             public void onResponse(Call<DeleteResponse> call, Response<DeleteResponse> response) {
                 if(response.body().getSuccess()) {
-
                     showDeleteAlertDialog(getResources().getString(R.string.textMeantimeThankYouForUsing));
                 }else {
                     showAlertDialog(getResources().getString(R.string.textFailedToWithdrawal));
@@ -242,7 +211,6 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
                     preferences.edit().putString("token","");
                     preferences.edit().apply();
                     SettingActivity.super.activityFinish();
-
                     Intent intent = new Intent(SettingActivity.this, DefaultActivity.class);
                     startActivity(intent);
                 });
@@ -254,28 +222,18 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         alertDialog.setTitle(getResources().getString(R.string.textNotification));
         alertDialog.setMessage(message);
         alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int which) {
-                        dialog.cancel();
-
-                        SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
-                        preferences.edit().clear().apply();
-                        preferences.edit().putString("id","");
-                        preferences.edit().putString("token","");
-                        preferences.edit().apply();
-                        SettingActivity.super.activityFinish();
-
-                        Intent intent = new Intent(SettingActivity.this, DefaultActivity.class);
-                        startActivity(intent);
-                    }
+                (dialog, which) -> {
+                    dialog.cancel();
+                    SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+                    preferences.edit().clear().apply();
+                    preferences.edit().putString("id","");
+                    preferences.edit().putString("token","");
+                    preferences.edit().apply();
+                    SettingActivity.super.activityFinish();
+                    Intent intent = new Intent(SettingActivity.this, DefaultActivity.class);
+                    startActivity(intent);
                 });
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                alertDialog.show();
-            }
-        });
+        runOnUiThread(() -> alertDialog.show());
     }
 
     public void showAlertDialog(String message) {
@@ -283,18 +241,8 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         alertDialog.setTitle(getResources().getString(R.string.textNotification));
         alertDialog.setMessage(message);
         alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int which) {
-                        dialog.cancel();
-                    }
-                });
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                alertDialog.show();
-            }
-        });
+                (dialog, which) -> dialog.cancel());
+        runOnUiThread(() -> alertDialog.show());
     }
 
     public void showWidthdrawalEditTextAlertDialog(String message) {
@@ -307,11 +255,7 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         alertDialog.setTitle(getResources().getString(R.string.textCircularWithdrawal));
         alertDialog.setMessage(message);
         alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        delete(et.getText().toString());
-                    }
-                });
+                (dialog, which) -> delete(et.getText().toString()));
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -332,19 +276,15 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.custom_two_edit_item,null);
         alertDialog.setView(layout);
-
         existingEditText = layout.findViewById(R.id.etExisting);
         existingEditText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         existingEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
         changeEditText = layout.findViewById(R.id.etChange);
         changeEditText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         changeEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
         confirmChangeEditText = layout.findViewById(R.id.etConfirmChange);
         confirmChangeEditText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         confirmChangeEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
         alertDialog.setTitle(getResources().getString(R.string.textPasswordChange));
         alertDialog.setMessage(message);
         alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
@@ -361,18 +301,8 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         alertDialog.setView(et);
         alertDialog.setTitle(getResources().getString(R.string.textChangeNickname));
         alertDialog.setMessage(getResources().getString(R.string.textEditNicknamechange));
-        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        updateNickName(et.getText().toString());
-                    }
-                });
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                alertDialog.show();
-            }
-        });
+        alertDialog.setPositiveButton(getResources().getString(R.string.textOk), (dialog, which) -> updateNickName(et.getText().toString()));
+        runOnUiThread(() -> alertDialog.show());
         FrameLayout.LayoutParams params = new  FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.leftMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
         params.rightMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
@@ -381,12 +311,9 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
 
     void updateNickName(final String id) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).build();
-                return chain.proceed(request);
-            }
+        httpClient.addInterceptor(chain -> {
+            Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).build();
+            return chain.proceed(request);
         });
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://1.246.219.189:20217")
@@ -412,6 +339,7 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
                     showAlertDialog(getResources().getString(R.string.textNicknameChangedFail));
                 }
             }
+
             @Override
             public void onFailure(Call<UpdateDispNameResponse> call, Throwable t) {
                 Log.d("logdinobei", "onFailure" + t.getMessage());
@@ -420,16 +348,12 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
     }
 
     void updatePassword(String pw, String pwNew, String pwConfirmNew) {
-
         if(!pwNew.equals("") && pwNew.equals(pwConfirmNew)) {
             if(pwNew.length() >= 6 && pwNew.length() <= 15) {
                 OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-                httpClient.addInterceptor(new Interceptor() {
-                    @Override
-                    public okhttp3.Response intercept(Chain chain) throws IOException {
-                        Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).build();
-                        return chain.proceed(request);
-                    }
+                httpClient.addInterceptor(chain -> {
+                    Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).build();
+                    return chain.proceed(request);
                 });
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("http://1.246.219.189:20217")
@@ -474,28 +398,19 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
 
     @Override
     public void onRefresh() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1400);
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(1400);
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                });
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            runOnUiThread(() -> mSwipeRefreshLayout.setRefreshing(false));
         });
         thread.start();
     }
 
     void unRegPushToken(final String UUID) {
-
         new Thread(() -> {
             Call<UnRegPushTokenResponse> call = RetrofitClient
                     .getApiService(mToken)

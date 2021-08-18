@@ -21,8 +21,7 @@ import java.util.Stack;
 
 public class CustomApplication extends GlobalApplication {
 
-        private final static String mServerIp = "1.246.219.189";
-//    private final static String mServerIp = "192.168.0.30";
+    private final static String mServerIp = "1.246.219.189";
     private final static int mServerPort = 19193;
     MyActivityLifecycleCallbacks mMyActivityLifecycleCallbacks;
     public ServerSession mServerSession;
@@ -31,20 +30,16 @@ public class CustomApplication extends GlobalApplication {
     public envsensor.Sensor getEnvSensor() {
         return mEnvSensor;
     }
-
     public void setEnvSensor(envsensor.Sensor sensor) {
         mEnvSensor = sensor;
     }
     public String mToken;
     public String fcmToken;
 
-
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onCreate() {
         KakaoSdk.init(this, "6ddc904dfe7ad11e585a1a70995003bc");
-
         Registry.registMessage("StreamingStartRequest", envsensor.PacketType.streamingStartReq.getNumber());
         Registry.registMessage("StreamingStartResponse", envsensor.PacketType.streamingStartRes.getNumber());
         Registry.registMessage("StreamingStopRequest", envsensor.PacketType.streamingStopReq.getNumber());
@@ -57,7 +52,6 @@ public class CustomApplication extends GlobalApplication {
         Registry.registMessage("RegisterSensor", envsensor.PacketType.registerSensor.getNumber());
         Registry.registMessage("SetSensorNameRequest", envsensor.PacketType.setSensorNameReq.getNumber());
         Registry.registMessage("SetSensorNameResponse", envsensor.PacketType.setSensorNameRes.getNumber());
-
         Registry.registMessage("ShareSensorRequest", envsensor.PacketType.shareSensorReq.getNumber());
         Registry.registMessage("ShareSensorResponse", envsensor.PacketType.shareSensorRes.getNumber());
         Registry.registMessage("ShareSensorCancelRequest", envsensor.PacketType.shareSensorCancelReq.getNumber());
@@ -73,15 +67,12 @@ public class CustomApplication extends GlobalApplication {
         Registry.registMessage("UnregistSensorRequest", envsensor.PacketType.unregistSensorReq.getNumber());
         Registry.registMessage("UnregistSensorResponse", envsensor.PacketType.unregistSensorRes.getNumber());
         Registry.registMessage("Ping", envsensor.PacketType.ping.getNumber());
-
         Registry.registMessage("StatisticalDataOfDayRequest", envsensor.PacketType.statisticalDataOfDayRequest.getNumber());
         Registry.registMessage("StatisticalDataOfDayResponse", envsensor.PacketType.statisticalDataOfDayResponse.getNumber());
         Registry.registMessage("StatisticalDataOfYearRequest", envsensor.PacketType.statisticalDataOfYearRequest.getNumber());
         Registry.registMessage("StatisticalDataOfYearResponse", envsensor.PacketType.statisticalDataOfYearResponse.getNumber());
-
         Registry.registMessage("VersionUpdateRequest", envsensor.PacketType.versionUpdateRequest.getNumber());
         Registry.registMessage("VersionUpdateResponse", envsensor.PacketType.versionUpdateResponse.getNumber());
-
         Registry.registMessage("StreamingStartAllRequest", envsensor.PacketType.streamingStartAllReq.getNumber());
         Registry.registMessage("StreamingStartAllResponse", envsensor.PacketType.streamingStartAllRes.getNumber());
         Registry.registMessage("StreamingStopAllRequest", envsensor.PacketType.streamingStopAllReq.getNumber());
@@ -93,24 +84,14 @@ public class CustomApplication extends GlobalApplication {
                         Log.w("yot132", "getInstanceId failed", task.getException());
                         return;
                     }
-
-                    // Get new Instance ID token
-                    String token = task.getResult().getToken();
-
-                    // Log and toast
-                    fcmToken = token;
-                    Log.d("yot132","fcmToken = " + fcmToken);
+                    String token = task.getResult().getToken();// Get new Instance ID token
+                    fcmToken = token;// Log and toast
                 });
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-
         this.mMyActivityLifecycleCallbacks = new MyActivityLifecycleCallbacks();
         registerActivityLifecycleCallbacks(mMyActivityLifecycleCallbacks);
-
-//        setMainServerInfo("192.168.100.1", 9190, 1000); // 반드시 super.onCreate(); 이전에 호출해야 함
-
-
         super.onCreate();
     }
 
@@ -121,35 +102,27 @@ public class CustomApplication extends GlobalApplication {
     }
 
     public void stopServer() {
-
         mServerSession.interrupt();
         mServerSession = null;
-
         Log.d("yot132","onActivityDestroyed called");
     }
 
     public class MyActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
 
-        // running activity count
-        private int running = 0;
+        private int running = 0;// running activity count
         private Stack<Activity> mApplicationStack = new Stack<>();
 
         @Override
         public void onActivityCreated(Activity activity, Bundle bundle) {
-
         }
 
         @Override
         public void onActivityStarted(Activity activity) {
             mApplicationStack.push(activity);
-
-            Log.d("yot132","onActivityStarted called");
-
             if (++running == 1) {
                 // running activity is 1,
                 // app must be returned from background just now (or first launch)
                 mServerSession = new ServerSession(mServerIp, mServerPort, 1000, CustomApplication.this);
-                Log.d("yot132","server session start called1");
                 mServerSession.start();
             } else if (running > 1) {
                 // 2 or more running activities,
@@ -212,7 +185,6 @@ public class CustomApplication extends GlobalApplication {
     @Override
     public void onTimedOut() {
         mServerSession.request(envsensor.Ping.newBuilder().build());
-
     }
 
     @Override

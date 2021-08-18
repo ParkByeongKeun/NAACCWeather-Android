@@ -8,12 +8,9 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.MenuItem;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
 
@@ -27,8 +24,6 @@ public class InfoAppInfoActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_info);
-
-
         tvVersion = findViewById(R.id.tvVersion);
         tvVersion.setText("App version\n " + getAppVersionName());
         mCustomApplication = (CustomApplication) getApplicationContext();
@@ -41,15 +36,12 @@ public class InfoAppInfoActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(Color.parseColor("#3286EE"));//bottom
         }
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.menu_list: {
-//                mCustomDialog.show();
-                //sensor list call
                 return true;
             }
             default: {
@@ -58,8 +50,6 @@ public class InfoAppInfoActivity extends AppCompatActivity {
             }
         }
     }
-
-
 
     public String getAppVersionName(){
         PackageInfo packageInfo;
@@ -71,5 +61,4 @@ public class InfoAppInfoActivity extends AppCompatActivity {
         }
         return packageInfo.versionName;
     }
-
 }

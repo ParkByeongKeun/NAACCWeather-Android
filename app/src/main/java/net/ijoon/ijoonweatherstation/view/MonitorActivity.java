@@ -59,7 +59,7 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
     TextView mTvWindDirection;
     TextView mTvTemperature;
     TextView mTvHumidity;//습기
-    TextView mTvPressure;//압력
+    TextView mTvPressure;//기압
     TextView mTvWindVelocityValue;
     TextView mTvWindTitle;
     TextView mTvWindSubTitle;
@@ -110,7 +110,7 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
         mTvWindDirection = findViewById(R.id.tvWindDirection);
         mTvTemperature = findViewById(R.id.tvTemp);
         mTvHumidity = findViewById(R.id.tvHumidityValue);//습기
-        mTvPressure = findViewById(R.id.tvAtmValue);//압력
+        mTvPressure = findViewById(R.id.tvAtmValue);//기압
         mTvWindVelocityValue = findViewById(R.id.tvWindVelocityValue);
         mTvWindTitle = findViewById(R.id.tvWindTitle);
         mTvWindSubTitle = findViewById(R.id.tvWindSubTitle);
@@ -266,50 +266,42 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
                                 mWindDirection = response.getData().getDirection();
                             }
                             rotationCompass(tempWindDirection);
-                            if (tempWindDirection <= 15 || tempWindDirection >= 345){
-                                //북
+                            if (tempWindDirection <= 15 || tempWindDirection >= 345){//북
                                 rippleBackground.setX(screenWidth/2);
                                 rippleBackground.setY(-rippleBackground.getHeight());
                                 rippleBackground.startRippleAnimation();
                                 mTvCompass.setText(getResources().getString(R.string.text_wind_north));
-                            }else if (tempWindDirection >15&& tempWindDirection <=75){
-                                //북동
+                            }else if (tempWindDirection >15&& tempWindDirection <=75){//북동
                                 rippleBackground.setX(screenWidth);
                                 rippleBackground.setY(-rippleBackground.getHeight());
                                 rippleBackground.startRippleAnimation();
                                 mTvCompass.setText(getResources().getString(R.string.text_wind_east_north));
-                            }else if (tempWindDirection >75 && tempWindDirection <= 105){
-                                //동
+                            }else if (tempWindDirection >75 && tempWindDirection <= 105){//동
                                 rippleBackground.setX(screenWidth);
                                 rippleBackground.setY(screenHeight/2);
                                 rippleBackground.startRippleAnimation();
                                 mTvCompass.setText(getResources().getString(R.string.text_wind_east));
-                            }else if (tempWindDirection > 105 && tempWindDirection <= 165){
-                                //남동
+                            }else if (tempWindDirection > 105 && tempWindDirection <= 165){//남동
                                 rippleBackground.setX(screenWidth);
                                 rippleBackground.setY(screenHeight/2);
                                 rippleBackground.startRippleAnimation();
                                 mTvCompass.setText(getResources().getString(R.string.text_wind_south_east));
-                            }else if (tempWindDirection > 165 && tempWindDirection <= 195){
-                                //남
+                            }else if (tempWindDirection > 165 && tempWindDirection <= 195){//남
                                 rippleBackground.setX(screenWidth/2);
                                 rippleBackground.setY(screenHeight);
                                 rippleBackground.startRippleAnimation();
                                 mTvCompass.setText(getResources().getString(R.string.text_wind_south));
-                            }else if (tempWindDirection > 195 && tempWindDirection <= 255){
-                                //남서
+                            }else if (tempWindDirection > 195 && tempWindDirection <= 255){//남서
                                 rippleBackground.setX(-screenWidth);
                                 rippleBackground.setY(screenHeight);
                                 rippleBackground.startRippleAnimation();
                                 mTvCompass.setText(getResources().getString(R.string.text_wind_south_west));
-                            }else if (tempWindDirection > 255 && tempWindDirection <= 285){
-                                //서
+                            }else if (tempWindDirection > 255 && tempWindDirection <= 285){//서
                                 rippleBackground.setX(-screenWidth);
                                 rippleBackground.setY(screenHeight/2);
                                 rippleBackground.startRippleAnimation();
                                 mTvCompass.setText(getResources().getString(R.string.text_wind_west));
-                            }else if (tempWindDirection > 285 && tempWindDirection < 345){
-                                //북서
+                            }else if (tempWindDirection > 285 && tempWindDirection < 345){//북서
                                 rippleBackground.setX(-screenWidth);
                                 rippleBackground.setY(-rippleBackground.getHeight());
                                 rippleBackground.startRippleAnimation();
@@ -323,18 +315,15 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
                             mTvPressure.setText(String.format("%.2f",response.getData().getPressure())+" hPa");//압력
                             sunSet.getSunset(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
                             sunRise.getSunrise(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
-                            if(response.getData().getRain() >= 5) {
-                                //rain
+                            if(response.getData().getRain() >= 5) {//rain
                                 isRain = true;
                                 countDownTimer.cancel();
                                 countDownTimer.start();
                                 mIvWeather.setImageResource(R.drawable.ic_rain);
                                 mTvWeatherComment.setText(getResources().getString(R.string.midle_title6));
                             }else {
-                                if(computableDate.getAMPM() != 1 ) {
-                                    //오전
-                                    if(response.getData().getLuminosity() > 100) {
-                                        //cloud
+                                if(computableDate.getAMPM() != 1 ) {//오전
+                                    if(response.getData().getLuminosity() > 100) {//cloud
                                         mIvWeather.setImageResource(R.drawable.ic_moon);
                                     }else {
                                         mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
@@ -342,101 +331,77 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
                                     if(computableDate.getHour() <= sunRise.getSunSetHour()) {
                                         if(computableDate.getHour() == sunRise.getSunSetHour()) {
                                             if(computableDate.getMinute() < sunRise.getSunSetMinute()) {
-                                                if(response.getData().getLuminosity() > 100) {
-                                                    //cloud
+                                                if(response.getData().getLuminosity() > 100) {//cloud
                                                     mIvWeather.setImageResource(R.drawable.ic_moon);
                                                 }else {
                                                     mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
                                                 }
-                                            }else {
-                                                //일출
-                                                if(response.getData().getLuminosity() >= 30000 ) {
-                                                    //sun
+                                            }else {//일출
+                                                if(response.getData().getLuminosity() >= 30000 ) {//sun
                                                     mIvWeather.setImageResource(R.drawable.ic_sun);
-                                                }else if(response.getData().getLuminosity() < 30000 && response.getData().getLuminosity() > 15000 ) {
-                                                    //sun_cloud
+                                                }else if(response.getData().getLuminosity() < 30000 && response.getData().getLuminosity() > 15000 ) {//sun_cloud
                                                     mIvWeather.setImageResource(R.drawable.ic_sun_cloud);
-                                                }else  {
-                                                    //cloud
+                                                }else  {//cloud
                                                     mIvWeather.setImageResource(R.drawable.ic_cloud);
                                                 }
                                             }
                                         }
-                                    }else {
-                                        // 해 뜬 오전
-                                        if(response.getData().getLuminosity() >= 30000 ) {
-                                            //sun
+                                    }else {// 해 뜬 오전
+                                        if(response.getData().getLuminosity() >= 30000 ) {//sun
                                             mIvWeather.setImageResource(R.drawable.ic_sun);
-                                        }else if(response.getData().getLuminosity() < 30000 && response.getData().getLuminosity() > 15000 ) {
-                                            //sun_cloud
+                                        }else if(response.getData().getLuminosity() < 30000 && response.getData().getLuminosity() > 15000 ) {//sun_cloud
                                             mIvWeather.setImageResource(R.drawable.ic_sun_cloud);
-                                        }else  {
-                                            //cloud
+                                        }else  {//cloud
                                             mIvWeather.setImageResource(R.drawable.ic_cloud);
                                         }
                                     }
-                                }else {
-                                    //오후
-                                    if(computableDate.getHour() >= sunSet.getSunSetHour()) {
-                                        //오후 6시 이후
+                                }else {//오후
+                                    if(computableDate.getHour() >= sunSet.getSunSetHour()) {//오후 6시 이후
                                         if (computableDate.getHour() == sunSet.getSunSetHour()) {
                                             if (computableDate.getMinute() <= sunSet.getSunSetMinute()) {
-                                                if(response.getData().getLuminosity() >= 30000 ) {
-                                                    //sun
+                                                if(response.getData().getLuminosity() >= 30000 ) {//sun
                                                     mIvWeather.setImageResource(R.drawable.ic_sun);
-                                                }else if(response.getData().getLuminosity() < 30000 && response.getData().getLuminosity() > 15000 ) {
-                                                    //sun_cloud
+                                                }else if(response.getData().getLuminosity() < 30000 && response.getData().getLuminosity() > 15000 ) {//sun_cloud
                                                     mIvWeather.setImageResource(R.drawable.ic_sun_cloud);
-                                                }else  {
-                                                    //cloud
+                                                }else  {//cloud
                                                     mIvWeather.setImageResource(R.drawable.ic_cloud);
                                                 }
                                             }else {
-                                                if(response.getData().getLuminosity() > 100) {
-                                                    //cloud
+                                                if(response.getData().getLuminosity() > 100) {//cloud
                                                     mIvWeather.setImageResource(R.drawable.ic_moon);
                                                 }else {
                                                     mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
                                                 }
                                             }
                                         }
-                                        if(response.getData().getLuminosity() > 100) {
-                                            //cloud
+                                        if(response.getData().getLuminosity() > 100) {//cloud
                                             mIvWeather.setImageResource(R.drawable.ic_moon);
                                         }else {
                                             mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
                                         }
                                     }else {
-                                        if(response.getData().getLuminosity() >= 30000 ) {
-                                            //sun
+                                        if(response.getData().getLuminosity() >= 30000 ) {//sun
                                             mIvWeather.setImageResource(R.drawable.ic_sun);
-                                        }else if(response.getData().getLuminosity() < 30000 && response.getData().getLuminosity() > 15000 ) {
-                                            //sun_cloud
+                                        }else if(response.getData().getLuminosity() < 30000 && response.getData().getLuminosity() > 15000 ) {//sun_cloud
                                             mIvWeather.setImageResource(R.drawable.ic_sun_cloud);
-                                        }else  {
-                                            //cloud
+                                        }else  {//cloud
                                             mIvWeather.setImageResource(R.drawable.ic_cloud);
                                         }
                                     }
                                 }
-                                if(computableDate.getMonth() <=4 || computableDate.getMonth() >=11) {
-                                    //겨울
-                                    if(response.getData().getTemperature() < 0 ) {
-                                        //영하
+                                if(computableDate.getMonth() <=4 || computableDate.getMonth() >=11) {//겨울
+                                    if(response.getData().getTemperature() < 0 ) {//영하
                                         mTvWeatherComment.setText(getResources().getString(R.string.midle_title8));
-                                    }else {
-                                        //영상
+                                    }else {//영상
                                         mTvWeatherComment.setText(getResources().getString(R.string.midle_title1));
                                     }
-                                }else if(computableDate.getMonth() < 6 || computableDate.getMonth() > 4 ) {
-                                    //봄
+                                }else if(computableDate.getMonth() < 6 || computableDate.getMonth() > 4 ) {//봄
                                     if(response.getData().getTemperature() < 15 ) {
                                         mTvWeatherComment.setText(getResources().getString(R.string.midle_title1));
                                     }else {
                                         mTvWeatherComment.setText(getResources().getString(R.string.midle_title4));
                                     }
-                                }else if (computableDate.getMonth() >= 6 || computableDate.getMonth() <= 9) {
-                                    //여름
+                                }else if (computableDate.getMonth() >= 6 || computableDate.getMonth() <= 9) {//여름
                                     if(response.getData().getTemperature() < 30 ) {
                                         mTvWeatherComment.setText(getResources().getString(R.string.midle_title5));
                                     }else {
@@ -446,8 +411,7 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
                                             mTvWeatherComment.setText(getResources().getString(R.string.midle_title9));
                                         }
                                     }
-                                }else {
-                                    //가을
+                                }else {//가을
                                     if(response.getData().getTemperature() < 10) {
                                         mTvWeatherComment.setText(getResources().getString(R.string.midle_title1));
                                     }else {
@@ -599,15 +563,13 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
                     }
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
-                }
-                //streamingStartResponse
+                }//streamingStartResponse
                 break;
             }
             case 2: {
                 break;
             }
-            case 3: {
-                //streamingStopResponse
+            case 3: {//streamingStopResponse
                 break;
             }
             case 4: {
@@ -625,50 +587,42 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
                             mWindDirection = response.getDirection();
                         }
                         rotationCompass(tempWindDirection);
-                        if (tempWindDirection <= 15 || tempWindDirection >= 345){
-                            //북
+                        if (tempWindDirection <= 15 || tempWindDirection >= 345){//북
                             rippleBackground.setX(screenWidth/2);
                             rippleBackground.setY(-rippleBackground.getHeight());
                             rippleBackground.startRippleAnimation();
                             mTvCompass.setText(getResources().getString(R.string.text_wind_north));
-                        }else if (tempWindDirection >15&& tempWindDirection <=75){
-                            //북동
+                        }else if (tempWindDirection >15&& tempWindDirection <=75){//북동
                             rippleBackground.setX(screenWidth);
                             rippleBackground.setY(-rippleBackground.getHeight());
                             rippleBackground.startRippleAnimation();
                             mTvCompass.setText(getResources().getString(R.string.text_wind_east_north));
-                        }else if (tempWindDirection >75 && tempWindDirection <= 105){
-                            //동
+                        }else if (tempWindDirection >75 && tempWindDirection <= 105){//동
                             rippleBackground.setX(screenWidth);
                             rippleBackground.setY(screenHeight/2);
                             rippleBackground.startRippleAnimation();
                             mTvCompass.setText(getResources().getString(R.string.text_wind_east));
-                        }else if (tempWindDirection > 105 && tempWindDirection <= 165){
-                            //남동
+                        }else if (tempWindDirection > 105 && tempWindDirection <= 165){//남동
                             rippleBackground.setX(screenWidth);
                             rippleBackground.setY(screenHeight/2);
                             rippleBackground.startRippleAnimation();
                             mTvCompass.setText(getResources().getString(R.string.text_wind_south_east));
-                        }else if (tempWindDirection > 165 && tempWindDirection <= 195){
-                            //남
+                        }else if (tempWindDirection > 165 && tempWindDirection <= 195){//남
                             rippleBackground.setX(screenWidth/2);
                             rippleBackground.setY(screenHeight);
                             rippleBackground.startRippleAnimation();
                             mTvCompass.setText(getResources().getString(R.string.text_wind_south));
-                        }else if (tempWindDirection > 195 && tempWindDirection <= 255){
-                            //남서
+                        }else if (tempWindDirection > 195 && tempWindDirection <= 255){//남서
                             rippleBackground.setX(-screenWidth);
                             rippleBackground.setY(screenHeight);
                             rippleBackground.startRippleAnimation();
                             mTvCompass.setText(getResources().getString(R.string.text_wind_south_west));
-                        }else if (tempWindDirection > 255 && tempWindDirection <= 285){
-                            //서
+                        }else if (tempWindDirection > 255 && tempWindDirection <= 285){//서
                             rippleBackground.setX(-screenWidth);
                             rippleBackground.setY(screenHeight/2);
                             rippleBackground.startRippleAnimation();
                             mTvCompass.setText(getResources().getString(R.string.text_wind_west));
-                        }else if (tempWindDirection > 285 && tempWindDirection < 345){
-                            //북서
+                        }else if (tempWindDirection > 285 && tempWindDirection < 345){//북서
                             rippleBackground.setX(-screenWidth);
                             rippleBackground.setY(-rippleBackground.getHeight());
                             rippleBackground.startRippleAnimation();
@@ -682,18 +636,15 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
                         mTvPressure.setText(String.format("%.2f",response.getPressure())+" hPa");//압력
                         sunSet.getSunset(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
                         sunRise.getSunrise(computableDate.getYear(),computableDate.getMonth(),computableDate.getDay(),Double.valueOf(mEnvSensor.getLatitude()),Double.valueOf(mEnvSensor.getLongitude()));
-                        if(response.getRain() >= 5) {
-                            //rain
+                        if(response.getRain() >= 5) {//rain
                             isRain = true;
                             countDownTimer.cancel();
                             countDownTimer.start();
                             mIvWeather.setImageResource(R.drawable.ic_rain);
                             mTvWeatherComment.setText(getResources().getString(R.string.midle_title6));
                         }else {
-                            if(computableDate.getAMPM() != 1 ) {
-                                //오전
-                                if(response.getLuminosity() > 100) {
-                                    //cloud
+                            if(computableDate.getAMPM() != 1 ) {//오전
+                                if(response.getLuminosity() > 100) {//cloud
                                     mIvWeather.setImageResource(R.drawable.ic_moon);
                                 }else {
                                     mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
@@ -701,101 +652,77 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
                                 if(computableDate.getHour() <= sunRise.getSunSetHour()) {
                                     if(computableDate.getHour() == sunRise.getSunSetHour()) {
                                         if(computableDate.getMinute() < sunRise.getSunSetMinute()) {
-                                            if(response.getLuminosity() > 100) {
-                                                //cloud
+                                            if(response.getLuminosity() > 100) {//cloud
                                                 mIvWeather.setImageResource(R.drawable.ic_moon);
                                             }else {
                                                 mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
                                             }
-                                        }else {
-                                            //일출
-                                            if(response.getLuminosity() >= 30000 ) {
-                                                //sun
+                                        }else {//일출
+                                            if(response.getLuminosity() >= 30000 ) {//sun
                                                 mIvWeather.setImageResource(R.drawable.ic_sun);
-                                            }else if(response.getLuminosity() < 30000 && response.getLuminosity() > 15000 ) {
-                                                //sun_cloud
+                                            }else if(response.getLuminosity() < 30000 && response.getLuminosity() > 15000 ) {//sun_cloud
                                                 mIvWeather.setImageResource(R.drawable.ic_sun_cloud);
-                                            }else  {
-                                                //cloud
+                                            }else  {//cloud
                                                 mIvWeather.setImageResource(R.drawable.ic_cloud);
                                             }
                                         }
                                     }
-                                }else {
-                                    // 해 뜬 오전
-                                    if(response.getLuminosity() >= 30000 ) {
-                                        //sun
+                                }else {// 해 뜬 오전
+                                    if(response.getLuminosity() >= 30000 ) {//sun
                                         mIvWeather.setImageResource(R.drawable.ic_sun);
-                                    }else if(response.getLuminosity() < 30000 && response.getLuminosity() > 15000 ) {
-                                        //sun_cloud
+                                    }else if(response.getLuminosity() < 30000 && response.getLuminosity() > 15000 ) {//sun_cloud
                                         mIvWeather.setImageResource(R.drawable.ic_sun_cloud);
-                                    }else  {
-                                        //cloud
+                                    }else  {//cloud
                                         mIvWeather.setImageResource(R.drawable.ic_cloud);
                                     }
                                 }
-                            }else {
-                                //오후
-                                if(computableDate.getHour() >= sunSet.getSunSetHour()) {
-                                    //오후 6시 이후
+                            }else {//오후
+                                if(computableDate.getHour() >= sunSet.getSunSetHour()) {//오후 6시 이후
                                     if (computableDate.getHour() == sunSet.getSunSetHour()) {
                                         if (computableDate.getMinute() <= sunSet.getSunSetMinute()) {
-                                            if(response.getLuminosity() >= 30000 ) {
-                                                //sun
+                                            if(response.getLuminosity() >= 30000 ) {//sun
                                                 mIvWeather.setImageResource(R.drawable.ic_sun);
-                                            }else if(response.getLuminosity() < 30000 && response.getLuminosity() > 15000 ) {
-                                                //sun_cloud
+                                            }else if(response.getLuminosity() < 30000 && response.getLuminosity() > 15000 ) {//sun_cloud
                                                 mIvWeather.setImageResource(R.drawable.ic_sun_cloud);
-                                            }else  {
-                                                //cloud
+                                            }else  {//cloud
                                                 mIvWeather.setImageResource(R.drawable.ic_cloud);
                                             }
                                         }else {
-                                            if(response.getLuminosity() > 100) {
-                                                //cloud
+                                            if(response.getLuminosity() > 100) {//cloud
                                                 mIvWeather.setImageResource(R.drawable.ic_moon);
                                             }else {
                                                 mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
                                             }
                                         }
                                     }
-                                    if(response.getLuminosity() > 100) {
-                                        //cloud
+                                    if(response.getLuminosity() > 100) {//cloud
                                         mIvWeather.setImageResource(R.drawable.ic_moon);
                                     }else {
                                         mIvWeather.setImageResource(R.drawable.ic_moon_cloud);
                                     }
                                 }else {
-                                    if(response.getLuminosity() >= 30000 ) {
-                                        //sun
+                                    if(response.getLuminosity() >= 30000 ) {//sun
                                         mIvWeather.setImageResource(R.drawable.ic_sun);
-                                    }else if(response.getLuminosity() < 30000 && response.getLuminosity() > 15000 ) {
-                                        //sun_cloud
+                                    }else if(response.getLuminosity() < 30000 && response.getLuminosity() > 15000 ) {//sun_cloud
                                         mIvWeather.setImageResource(R.drawable.ic_sun_cloud);
-                                    }else  {
-                                        //cloud
+                                    }else  {//cloud
                                         mIvWeather.setImageResource(R.drawable.ic_cloud);
                                     }
                                 }
                             }
-                            if(computableDate.getMonth() <=4 || computableDate.getMonth() >=11) {
-                                //겨울
-                                if(response.getTemperature() < 0 ) {
-                                    //영하
+                            if(computableDate.getMonth() <=4 || computableDate.getMonth() >=11) {//겨울
+                                if(response.getTemperature() < 0 ) {//영하
                                     mTvWeatherComment.setText(getResources().getString(R.string.midle_title8));
-                                }else {
-                                    //영상
+                                }else {//영상
                                     mTvWeatherComment.setText(getResources().getString(R.string.midle_title1));
                                 }
-                            }else if(computableDate.getMonth() < 6 || computableDate.getMonth() > 4 ) {
-                                //봄
+                            }else if(computableDate.getMonth() < 6 || computableDate.getMonth() > 4 ) {//봄
                                 if(response.getTemperature() < 15 ) {
                                     mTvWeatherComment.setText(getResources().getString(R.string.midle_title1));
                                 }else {
                                     mTvWeatherComment.setText(getResources().getString(R.string.midle_title4));
                                 }
-                            }else if (computableDate.getMonth() >= 6 || computableDate.getMonth() <= 9) {
-                                //여름
+                            }else if (computableDate.getMonth() >= 6 || computableDate.getMonth() <= 9) {//여름
                                 if(response.getTemperature() < 30 ) {
                                     mTvWeatherComment.setText(getResources().getString(R.string.midle_title5));
                                 }else {
@@ -805,8 +732,7 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
                                         mTvWeatherComment.setText(getResources().getString(R.string.midle_title9));
                                     }
                                 }
-                            }else {
-                                //가을
+                            }else {//가을
                                 if(response.getTemperature() < 10) {
                                     mTvWeatherComment.setText(getResources().getString(R.string.midle_title1));
                                 }else {
@@ -975,17 +901,14 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
 
     @Override
     public void onConnected(RendezvousSession rendezvousSession, Connection connection) {
-        Log.d("yot132","connected called");
         super.onConnected(rendezvousSession, connection);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // ACCESS_FINE_LOCATION 에 대한 권한 획득.
-        } else {
-            // ACCESS_FINE_LOCATION 에 대한 권한 거부.
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {// ACCESS_FINE_LOCATION 에 대한 권한 획득.
+        } else {// ACCESS_FINE_LOCATION 에 대한 권한 거부.
         }
     }
 

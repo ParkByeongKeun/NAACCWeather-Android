@@ -135,7 +135,6 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                                 Thread thread = new Thread(() -> {
                                         try {
                                                 Thread.sleep(1400);
-
                                         } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                         }
@@ -200,7 +199,6 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                 getNickname();
                 tvId.setText(mId);
                 tvNickname.setText(mNickname);
-
                 envsensor.GetSensorListRequest request1 = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
                 mCustomApplication.mServerSession.request(request1);
         }

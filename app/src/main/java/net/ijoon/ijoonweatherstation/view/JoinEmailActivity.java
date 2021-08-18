@@ -2,40 +2,28 @@
 package net.ijoon.ijoonweatherstation.view;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.ijoonweatherstation.login.AuthService;
-import net.ijoon.ijoonweatherstation.login.LoginResponse;
 import net.ijoon.ijoonweatherstation.login.ResendRequest;
 import net.ijoon.ijoonweatherstation.login.ResendResponse;
 import net.ijoon.ijoonweatherstation.login.VerifyJoinRequest;
 import net.ijoon.ijoonweatherstation.login.VerifyJoinResponse;
-
-import java.io.IOException;
-
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
@@ -64,12 +52,7 @@ public class JoinEmailActivity extends AppCompatActivity {
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         mRlRoot = findViewById(R.id.rlRootView);
         mId = getIntent().getStringExtra("id");
-        mRlRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imm.hideSoftInputFromWindow(mEtAuth.getWindowToken(), 0);
-            }
-        });
+        mRlRoot.setOnClickListener(v -> imm.hideSoftInputFromWindow(mEtAuth.getWindowToken(), 0));
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -81,30 +64,19 @@ public class JoinEmailActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
             actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textConfirm) + "</font>"));
         }
-
         mBtnAuthOk.setOnClickListener(v -> {
             verifyJoin(mId,mEtAuth.getText().toString());
         });
-
-        mBtnRetryEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resend(mId);
-            }
-        });
+        mBtnRetryEmail.setOnClickListener(v -> resend(mId));
     }
 
     void verifyJoin(String id,String verifyJoinNumber) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(new Interceptor()    {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request request = chain.request().newBuilder().addHeader("Content-Type", "application/json").build();
-                return chain.proceed(request);
-            }
+        httpClient.addInterceptor(chain -> {
+            Request request = chain.request().newBuilder().addHeader("Content-Type", "application/json").build();
+            return chain.proceed(request);
         });
         Gson gson = new GsonBuilder().setLenient().create();
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://1.246.219.189:20217")
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -115,9 +87,7 @@ public class JoinEmailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<VerifyJoinResponse> call, Response<VerifyJoinResponse> response) {
                 VerifyJoinResponse body = response.body();
-                Log.d("yot132","id = " + id + " auth = " + verifyJoinNumber );
-                if(body == null) {
-                    // Todo: 로그인인증서버에서 HTTP Status Code에 따라 body가 null이 되는지 확인
+                if(body == null) {// Todo: 로그인인증서버에서 HTTP Status Code에 따라 body가 null이 되는지 확인
                     showAlertDialog("인증 실패");
                     return;
                 }
@@ -129,7 +99,6 @@ public class JoinEmailActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<VerifyJoinResponse> call, Throwable t) {
-                Log.d("logdinobei", "onFailure" + t.getMessage());
             }
         });
     }
@@ -152,7 +121,6 @@ public class JoinEmailActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResendResponse> call, Throwable t) {
-                Log.d("logdinobei", "onFailure" + t.getMessage());
             }
         });
     }
@@ -164,18 +132,8 @@ public class JoinEmailActivity extends AppCompatActivity {
         alertDialog
                 .setMessage(message);
         alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int which) {
-                        dialog.cancel();
-                    }
-                });
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                alertDialog.show();
-            }
-        });
+                (dialog, which) -> dialog.cancel());
+        runOnUiThread(() -> alertDialog.show());
     }
 
     public void showAuthAlertDialog(String message) {
@@ -185,22 +143,14 @@ public class JoinEmailActivity extends AppCompatActivity {
         alertDialog
                 .setMessage(message);
         alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int which) {
-                        Intent intent = new Intent(JoinEmailActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                        overridePendingTransition(0,0);
-                        dialog.cancel();
-                    }
+                (dialog, which) -> {
+                    Intent intent = new Intent(JoinEmailActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                    overridePendingTransition(0,0);
+                    dialog.cancel();
                 });
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                alertDialog.show();
-            }
-        });
+        runOnUiThread(() -> alertDialog.show());
     }
 
     @Override

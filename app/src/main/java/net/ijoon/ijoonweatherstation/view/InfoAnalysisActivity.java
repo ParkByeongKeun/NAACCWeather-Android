@@ -100,7 +100,6 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
             mCustomApplication.mServerSession.request(request);
             position = mCustomDialog.getPosition();
         });
-
         mIvleft.setOnClickListener(v -> {
             mComputableDate.addYear(-1);
             mComputableDate.setDateFormat("yyyy");
@@ -109,7 +108,6 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
                     .setSerial(mSensor.get(mCustomDialog.getPosition()).getSerial()).setIsIntervalDay(true).build();
             mCustomApplication.mServerSession.request(request);
         });
-
         mIvRight.setOnClickListener(v -> {
             mComputableDate.addYear(1);
             mComputableDate.setDateFormat("yyyy");
@@ -118,7 +116,6 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
                     .setSerial(mSensor.get(mCustomDialog.getPosition()).getSerial()).setIsIntervalDay(true).build();
             mCustomApplication.mServerSession.request(request);
         });
-
         mIvCalendar.setOnClickListener(v -> {
             FragmentManager fragmentManager = getSupportFragmentManager();
             if(caldroidFragment.isHidden()) {
@@ -134,7 +131,6 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
                         .commit();
             }
         });
-
         rootView.setOnClickListener(v -> {
             if(!caldroidFragment.isHidden()) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
@@ -156,8 +152,7 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.menu_list: {
-                mCustomDialog.show();
-                //sensor list call
+                mCustomDialog.show();//sensor list call
                 return true;
             }
             default: {
@@ -186,7 +181,6 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
                 try {
                     final envsensor.GetSensorListResponse response = envsensor.GetSensorListResponse.parseFrom(bodyBuf);
                     mSensor = new ArrayList<>();
-
                     ArrayList<envsensor.Sensor> tempArr1 = new ArrayList<>();
                     ArrayList<envsensor.Sensor> tempArr2 = new ArrayList<>();
                     for(int i = 0 ; i < response.getSensorCount() ; i ++) {
@@ -210,12 +204,10 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
                 }
                 break;
             }
-            case 30: {
-                //StatisticalDataOfYearResponse
+            case 30: {//StatisticalDataOfYearResponse
                 try {
                     final envsensor.StatisticalDataOfYearResponse response = envsensor.StatisticalDataOfYearResponse.parseFrom(bodyBuf);
                     sensorVelocityList = response.getItemsList();
-
                     runOnUiThread(() -> {
                         chart = findViewById(R.id.chart1);
                         chart.getDescription().setEnabled(false);
@@ -223,31 +215,25 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
                         chart.setDrawGridBackground(false);
                         chart.setDrawBarShadow(false);
                         chart.setHighlightFullBarEnabled(false);
-                        // draw bars behind lines
-                        chart.setDrawOrder(new CombinedChart.DrawOrder[]{
+                        chart.setDrawOrder(new CombinedChart.DrawOrder[]{// draw bars behind lines
                                 CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.BUBBLE, CombinedChart.DrawOrder.CANDLE, CombinedChart.DrawOrder.LINE, CombinedChart.DrawOrder.SCATTER
                         });
-
                         Legend l = chart.getLegend();
                         l.setWordWrapEnabled(true);
                         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
                         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
                         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
                         l.setDrawInside(false);
-
                         YAxis rightAxis = chart.getAxisRight();
                         rightAxis.setDrawGridLines(false);
                         rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
                         YAxis leftAxis = chart.getAxisLeft();
                         leftAxis.setDrawGridLines(false);
                         leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
                         XAxis xAxis = chart.getXAxis();
                         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
                         xAxis.setAxisMinimum(0f);
                         xAxis.setGranularity(1f);
-
                         for(int i = 0 ; i < sensorVelocityList.size() ; i ++) {
                             mComputableDate.setDateFormat("MM월dd일");
                             mComputableDate.setDate(sensorVelocityList.get(i).getUtc());

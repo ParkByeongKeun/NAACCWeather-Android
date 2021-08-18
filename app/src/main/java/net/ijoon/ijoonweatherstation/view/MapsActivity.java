@@ -21,7 +21,6 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -145,8 +144,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_person_whit);
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
-        saveLat = preferences.getFloat("lat",(float) 36.5);
-        saveLong = preferences.getFloat("long",(float) 127.266667);
+        saveLat = preferences.getFloat("lat",(float) 36.526803);
+        saveLong = preferences.getFloat("long",(float) 127.293589);
         saveZoom = preferences.getFloat("zoom",12);
         isFix = preferences.getBoolean("fix",false);
         fixSensorName = preferences.getString("fixSensorName","");
@@ -229,7 +228,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             editor.putString("fixSensorName",mSensor.get(mPosition).getName());
             editor.apply();
         });
-
         Thread thread = new Thread(() -> {
             try {
                 Thread.sleep(300);
@@ -440,8 +438,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                         for (int i = 0; i < response.getSensorCount(); i++) {
                             mSensor.add(response.getSensor(i));
                         }
-                        if (response.getSensorCount() == 0) {
-                            //Todo : 센서가 없습니다.
+                        if (response.getSensorCount() == 0) {//Todo : 센서가 없습니다.
                             runOnUiThread(() -> {
                                 showDialog(getResources().getString(R.string.textSensorAvailable));
                             });
@@ -573,7 +570,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                     markerOptions.title(mSensor.get(i).getName());
                                     markerOptions.snippet(String.valueOf(response.getData(j).getSerial()));
                                     mArrMarkerOptions.set(i, markerOptions);
-
                                     markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), marker_root_view)));
                                     displayMarker.add(mMap.addMarker(mArrMarkerOptions.get(i)));
                                     float value = 0;
@@ -783,8 +779,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         registerReceiver(mActivatedBroadcastReceiver, filterDeactivated);
 
     }
-    // View를 Bitmap으로 변환
-    private Bitmap createDrawableFromView(Context context, View view) {
+
+    private Bitmap createDrawableFromView(Context context, View view) {    // View를 Bitmap으로 변환
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -833,7 +829,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             String maxVelocityTime = intent.getStringExtra("maxVelocityTime");
             String serial = intent.getStringExtra("serial");
             mMap.clear();
-            Log.d("yot132","maxVelocity = " +maxVelocity);
             for(int i = 0 ; i < mSensor.size() ; i ++) {
                 int finalI = i;
                 runOnUiThread(() -> {
@@ -845,7 +840,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                         }
                         tv_marker.setText(mSensor.get(finalI).getName());
                         tvMarkerSubTitle.setText(maxVelocity + "m/s (" + maxVelocityTime + ")");
-
                     }else {
                         if (mSensor.get(finalI).getPing() >= ALIVEPING) {
                             rl_message.setBackgroundResource(R.drawable.ic_message_ping);

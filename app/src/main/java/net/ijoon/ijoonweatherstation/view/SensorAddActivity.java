@@ -52,7 +52,6 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textNewStationRegistration) + "</font>"));
@@ -68,11 +67,9 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
         mEtAuth = findViewById(R.id.etAuth);
         mBtnRegist = findViewById(R.id.btnRegist);
         mRlRoot = findViewById(R.id.rlRoot);
-
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         mRlRoot.setOnClickListener(v -> imm.hideSoftInputFromWindow(mEtSerial.getWindowToken(), 0));
-
         mBtnRegist.setOnClickListener(v -> {
             mEtSerial.getText().toString();
             mEtAuth.getText().toString();

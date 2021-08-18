@@ -21,7 +21,6 @@ import net.ijoon.ijoonweatherstation.util.SensorListViewAdapter;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class InfoMySensorActivity extends SCNetAppCompatActivity {
@@ -100,10 +99,8 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                 }
-
                 break;
             }
-
             default: {
                 Log.d("yot132","[onMessage] Unknown PacketType");
                 break;
