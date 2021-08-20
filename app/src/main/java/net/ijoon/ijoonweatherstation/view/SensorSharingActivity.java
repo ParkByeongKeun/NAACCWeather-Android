@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -34,6 +34,7 @@ import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.ijoonweatherstation.login.AuthService;
 import net.ijoon.ijoonweatherstation.login.UserListItem;
 import net.ijoon.ijoonweatherstation.login.UserListRequest;
+import net.ijoon.ijoonweatherstation.util.SharePermissionAdapter;
 import net.ijoon.ijoonweatherstation.util.UserList;
 import net.ijoon.ijoonweatherstation.util.UserListAdapter;
 import net.ijoon.scnet_android.Connection;
@@ -72,6 +73,7 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
     List<String> data;
     TextView tvSharing;
     ListView lvUser;
+    String mId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,6 +91,7 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
         lvUser = findViewById(R.id.listView1);
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
+        mId = preferences.getString("id","");
         mSerial = mCustomApplication.getEnvSensor().getSerial();
         mArrUserList = new ArrayList<>();
         mData = new ArrayList<>();
@@ -155,8 +158,17 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
                 mUserListView.setVisibility(View.GONE);
             }
         });
-        lvUser.setOnItemClickListener((parent, view, position, id) -> {
-            showAlertDialog(data.get(position) + "님과의 공유를 해제하시겠습니까?",position);
+        lvUser.setOnItemLongClickListener((parent, view, position, id) -> {
+            if(mCustomApplication.getEnvSensor().getOwner().equals(data.get(position))) {
+                if(mId.equals(data.get(position))) {
+                    return false;
+                }
+                Toast.makeText(getApplicationContext(),"권한이 없습니다.",Toast.LENGTH_SHORT).show();
+            }else if(mId.equals(data.get(position))) {//내 계정
+            }else {
+                showAlertDialog(data.get(position) + "님과의 공유를 해제하시겠습니까?",position);
+            }
+            return false;
         });
     }
 
@@ -326,12 +338,13 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
                         final envsensor.SharedUsersResponse response = envsensor.SharedUsersResponse.parseFrom(bodyBuf);
                         if(response.getResult() == envsensor.SharedUsersResponse.Result.success) {
                             data = response.getSharedUsersList();
-                            ArrayAdapter adapter = new ArrayAdapter(
-                                    getApplicationContext(),
-                                    R.layout.myrow,
-                                    data);
-                            lvUser.setAdapter(adapter);
-                            adapter.notifyDataSetChanged();
+                            SharePermissionAdapter sharePermissionAdapter = new SharePermissionAdapter(
+                                    this,
+                                    data,
+                                    mCustomApplication.getEnvSensor().getOwner(),
+                                    mId);
+                            lvUser.setAdapter(sharePermissionAdapter);
+                            sharePermissionAdapter.notifyDataSetChanged();
                         }
                     } catch (InvalidProtocolBufferException e) {
                         e.printStackTrace();
