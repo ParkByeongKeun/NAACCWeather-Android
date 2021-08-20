@@ -95,7 +95,7 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + getResources().getString(R.string.textStationTransfer) + "</font>"));
+            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + mCustomApplication.getEnvSensor().getName() + "</font>"));
         }
         mBtnSuccess.setOnClickListener(v -> {
             envsensor.HandoverSensorRequest handoverRequest = envsensor.HandoverSensorRequest.newBuilder().setAccessToken(mToken).setSerial(mSerial).setAssigneeId(mEtName.getText().toString()).build();

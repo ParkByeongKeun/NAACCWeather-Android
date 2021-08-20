@@ -11,9 +11,9 @@
         android:text="@string/textPleaseEnterTheOtherPersonIdToTransfer"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:textSize="20dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/black"
+        android:textSize="16dp"
         android:id="@+id/tvTitle" />
 
     <LinearLayout
@@ -33,20 +33,24 @@
             android:singleLine = "true"
             android:lines = "1"
             android:id="@+id/etStationName" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_weight="0.3"
-            android:text="@string/textOk"
-            android:id="@+id/btnSuccess"/>
     </LinearLayout>
 
-
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textSetTransfer"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@+id/llTop"
+        android:layout_marginTop="10dp"
+        android:background="@color/ocbg"
+        android:textColor="@color/white"
+        android:id="@+id/btnSuccess"/>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/list"
+        android:translationZ="30dp"
         android:layout_below="@id/llTop"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="70dp"

@@ -199,9 +199,9 @@
     <string name= "textSerialAuthRegister">시리얼/인증코드로 등록하기</string>
     <string name= "textQRCodeRegister">QR코드로 등록하기</string>
     <string name= "textLoginAnotherID">다른 아이디로 로그인하기</string>
-    <string name= "textPleaseEnterTheOtherPersonIdToSharing">스테이션을 공유할 상대방의 아이디를 입력해주세요.</string>
-    <string name= "textID">ID</string>
-    <string name= "textPleaseEnterTheOtherPersonIdToTransfer">스테이션을 양도할 상대방의 아이디를 입력해주세요.</string>
+    <string name= "textPleaseEnterTheOtherPersonIdToSharing">공유할 상대방의 아이디를 입력해주세요.</string>
+    <string name= "textID">아이디</string>
+    <string name= "textPleaseEnterTheOtherPersonIdToTransfer">양도할 상대방의 아이디를 입력해주세요.</string>
 
 
     <string name="textSignupCircular">시작하려면\n회원가입을 해주세요.</string>
@@ -209,7 +209,7 @@
     <string name="textPerson">명</string>
     <string name="textJoinFailed">회원가입 실패</string>
     <string name="textEmailResent">이메일이 재전송 되었습니다.</string>
-    <string name="textResentFailed">재전송 실패</string>
+    <string name="textResentFailed">실패</string>
     <string name="textCheckInfomation">입력정보를 확인해주세요.</string>
     <string name="textSetting">설정</string>
     <string name="textCancelCircularMembership">회원탈퇴를 하시려면 비밀번호 입력후 확인버튼을 눌러주세요.</string>
