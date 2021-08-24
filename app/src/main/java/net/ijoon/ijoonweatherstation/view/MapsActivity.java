@@ -442,11 +442,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                 }
                                 markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), marker_root_view)));
                                 overlayMarker.add(mMap.addMarker(mArrMarkerOptions.get(i)));
-                                float value = 0;
-                                if(mSensor.get(i).getPing() < ALIVEPING) {
-                                    value = (1 + value) * mSensor.get(i).getMaxVelocity();
-                                }
-                                displayMarker.get(i).setZIndex(value);
                             }
                             if(oldMarker != null) {
                                 if(oldMarker.get(i).getSnippet().equals(response.getSerial())) {
@@ -503,12 +498,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                 mArrMarkerOptions.add(markerOptions);
                                 markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), marker_root_view)));
                                 displayMarker.add(mMap.addMarker(mArrMarkerOptions.get(i)));
-                                float value = 0;
-                                if(mSensor.get(i).getPing() < ALIVEPING) {
-                                    value = (1 + value) * mSensor.get(i).getMaxVelocity();
-                                }
-                                displayMarker.get(i).setZIndex(value);
-                                displayMarker.get(i).setAlpha(1f);
+                                displayMarker.get(i).setZIndex(-1);
                             }
                             if(!isRefresh) {
                                 LatLng firstGPS = new LatLng(saveLat, saveLong);
@@ -609,13 +599,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                     mArrMarkerOptions.set(i, markerOptions);
                                     markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), marker_root_view)));
                                     displayMarker.add(mMap.addMarker(mArrMarkerOptions.get(i)));
-                                    float value = 0;
-                                    if (mSensor.get(i).getPing() < ALIVEPING) {
-                                        value = (1 + value) * mSensor.get(i).getMaxVelocity();
-                                    }
-                                    displayMarker.get(i).setZIndex(value);
-                                    displayMarker.get(i).setAlpha(1f);
-
                                     if (oldMarker != null) {
                                         oldMarker.get(i).remove();
                                     }
@@ -897,12 +880,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                     mArrMarkerOptions.add(markerOptions);
                     markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), marker_root_view)));
                     Marker marker = mMap.addMarker(mArrMarkerOptions.get(finalI));
-                    float value = 0;
-                    if(mSensor.get(finalI).getPing() < ALIVEPING) {
-                        value = (1 + value) * mSensor.get(finalI).getMaxVelocity();
-                    }
-                    marker.setZIndex(value);
-                    marker.setAlpha(1f);
                 });
             }
         }
