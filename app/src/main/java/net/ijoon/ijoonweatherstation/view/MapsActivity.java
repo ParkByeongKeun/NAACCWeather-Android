@@ -103,12 +103,13 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     String fixSensorName;
     private Intent serviceIntent;
     List<Marker> displayMarker;
+    List<Marker> overlayMarker;
 
     private void setCustomMarkerView() {
         marker_root_view = LayoutInflater.from(this).inflate(R.layout.marker_layout, null);
         tv_marker = marker_root_view.findViewById(R.id.tv_marker);
-        rl_message = marker_root_view.findViewById(R.id.rlMessage);
         tvMarkerSubTitle = marker_root_view.findViewById(R.id.tv_sub_title_marker);
+        rl_message = marker_root_view.findViewById(R.id.rlMessage);
     }
 
     private void setPermission(){
@@ -153,6 +154,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         mBackPressCloseHandler = new BackPressCloseHandler(this);
         mArrMarkerOptions = new ArrayList<>();
         displayMarker = new ArrayList<>();
+        overlayMarker = new ArrayList<>();
         mCustomApplication = (CustomApplication) getApplicationContext();
         actionBar = getSupportActionBar();
         setCustomMarkerView();
@@ -277,6 +279,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             mSweetSheet.toggle();
         }
         displayMarker.clear();
+        overlayMarker.clear();
     }
 
     @Override
@@ -371,6 +374,30 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         });
     }
 
+    public boolean fadeMarker(final Marker marker) {
+        final Handler handler = new Handler();
+        handler.post(new Runnable() {
+            float f;
+            int i = 2;
+            int timer;
+            @Override
+            public void run() {
+                if(i%2 == 0) {
+                    f = 1f;
+                }
+                else
+                    f = 0f;
+                marker.setAlpha(f);
+                i++;
+                timer = timer + 300;
+                if(timer < 500){
+                    handler.postDelayed(this, 300);
+                }else marker.remove();
+            }
+        });
+        return true;
+    }
+
     @Override
     public void onResponse(MessageHeader messageHeader, final byte[] bodyBuf) {
         super.onResponse(messageHeader, bodyBuf);
@@ -395,9 +422,9 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                     displayMarker.remove(i);
                                 }
                                 if(mSensor.get(i).getMaxVelocity() >= 10.0) {
-                                    rl_message.setBackgroundResource(R.drawable.ic_message_danger);
+                                    rl_message.setBackgroundResource(R.drawable.round_danger);
                                 }else {
-                                    rl_message.setBackgroundResource(R.drawable.ic_message_default);
+                                    rl_message.setBackgroundResource(R.drawable.round_default);
                                 }
                                 tv_marker.setText(mSensor.get(i).getName());
                                 tvMarkerSubTitle.setText(String.format("%.1f", response.getVelocity()) + "m/s" + " (" + mSensor.get(i).getMaxVelocity()+ "m/s)");
@@ -408,18 +435,28 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                 mArrMarkerOptions.set(i,markerOptions);
                                 markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), marker_root_view)));
                                 displayMarker.add(mMap.addMarker(mArrMarkerOptions.get(i)));
+                                if(mSensor.get(i).getMaxVelocity() >= 10.0) {
+                                    rl_message.setBackgroundResource(R.drawable.round_danger_overlay);
+                                }else {
+                                    rl_message.setBackgroundResource(R.drawable.round_default_overlay);
+                                }
+                                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), marker_root_view)));
+                                overlayMarker.add(mMap.addMarker(mArrMarkerOptions.get(i)));
                                 float value = 0;
                                 if(mSensor.get(i).getPing() < ALIVEPING) {
                                     value = (1 + value) * mSensor.get(i).getMaxVelocity();
                                 }
                                 displayMarker.get(i).setZIndex(value);
-                                displayMarker.get(i).setAlpha(1f);
                             }
-
                             if(oldMarker != null) {
                                 if(oldMarker.get(i).getSnippet().equals(response.getSerial())) {
                                     oldMarker.get(i).remove();
                                 }
+                            }
+                        }
+                        for(int i = 0 ; i < overlayMarker.size() ; i ++) {
+                            if(overlayMarker.get(i).getSnippet().equals(response.getSerial())) {
+                                fadeMarker(overlayMarker.get(i));
                             }
                         }
                     });
@@ -449,12 +486,12 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                             mCustomApplication.setEnvSensor(mSensor.get(mPosition));
                             for(int i = 0 ; i < response.getSensorCount() ; i ++) {
                                 if(mSensor.get(i).getPing() >= ALIVEPING) {
-                                    rl_message.setBackgroundResource(R.drawable.ic_message_ping);
+                                    rl_message.setBackgroundResource(R.drawable.round_disconnect);
                                 }else {
                                     if(mSensor.get(i).getMaxVelocity() >= 10.0) {
-                                        rl_message.setBackgroundResource(R.drawable.ic_message_danger);
+                                        rl_message.setBackgroundResource(R.drawable.round_danger);
                                     }else {
-                                        rl_message.setBackgroundResource(R.drawable.ic_message_default);
+                                        rl_message.setBackgroundResource(R.drawable.round_default);
                                     }
                                 }
                                 tv_marker.setText(mSensor.get(i).getName());
@@ -559,9 +596,9 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                             for(int j = 0 ; j < response.getDataCount() ; j ++) {
                                 if (mSensor.get(i).getSerial().equals(response.getData(j).getSerial())) {
                                     if (mSensor.get(i).getMaxVelocity() >= 10.0) {
-                                        rl_message.setBackgroundResource(R.drawable.ic_message_danger);
+                                        rl_message.setBackgroundResource(R.drawable.round_danger);
                                     } else {
-                                        rl_message.setBackgroundResource(R.drawable.ic_message_default);
+                                        rl_message.setBackgroundResource(R.drawable.round_default);
                                     }
                                     tv_marker.setText(mSensor.get(i).getName());
                                     tvMarkerSubTitle.setText(String.format("%.1f", response.getData(j).getVelocity()) + "m/s" + " (" + mSensor.get(i).getMaxVelocity() + "m/s)");
@@ -834,20 +871,20 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 runOnUiThread(() -> {
                     if (serial.equals(mSensor.get(finalI).getSerial())) {
                         if (Float.valueOf(maxVelocity) >= 10.0) {
-                            rl_message.setBackgroundResource(R.drawable.ic_message_danger);
+                            rl_message.setBackgroundResource(R.drawable.round_danger);
                         } else {
-                            rl_message.setBackgroundResource(R.drawable.ic_message_default);
+                            rl_message.setBackgroundResource(R.drawable.round_default);
                         }
                         tv_marker.setText(mSensor.get(finalI).getName());
                         tvMarkerSubTitle.setText(maxVelocity + "m/s (" + maxVelocityTime + ")");
                     }else {
                         if (mSensor.get(finalI).getPing() >= ALIVEPING) {
-                            rl_message.setBackgroundResource(R.drawable.ic_message_ping);
+                            rl_message.setBackgroundResource(R.drawable.round_disconnect);
                         }else {
                             if (mSensor.get(finalI).getMaxVelocity() >= 10.0) {
-                                rl_message.setBackgroundResource(R.drawable.ic_message_danger);
+                                rl_message.setBackgroundResource(R.drawable.round_danger);
                             }else {
-                                rl_message.setBackgroundResource(R.drawable.ic_message_default);
+                                rl_message.setBackgroundResource(R.drawable.round_default);
                             }
                         }
                         tv_marker.setText(mSensor.get(finalI).getName());
