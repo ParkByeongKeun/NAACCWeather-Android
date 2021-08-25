@@ -5,13 +5,13 @@
     "kind": "Directory"
   },
   "applicationId": "net.ijoon.ijoonweatherstation",
-  "variantName": "processReleaseResources",
+  "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 33,
-      "versionName": "0.3.19",
+      "versionCode": 34,
+      "versionName": "0.4.1",
       "outputFile": "app-release.apk"
     }
   ]
