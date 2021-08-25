@@ -112,12 +112,8 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                         startActivity(intent);
                 });
                 mLlMySensor.setOnClickListener(v -> {
-                        if (mEnvSensor == null) {
-                                showDialog(getResources().getString(R.string.textSensorAvailable));
-                        }else {
-                                Intent intent = new Intent(InfomationActivity.this, InfoMySensorActivity.class);
-                                startActivity(intent);
-                        }
+                        Intent intent = new Intent(InfomationActivity.this, InfoMySensorActivity.class);
+                        startActivity(intent);
                 });
                 mLlNotice.setOnClickListener(v -> {
                         Intent intent = new Intent(InfomationActivity.this, InfoNoticeActivity.class);
