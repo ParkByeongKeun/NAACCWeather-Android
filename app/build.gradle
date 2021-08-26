@@ -8,8 +8,8 @@ android {
         applicationId "net.ijoon.ijoonweatherstation"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 34
-        versionName "0.4.1"
+        versionCode 35
+        versionName "0.4.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
