@@ -89,6 +89,7 @@ public class ForgotPWAuthenticationActivity extends AppCompatActivity {
             public void onResponse(Call<ResetPasswordCheckResponse> call, Response<ResetPasswordCheckResponse> response) {
                 ResetPasswordCheckResponse body = response.body();
                 if(body == null) {
+                    showAlertDialog(getResources().getString(R.string.textCheckInformation));
                     return;
                 }
                 if(body.getSuccess()) {

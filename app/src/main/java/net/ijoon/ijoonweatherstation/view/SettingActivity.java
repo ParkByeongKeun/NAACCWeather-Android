@@ -414,7 +414,7 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         new Thread(() -> {
             Call<UnRegPushTokenResponse> call = RetrofitClient
                     .getApiService(mToken)
-                    .regPushToken(new UnRegPushTokenRequest(UUID));
+                    .unRegPushToken(new UnRegPushTokenRequest(UUID));
             call.enqueue(new Callback<UnRegPushTokenResponse>() {
                 @Override
                 public void onResponse(Call<UnRegPushTokenResponse> call, Response<UnRegPushTokenResponse> response) {
