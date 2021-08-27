@@ -94,18 +94,19 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
         mCustomApplication.mServerSession.request(getSensorRequest);
         mCustomDialog.setOnDismissListener(dialog -> {
             mComputableDate.setDateFormat("yyyy");
-            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + mSensor.get(mCustomDialog.getPosition()).getName() + "</font>"));
+            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + mCustomApplication.getEnvSensor().getName() + "</font>"));
             envsensor.StatisticalDataOfYearRequest request = envsensor.StatisticalDataOfYearRequest.newBuilder().setYear(mComputableDate.getYear()).setAccessToken(mToken)
-                    .setSerial(mSensor.get(mCustomDialog.getPosition()).getSerial()).setIsIntervalDay(true).build();
+                    .setSerial(mCustomApplication.getEnvSensor().getSerial()).setIsIntervalDay(true).build();
             mCustomApplication.mServerSession.request(request);
             position = mCustomDialog.getPosition();
+            mCustomApplication.setEnvSensor(mSensor.get(position));
         });
         mIvleft.setOnClickListener(v -> {
             mComputableDate.addYear(-1);
             mComputableDate.setDateFormat("yyyy");
             mTvCalendal.setText(mComputableDate.getCurrentTimeText());
             envsensor.StatisticalDataOfYearRequest request = envsensor.StatisticalDataOfYearRequest.newBuilder().setYear(mComputableDate.getYear()).setAccessToken(mToken)
-                    .setSerial(mSensor.get(mCustomDialog.getPosition()).getSerial()).setIsIntervalDay(true).build();
+                    .setSerial(mCustomApplication.getEnvSensor().getSerial()).setIsIntervalDay(true).build();
             mCustomApplication.mServerSession.request(request);
         });
         mIvRight.setOnClickListener(v -> {
@@ -113,7 +114,7 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
             mComputableDate.setDateFormat("yyyy");
             mTvCalendal.setText(mComputableDate.getCurrentTimeText());
             envsensor.StatisticalDataOfYearRequest request = envsensor.StatisticalDataOfYearRequest.newBuilder().setYear(mComputableDate.getYear()).setAccessToken(mToken)
-                    .setSerial(mSensor.get(mCustomDialog.getPosition()).getSerial()).setIsIntervalDay(true).build();
+                    .setSerial(mCustomApplication.getEnvSensor().getSerial()).setIsIntervalDay(true).build();
             mCustomApplication.mServerSession.request(request);
         });
         mIvCalendar.setOnClickListener(v -> {

@@ -105,19 +105,20 @@ public class InfoChartActivity extends ChartBase {
                     .setSerial(mSensor.get(mCustomDialog.getPosition()).getSerial()).setIntervalMin(INTERVAL).build();
             mCustomApplication.mServerSession.request(request1);
             position = mCustomDialog.getPosition();
+            mCustomApplication.setEnvSensor(mSensor.get(position));
         });
         mIvleft.setOnClickListener(v -> {
             mComputableDate.addDayOfMonth(-1);
             mTvCalendal.setText(mComputableDate.getCurrentTimeText());
             envsensor.StatisticalDataOfDayRequest requestLeft = envsensor.StatisticalDataOfDayRequest.newBuilder().setAccessToken(mToken).setDate(mComputableDate.getCurrentTimeText())
-                    .setSerial(mSensor.get(position).getSerial()).setIntervalMin(INTERVAL).build();
+                    .setSerial(mCustomApplication.getEnvSensor().getSerial()).setIntervalMin(INTERVAL).build();
             mCustomApplication.mServerSession.request(requestLeft);
         });
         mIvRight.setOnClickListener(v -> {
             mComputableDate.addDayOfMonth(1);
             mTvCalendal.setText(mComputableDate.getCurrentTimeText());
             envsensor.StatisticalDataOfDayRequest requestRight = envsensor.StatisticalDataOfDayRequest.newBuilder().setAccessToken(mToken).setDate(mComputableDate.getCurrentTimeText())
-                    .setSerial(mSensor.get(position).getSerial()).setIntervalMin(INTERVAL).build();
+                    .setSerial(mCustomApplication.getEnvSensor().getSerial()).setIntervalMin(INTERVAL).build();
             mCustomApplication.mServerSession.request(requestRight);
         });
         mIvCalendar.setOnClickListener(v -> {
@@ -348,7 +349,7 @@ public class InfoChartActivity extends ChartBase {
                 mComputableDate.setDate(date);
                 mTvCalendal.setText(mComputableDate.getCurrentTimeText());
                 envsensor.StatisticalDataOfDayRequest requestLeft = envsensor.StatisticalDataOfDayRequest.newBuilder().setAccessToken(mToken).setDate(mComputableDate.getCurrentTimeText())
-                        .setSerial(mSensor.get(position).getSerial()).setIntervalMin(INTERVAL).build();
+                        .setSerial(mCustomApplication.getEnvSensor().getSerial()).setIntervalMin(INTERVAL).build();
                 mCustomApplication.mServerSession.request(requestLeft);
             }
         });
