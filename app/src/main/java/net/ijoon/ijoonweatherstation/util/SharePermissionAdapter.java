@@ -61,11 +61,12 @@ public class SharePermissionAdapter extends BaseAdapter {
         holder.userEmail.setTextColor(context.getResources().getColor(R.color.black));
         if(InfoArr.get(position).equals(ownerEmail)) {
             holder.userEmail.setText(InfoArr.get(position) + " (owner)");
-            holder.userEmail.setTextColor(context.getResources().getColor(R.color.color_blue));
             if(InfoArr.get(position).equals(usrEmail)) {
+                holder.userEmail.setTextColor(context.getResources().getColor(R.color.color_blue));
                 holder.userEmail.setText("> " + InfoArr.get(position) + " (owner)");
             }
         }else if(InfoArr.get(position).equals(usrEmail)) {
+            holder.userEmail.setTextColor(context.getResources().getColor(R.color.color_blue));
             holder.userEmail.setText("> " + InfoArr.get(position));
         }else {
             holder.userEmail.setText(InfoArr.get(position));

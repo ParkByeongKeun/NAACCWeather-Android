@@ -74,6 +74,7 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
     TextView tvSharing;
     ListView lvUser;
     String mId;
+    TextView mTvSharingCount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,6 +90,7 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
         tvSharing = findViewById(R.id.tvSharing);
         tvSharing.setVisibility(View.GONE);
         lvUser = findViewById(R.id.listView1);
+        mTvSharingCount = findViewById(R.id.tvSharingCount);
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
         mId = preferences.getString("id","");
@@ -345,6 +347,12 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
                                     mId);
                             lvUser.setAdapter(sharePermissionAdapter);
                             sharePermissionAdapter.notifyDataSetChanged();
+
+                            if(response.getSharedUsersList().size() > 1) {
+                                mTvSharingCount.setText(response.getSharedUsersList().size() + "명이 함께 사용중입니다.");
+                            }else {
+                                mTvSharingCount.setText("함께할 사용자를 공유해주세요.");
+                            }
                         }
                     } catch (InvalidProtocolBufferException e) {
                         e.printStackTrace();
