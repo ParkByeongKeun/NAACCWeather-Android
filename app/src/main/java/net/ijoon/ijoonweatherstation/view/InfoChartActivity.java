@@ -1,5 +1,6 @@
 package net.ijoon.ijoonweatherstation.view;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -166,9 +167,14 @@ public class InfoChartActivity extends ChartBase {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_list,menu);
-        return true;
+        Intent intent = getIntent();
+        if(intent.getBooleanExtra("monitor",false)) {
+            return false;
+        }else {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.menu_list,menu);
+            return true;
+        }
     }
 
     private LineData generateLineData() {

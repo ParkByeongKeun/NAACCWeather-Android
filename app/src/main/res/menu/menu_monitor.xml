@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.ijoon.weathermoniter.net.ijoon.weathermoniter.ScrollingActivity">
+
+
+    <item
+        android:id="@+id/action_vel_list"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        android:icon="@drawable/ic_baseline_notifications"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_chart"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        android:icon="@drawable/ic_chart_btn"
+        app:showAsAction="always" />
+
+</menu>

@@ -15,6 +15,8 @@ import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -922,17 +924,6 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
-                finish();
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onBackPressed() {
         if(mSweetSheet.isShow()){
             mSweetSheet.dismiss();
@@ -980,5 +971,35 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
         ra.setFillAfter(true);
         mIvCompass.startAnimation(ra);
         prevValue = (int)value;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_monitor,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action_chart: {
+                Intent intent = new Intent(MonitorActivity.this, InfoChartActivity.class);
+                intent.putExtra("monitor",true);
+                startActivity(intent);
+                return true;
+            }
+            case R.id.action_vel_list: {
+                Intent intent = new Intent(MonitorActivity.this, VelocityRecordActivity.class);
+                intent.putExtra("serial",mEnvSensor.getSerial());
+                startActivity(intent);
+                return true;
+            }
+            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
