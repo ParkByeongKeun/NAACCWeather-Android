@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import com.google.gson.Gson;
@@ -78,10 +81,11 @@ public class VelocityRecordActivity extends SCNetAppCompatActivity {
         adapter = new RecordListViewAdapter();
         runOnUiThread(() -> mListView.setAdapter(adapter));
 
-        mListView.setOnItemClickListener((parent, view, position, id) -> {
+        mListView.setOnItemLongClickListener((parent, view, position, id) -> {
             showDeleteSuccessAlertDialog(getResources().getString(R.string.textDeleteTheSelectedRecord),
                     mArrVelocityRecord.get(position).getSerial(),
                     mArrVelocityRecord.get(position).getId());
+            return false;
         });
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             boolean lastItemVisibleFlag = false;
