@@ -621,6 +621,14 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     }
 
     @Override
+    public void onAttachFailed() {
+        runOnUiThread(() -> {
+            mMap.clear();
+        });
+        super.onAttachFailed();
+    }
+
+    @Override
     public boolean onMarkerClick(Marker marker) {
         for (int i = 0 ; i < mSensor.size() ; i ++) {
             if(String.valueOf(mSensor.get(i).getSerial()).equals(marker.getSnippet())) {
