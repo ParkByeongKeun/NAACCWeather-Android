@@ -88,13 +88,13 @@ public class JoinEmailActivity extends AppCompatActivity {
             public void onResponse(Call<VerifyJoinResponse> call, Response<VerifyJoinResponse> response) {
                 VerifyJoinResponse body = response.body();
                 if(body == null) {// Todo: 로그인인증서버에서 HTTP Status Code에 따라 body가 null이 되는지 확인
-                    showAlertDialog("인증 실패");
+                    showAlertDialog("인증 실패\n 인증번호를 확인해주세요");
                     return;
                 }
                 if(body.getSuccess()) {
                     showAuthAlertDialog("인증 성공\n 로그인 후 사용해주세요.");
                 }else {
-                    showAlertDialog("인증 실패");
+                    showAlertDialog("인증 실패\n 인증번호를 확인해주세요");
                 }
             }
             @Override

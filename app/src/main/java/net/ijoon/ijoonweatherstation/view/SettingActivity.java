@@ -169,6 +169,10 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
     }
 
     void delete(String pw) {
+        if(pw.equals("")) {
+            showAlertDialog(getResources().getString(R.string.textFailedToWithdrawal));
+            return;
+        }
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(chain -> {
             Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).build();
@@ -184,8 +188,19 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         deleteResponseCall.enqueue(new Callback<DeleteResponse>() {
             @Override
             public void onResponse(Call<DeleteResponse> call, Response<DeleteResponse> response) {
+                if(response.body() == null) {
+                    showAlertDialog(getResources().getString(R.string.textFailedToWithdrawal));
+                    return;
+                }
                 if(response.body().getSuccess()) {
-                    showDeleteAlertDialog(getResources().getString(R.string.textMeantimeThankYouForUsing));
+                    SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+                    preferences.edit().clear().apply();
+                    preferences.edit().putString("id","");
+                    preferences.edit().putString("token","");
+                    preferences.edit().apply();
+                    SettingActivity.super.activityFinish();
+                    Intent intent = new Intent(SettingActivity.this, DeleteActivity.class);
+                    startActivity(intent);
                 }else {
                     showAlertDialog(getResources().getString(R.string.textFailedToWithdrawal));
                 }
@@ -205,25 +220,6 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
                 (dialog, which) -> {
                     unRegPushToken(UUIDManager.getDeviceUUID(getApplicationContext()));
-                    SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
-                    preferences.edit().clear().apply();
-                    preferences.edit().putString("id","");
-                    preferences.edit().putString("token","");
-                    preferences.edit().apply();
-                    SettingActivity.super.activityFinish();
-                    Intent intent = new Intent(SettingActivity.this, DefaultActivity.class);
-                    startActivity(intent);
-                });
-        runOnUiThread(() -> alertDialog.show());
-    }
-
-    public void showDeleteAlertDialog(String message) {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle(getResources().getString(R.string.textNotification));
-        alertDialog.setMessage(message);
-        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                (dialog, which) -> {
-                    dialog.cancel();
                     SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
                     preferences.edit().clear().apply();
                     preferences.edit().putString("id","");

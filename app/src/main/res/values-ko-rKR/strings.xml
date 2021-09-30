@@ -213,7 +213,7 @@
     <string name="textCheckInfomation">입력정보를 확인해주세요.</string>
     <string name="textSetting">설정</string>
     <string name="textCancelCircularMembership">회원탈퇴를 하시려면 비밀번호 입력후 확인버튼을 눌러주세요.</string>
-    <string name="textFailedToWithdrawal">회원탈퇴를 실패했습니다.</string>
+    <string name="textFailedToWithdrawal">회원탈퇴를 실패했습니다.\n비밀번호 또는 네트워크를 확인해주세요.</string>
     <string name="textPasswordChange">비밀번호 변경</string>
     <string name="textNicknameChangedSuccess">닉네임 변경에 성공했습니다.\n변경된 닉네임은 </string>
     <string name="textNicknameChangedFail">닉네임 변경에 실패했습니다.</string>
