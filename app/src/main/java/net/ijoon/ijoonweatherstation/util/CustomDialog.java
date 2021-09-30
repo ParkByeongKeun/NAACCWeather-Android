@@ -68,6 +68,7 @@ public class CustomDialog extends Dialog implements SwipeRefreshLayout.OnRefresh
         }else {
             mListViewAdapter.addItem(R.drawable.logo_weather_gray, title, false);
         }
+        mActivity.runOnUiThread(() -> mListViewAdapter.notifyDataSetChanged());
 
     }
 
