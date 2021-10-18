@@ -171,8 +171,6 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
         mSwipeRefreshLayout.setRefreshing(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-        envsensor.StreamingStartRequest request = envsensor.StreamingStartRequest.newBuilder().setAccessToken(mToken).setSerial(mEnvSensor.getSerial()).setClearPrevious(true).build();
-        mCustomApplication.mServerSession.request(request);
 //        mSweetSheet = new SweetSheet(rl);
 //        mRootView.setOnClickListener(v -> {
 //            if(mSweetSheet.isShow()){
@@ -195,6 +193,13 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
 //            setupCustomView();
 //            mSweetSheet.toggle();
 //        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        envsensor.StreamingStartRequest request = envsensor.StreamingStartRequest.newBuilder().setAccessToken(mToken).setSerial(mEnvSensor.getSerial()).setClearPrevious(true).build();
+        mCustomApplication.mServerSession.request(request);
     }
 
     @Override
