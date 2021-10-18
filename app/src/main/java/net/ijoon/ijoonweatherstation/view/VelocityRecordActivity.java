@@ -82,6 +82,9 @@ public class VelocityRecordActivity extends SCNetAppCompatActivity {
         runOnUiThread(() -> mListView.setAdapter(adapter));
 
         mListView.setOnItemLongClickListener((parent, view, position, id) -> {
+            if(mArrVelocityRecord.size() == 0) {
+                return false;
+            }
             showDeleteSuccessAlertDialog(getResources().getString(R.string.textDeleteTheSelectedRecord),
                     mArrVelocityRecord.get(position).getSerial(),
                     mArrVelocityRecord.get(position).getId());
