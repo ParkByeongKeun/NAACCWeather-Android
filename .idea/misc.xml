@@ -8,8 +8,24 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/activity_app_info.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/activity_default.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/activity_delete.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/activity_email_confirm.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/activity_forgot_pw.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/activity_forgot_pw_authentication.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/activity_forgot_pw_confirm.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/activity_infomation.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/activity_join.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/activity_join_email.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/activity_more.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/activity_setting.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/menu/menu_add.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/menu/menu_list.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/menu/menu_monitor.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/menu/menu_qrcode.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/menu/menu_refresh.xml" value="0.17239583333333333" />
       </map>
     </option>
   </component>

@@ -11,9 +11,9 @@
             android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="80dp"
+            android:layout_marginBottom="150dp"
+            android:layout_above="@+id/llCenter"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -49,6 +49,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="32dp"
             android:orientation="vertical"
+            android:id="@+id/llCenter"
             android:paddingLeft="32dp"
             android:paddingRight="32dp">
 

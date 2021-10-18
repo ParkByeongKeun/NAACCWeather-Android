@@ -15,9 +15,9 @@ android:background="@drawable/blue_skies">
     android:id="@+id/linearLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
     android:layout_centerHorizontal="true"
-    android:layout_marginTop="80dp"
+    android:layout_marginBottom="150dp"
+    android:layout_above="@+id/llCenter"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -45,120 +45,119 @@ android:background="@drawable/blue_skies">
 </LinearLayout>
 
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true"
-    android:layout_marginBottom="32dp"
-    android:orientation="vertical"
-    android:paddingLeft="32dp"
-    android:paddingRight="32dp">
-
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColorHint="#96ffffff"
-        android:theme="@style/EditScreenTextInputLayoutStyle">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:drawablePadding="16dp"
-            android:drawableRight="@drawable/ic_email_white_24dp"
-            android:hint="@string/textEmail"
-            android:id="@+id/etId"
-            android:inputType="textEmailAddress"
-            android:maxLines="1"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColorHint="#96ffffff"
-        android:theme="@style/EditScreenTextInputLayoutStyle">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:drawablePadding="16dp"
-            android:drawableRight="@drawable/ic_lock_white_24dp"
-            android:hint="@string/textPassword"
-            android:id="@+id/etPassword"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColorHint="#96ffffff"
-        android:theme="@style/EditScreenTextInputLayoutStyle">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:drawablePadding="16dp"
-            android:drawableRight="@drawable/ic_confirm"
-            android:hint="@string/textConfirmPassword"
-            android:id="@+id/etRePassword"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColorHint="#96ffffff"
-        android:theme="@style/EditScreenTextInputLayoutStyle">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:drawablePadding="16dp"
-            android:drawableRight="@drawable/ic_nickname"
-            android:hint="@string/textNickname"
-            android:id="@+id/etNick"
-            android:maxLines="1"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="32dp"
+        android:orientation="vertical"
+        android:id="@+id/llCenter"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp">
 
 
-
-        <Button
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/buttonshapewhitebg"
-            android:text="@string/textEmailAuthentication"
-            android:id="@+id/btnJoin"
-            android:textAllCaps="false"
-            android:textColor="#96ffffff"
-            android:textSize="16dp"
-            android:padding="10dp"
-            android:textStyle="bold" />
+            android:textColorHint="#96ffffff"
+            android:theme="@style/EditScreenTextInputLayoutStyle">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etId"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableRight="@drawable/ic_email_white_24dp"
+                android:drawablePadding="16dp"
+                android:hint="@string/textEmail"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="#96ffffff"
+            android:theme="@style/EditScreenTextInputLayoutStyle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableRight="@drawable/ic_lock_white_24dp"
+                android:drawablePadding="16dp"
+                android:hint="@string/textPassword"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="#96ffffff"
+            android:theme="@style/EditScreenTextInputLayoutStyle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etRePassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableRight="@drawable/ic_confirm"
+                android:drawablePadding="16dp"
+                android:hint="@string/textConfirmPassword"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="#96ffffff"
+            android:theme="@style/EditScreenTextInputLayoutStyle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNick"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableRight="@drawable/ic_nickname"
+                android:drawablePadding="16dp"
+                android:hint="@string/textNickname"
+                android:maxLines="1"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/btnJoin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttonshapewhitebg"
+                android:padding="10dp"
+                android:text="@string/textEmailAuthentication"
+                android:textAllCaps="false"
+                android:textColor="#96ffffff"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
 
 
 </RelativeLayout>

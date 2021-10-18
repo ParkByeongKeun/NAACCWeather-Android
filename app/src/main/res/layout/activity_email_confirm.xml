@@ -11,9 +11,9 @@
             android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="80dp"
+            android:layout_marginBottom="150dp"
+            android:layout_above="@+id/llCenter"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -41,62 +41,61 @@
         </LinearLayout>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="32dp"
+        android:orientation="vertical"
+        android:id="@+id/llCenter"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="#96ffffff"
+            android:theme="@style/EditScreenTextInputLayoutStyle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etId"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableRight="@drawable/ic_email_white_24dp"
+                android:drawablePadding="16dp"
+                android:hint="@string/textEmail"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="32dp"
-            android:orientation="vertical"
-            android:paddingLeft="32dp"
-            android:paddingRight="32dp">
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/btnOk"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColorHint="#96ffffff"
-                android:theme="@style/EditScreenTextInputLayoutStyle">
+                android:layout_marginLeft="16dp"
+                android:background="@drawable/buttonshapewhitebg"
+                android:text="@string/textOk"
+                android:textAllCaps="false"
+                android:textColor="#96ffffff"
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:drawablePadding="16dp"
-                    android:drawableRight="@drawable/ic_email_white_24dp"
-                    android:hint="@string/textEmail"
-                    android:id="@+id/etId"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="8dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:background="@drawable/buttonshapewhitebg"
-                    android:text="@string/textOk"
-                    android:id="@+id/btnOk"
-                    android:textAllCaps="false"
-                    android:textColor="#96ffffff"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-
-            </LinearLayout>
 
         </LinearLayout>
+
+    </LinearLayout>
 
 
     </RelativeLayout>

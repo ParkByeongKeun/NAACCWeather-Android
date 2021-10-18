@@ -82,13 +82,12 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".view.JoinActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".view.JoinEmailActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:screenOrientation="portrait"/>
         <activity android:name=".view.LoginActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".view.InfomationActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.SensorAddActivity"
@@ -100,12 +99,16 @@
         <activity android:name=".view.StationHandOfOutActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.EmailConfirmActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.ForgotPWActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.ForgotPWAuthenticationActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.ForgotPWConfirmActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".view.InfoMySensorActivity"
