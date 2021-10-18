@@ -55,7 +55,7 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
     HorizontalAdapter horizontalAdapter;
     public List<DataProgrssBar> horizontalList;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    SweetSheet mSweetSheet;
+//    SweetSheet mSweetSheet;
     String mToken;
     CustomApplication mCustomApplication;
     TextView mTvWindDirection;
@@ -173,28 +173,28 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         envsensor.StreamingStartRequest request = envsensor.StreamingStartRequest.newBuilder().setAccessToken(mToken).setSerial(mEnvSensor.getSerial()).setClearPrevious(true).build();
         mCustomApplication.mServerSession.request(request);
-        mSweetSheet = new SweetSheet(rl);
-        mRootView.setOnClickListener(v -> {
-            if(mSweetSheet.isShow()){
-                mSweetSheet.dismiss();
-            }
-            mTouchCheck++;
-            if(mTouchCheck == 10) {
-                Intent intent = new Intent(MonitorActivity.this, DevActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        mIvWeather.setOnClickListener(v -> {
-            if(mSweetSheet.isShow()) {
-                return;
-            }
-            if(sunSet.getSunSetHour() == null) {
-                return;
-            }
-            setupCustomView();
-            mSweetSheet.toggle();
-        });
+//        mSweetSheet = new SweetSheet(rl);
+//        mRootView.setOnClickListener(v -> {
+//            if(mSweetSheet.isShow()){
+//                mSweetSheet.dismiss();
+//            }
+//            mTouchCheck++;
+////            if(mTouchCheck == 10) {
+////                Intent intent = new Intent(MonitorActivity.this, DevActivity.class);
+////                startActivity(intent);
+////                finish();
+////            }
+//        });
+//        mIvWeather.setOnClickListener(v -> {
+//            if(mSweetSheet.isShow()) {
+//                return;
+//            }
+//            if(sunSet.getSunSetHour() == null) {
+//                return;
+//            }
+//            setupCustomView();
+//            mSweetSheet.toggle();
+//        });
     }
 
     @Override
@@ -925,11 +925,11 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
 
     @Override
     public void onBackPressed() {
-        if(mSweetSheet.isShow()){
-            mSweetSheet.dismiss();
-        }else {
+//        if(mSweetSheet.isShow()){
+//            mSweetSheet.dismiss();
+//        }else {
             super.onBackPressed();
-        }
+//        }
     }
 
     private void setupCustomView() {
@@ -937,7 +937,7 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
                 CustomDelegate.AnimationType.DuangLayoutAnimation);
         View view = LayoutInflater.from(this).inflate(R.layout.sunset_sunrise_view, null, false);
         customDelegate.setCustomView(view);
-        mSweetSheet.setDelegate(customDelegate);
+//        mSweetSheet.setDelegate(customDelegate);
         final TextView tvTimeSunrise = view.findViewById(R.id.tvTime);
         final TextView tvTimeSunset = view.findViewById(R.id.tvTimeSunset);
         int tempSunsetHour = 0;
