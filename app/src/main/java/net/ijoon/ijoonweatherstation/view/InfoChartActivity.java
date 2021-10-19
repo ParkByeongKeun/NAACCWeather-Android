@@ -54,6 +54,7 @@ public class InfoChartActivity extends ChartBase {
     List<envsensor.Item> yearSensorVelocityList;
     CustomDialog mCustomDialog;
     ComputableDate mComputableDate;
+    ComputableDate mCalendarComputableDate;
     List<envsensor.Sensor> mSensor;
     TextView mTvCalendal;
     ImageView mIvleft;
@@ -90,6 +91,7 @@ public class InfoChartActivity extends ChartBase {
         mToken = preferences.getString("token","");
         sensorVelocityList = new ArrayList<>();
         mComputableDate = new ComputableDate();
+        mCalendarComputableDate = new ComputableDate();
         mComputableDate.setDateFormat("yyyy-MM-dd");
         mTvCalendal.setText(mComputableDate.getCurrentTimeText());
         envsensor.StatisticalDataOfYearRequest yearRequest = envsensor.StatisticalDataOfYearRequest.newBuilder().setYear(mComputableDate.getYear()).setAccessToken(mToken)
@@ -331,9 +333,9 @@ public class InfoChartActivity extends ChartBase {
     private void updateCalendar() {
         for(int i = 0 ; i < yearSensorVelocityList.size() ; i ++) {
             if(yearSensorVelocityList.get(i).getMaxVelocity() >= MAXVELOCITY) {
-                caldroidFragment.setBackgroundDrawableForDate(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_danger, null), mComputableDate.setDate(yearSensorVelocityList.get(i).getUtc()).getDate());
+                caldroidFragment.setBackgroundDrawableForDate(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_danger, null), mCalendarComputableDate.setDate(yearSensorVelocityList.get(i).getUtc()).getDate());
             }else {
-                caldroidFragment.setBackgroundDrawableForDate(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_normal, null), mComputableDate.setDate(yearSensorVelocityList.get(i).getUtc()).getDate());
+                caldroidFragment.setBackgroundDrawableForDate(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_normal, null), mCalendarComputableDate.setDate(yearSensorVelocityList.get(i).getUtc()).getDate());
             }
         }
         caldroidFragment.refreshView();

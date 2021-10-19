@@ -47,6 +47,7 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
     ActionBar actionBar;
     String mToken;
     ComputableDate mComputableDate;
+    ComputableDate mCalendarComputableDate;
     private CombinedChart chart;
     List<envsensor.Item> sensorVelocityList;
     List<envsensor.Sensor> mSensor;
@@ -68,6 +69,7 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
         mCustomApplication = (CustomApplication) getApplicationContext();
         sensorVelocityList = new ArrayList<>();
         mComputableDate = new ComputableDate();
+        mCalendarComputableDate = new ComputableDate();
         mCustomDialog = new CustomDialog(this);
         mIvleft = findViewById(R.id.ivLeft);
         mIvRight = findViewById(R.id.ivRight);
@@ -290,9 +292,9 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
     private void updateCalendar() {
         for(int i = 0 ; i < sensorVelocityList.size() ; i ++) {
             if(sensorVelocityList.get(i).getMaxVelocity() >= MAXVELOCITY) {
-                caldroidFragment.setBackgroundDrawableForDate(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_danger, null), mComputableDate.setDate(sensorVelocityList.get(i).getUtc()).getDate());
+                caldroidFragment.setBackgroundDrawableForDate(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_danger, null), mCalendarComputableDate.setDate(sensorVelocityList.get(i).getUtc()).getDate());
             }else {
-                caldroidFragment.setBackgroundDrawableForDate(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_normal, null), mComputableDate.setDate(sensorVelocityList.get(i).getUtc()).getDate());
+                caldroidFragment.setBackgroundDrawableForDate(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_normal, null), mCalendarComputableDate.setDate(sensorVelocityList.get(i).getUtc()).getDate());
             }
         }
         caldroidFragment.refreshView();
