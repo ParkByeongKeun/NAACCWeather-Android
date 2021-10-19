@@ -459,7 +459,7 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
                             }else if(response.getData().getVelocity() >= 3.4  && response.getData().getVelocity() <= 5.4 ) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind3));
-                                mRootView.setBackgroundResource(R.drawable.blue_skies);
+                                mRootView.setBackgroundResource(R.drawable.bg_lv1);
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                     getWindow().setNavigationBarColor(Color.parseColor("#52CC7D"));//bottom
                                     getWindow().setStatusBarColor(Color.parseColor("#F4D101"));//statusBar
@@ -470,47 +470,47 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
                             }else if(response.getData().getVelocity() >= 5.5  && response.getData().getVelocity() <= 7.9 ) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind4));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation4));
-                                mRootView.setBackgroundResource(R.drawable.blue_skies);
+                                mRootView.setBackgroundResource(R.drawable.bg_lv1);
                                 mTvWeatherComment.setText(getResources().getString(R.string.midle_title2));
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                     getWindow().setNavigationBarColor(Color.parseColor("#52CC7D"));//bottom
                                     getWindow().setStatusBarColor(Color.parseColor("#F4D101"));//statusBar
                                 }
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFF4D101));
-                            }else if(response.getData().getVelocity() >= 8.0  && response.getData().getVelocity() <= 9.9 ) {
+                            }else if(response.getData().getVelocity() >= 8.0  && response.getData().getVelocity() <= 10.7 ) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind5));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation5));
-                                mRootView.setBackgroundResource(R.drawable.blue_skies);
+                                mRootView.setBackgroundResource(R.drawable.bg_lv2);
                                 mTvWeatherComment.setText(getResources().getString(R.string.midle_title2));
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                     getWindow().setNavigationBarColor(Color.parseColor("#A990D3"));//bottom
                                     getWindow().setStatusBarColor(Color.parseColor("#F7C0EA"));//statusBar
                                 }
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFF7C0EA));//title
-                            }else if(response.getData().getVelocity() >= 10.0  && response.getData().getVelocity() <= 13.8 ) {
+                            }else if(response.getData().getVelocity() >= 10.8  && response.getData().getVelocity() <= 13.8 ) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind6));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation6));
-                                mRootView.setBackgroundResource(R.drawable.bg_lv1);
+                                mRootView.setBackgroundResource(R.drawable.bg_lv2);
                                 mTvWeatherComment.setText(getResources().getString(R.string.midle_title2));
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                     getWindow().setNavigationBarColor(Color.parseColor("#A990D3"));//bottom
                                     getWindow().setStatusBarColor(Color.parseColor("#F7C0EA"));//statusBar
                                 }
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFF7C0EA));//title
-                            }else if(response.getData().getVelocity() >= 13.9  && response.getData().getVelocity() <= 14.9 ) {
+                            }else if(response.getData().getVelocity() >= 13.9  && response.getData().getVelocity() <= 17.1 ) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind7));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation7));
-                                mRootView.setBackgroundResource(R.drawable.bg_lv1);
+                                mRootView.setBackgroundResource(R.drawable.bg_lv2);
                                 mTvWeatherComment.setText(getResources().getString(R.string.midle_title2));
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                     getWindow().setNavigationBarColor(Color.parseColor("#A990D3"));//bottom
                                     getWindow().setStatusBarColor(Color.parseColor("#F7C0EA"));//statusBar
                                 }
                                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFF7C0EA));//title
-                            }else if(response.getData().getVelocity() >= 15.0 && response.getData().getVelocity() <= 20.7) {
+                            }else if(response.getData().getVelocity() >= 17.2 && response.getData().getVelocity() <= 20.7) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind8));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation8));
-                                mRootView.setBackgroundResource(R.drawable.bg_lv2);
+                                mRootView.setBackgroundResource(R.drawable.bg_lv3);
                                 mTvWeatherComment.setText(getResources().getString(R.string.midle_title2));
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                     getWindow().setNavigationBarColor(Color.parseColor("#FFAE98"));//bottom
@@ -520,7 +520,7 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
                             }else if(response.getData().getVelocity() >= 20.8  && response.getData().getVelocity() <= 24.4) {
                                 mTvWindTitle.setText(getResources().getString(R.string.Wind9));
                                 mTvWindSubTitle.setText(getResources().getString(R.string.Explanation9));
-                                mRootView.setBackgroundResource(R.drawable.bg_lv2);
+                                mRootView.setBackgroundResource(R.drawable.bg_lv3);
                                 mTvWeatherComment.setText(getResources().getString(R.string.midle_title2));
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                     getWindow().setNavigationBarColor(Color.parseColor("#FFAE98"));//bottom
