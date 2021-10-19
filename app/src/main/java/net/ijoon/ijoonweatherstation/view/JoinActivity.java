@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.InputFilter;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -74,6 +75,11 @@ public class JoinActivity extends AppCompatActivity {
             }
             return false;
         });
+        mEtId.setFilters(new InputFilter[] {new InputFilter.LengthFilter(20)});
+        mEtPassword.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
+        mEtNickName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
+        mEtRePassword.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
+
         mRlRoot.setOnClickListener(v -> imm.hideSoftInputFromWindow(mEtId.getWindowToken(), 0));
         mBtnJoin.setOnClickListener(v -> {
             mStrId = mEtId.getText().toString();

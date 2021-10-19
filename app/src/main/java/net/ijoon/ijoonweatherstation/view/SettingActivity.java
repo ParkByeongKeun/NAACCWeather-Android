@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Html;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -245,6 +246,7 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         final EditText et = new EditText(SettingActivity.this);
         et.setHint(getResources().getString(R.string.textPassword));
+        et.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
         et.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         et.setTransformationMethod(PasswordTransformationMethod.getInstance());
         alertDialog.setView(et);
@@ -281,6 +283,9 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         confirmChangeEditText = layout.findViewById(R.id.etConfirmChange);
         confirmChangeEditText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         confirmChangeEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        existingEditText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
+        changeEditText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
+        confirmChangeEditText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
         alertDialog.setTitle(getResources().getString(R.string.textPasswordChange));
         alertDialog.setMessage(message);
         alertDialog.setPositiveButton(getResources().getString(R.string.textOk),

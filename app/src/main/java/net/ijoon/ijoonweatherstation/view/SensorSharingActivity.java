@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
@@ -85,6 +86,7 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
         getNameRunnable = () -> userList(mEtName.getText().toString());
         mBtnSuccess = findViewById(R.id.btnSuccess);
         mEtName = findViewById(R.id.etId);
+        mEtName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(30)});
         mUserListView = findViewById(R.id.list);
         mRlRoot = findViewById(R.id.rlRoot);
         tvSharing = findViewById(R.id.tvSharing);

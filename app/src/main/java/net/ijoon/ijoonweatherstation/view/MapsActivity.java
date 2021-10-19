@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.text.InputFilter;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -693,6 +694,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         et.setHint(R.string.text_new_sensor_name);
         et.setSingleLine(true);
         et.setLines(1);
+        et.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
         alertDialog.setView(et);
         alertDialog.setTitle(R.string.text_changing_sensor_name);
         alertDialog.setMessage(R.string.text_subtitle_changing_sensor_name);

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,6 +66,8 @@ public class ForgotPWConfirmActivity extends AppCompatActivity {
         mBtnOk = findViewById(R.id.btnOk);
         mEtPassword = findViewById(R.id.etPassword);
         mEtRePassword = findViewById(R.id.etRePassword);
+        mEtPassword.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
+        mEtRePassword.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
         mRlRoot = findViewById(R.id.rlRoot);
         mBtnOk.setOnClickListener(v -> {
             mPw = mEtPassword.getText().toString();

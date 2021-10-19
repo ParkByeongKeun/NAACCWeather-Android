@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.InputFilter;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -49,6 +50,7 @@ public class JoinEmailActivity extends AppCompatActivity {
         mBtnRetryEmail = findViewById(R.id.btnRetryEmail);
         mBtnAuthOk = findViewById(R.id.btnAuthOk);
         mEtAuth = findViewById(R.id.etAuth);
+        mEtAuth.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         mRlRoot = findViewById(R.id.rlRootView);
         mId = getIntent().getStringExtra("id");

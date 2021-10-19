@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -64,7 +65,9 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
         }
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
         mEtSerial = findViewById(R.id.etSerial);
+        mEtSerial.setFilters(new InputFilter[] {new InputFilter.LengthFilter(20)});
         mEtAuth = findViewById(R.id.etAuth);
+        mEtAuth.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
         mBtnRegist = findViewById(R.id.btnRegist);
         mRlRoot = findViewById(R.id.rlRoot);
         view = getWindow().getDecorView();

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -80,7 +81,10 @@ public class LoginActivity extends SCNetAppCompatActivity {
         mTvForgotEmail = findViewById(R.id.tvEmailForgot);
         mBtnLogin = findViewById(R.id.btnLogin);
         mEtId = findViewById(R.id.etId);
+        mEtId.setFilters(new InputFilter[] {new InputFilter.LengthFilter(30)});
+
         mEtPassword = findViewById(R.id.etPassword);
+        mEtPassword.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
         mRlRoot = findViewById(R.id.rlRoot);
         mBtnLogin.setOnClickListener(v -> {
             mStrId = mEtId.getText().toString();

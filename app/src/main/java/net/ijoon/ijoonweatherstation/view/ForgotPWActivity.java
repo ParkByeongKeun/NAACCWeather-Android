@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,6 +62,7 @@ public class ForgotPWActivity extends AppCompatActivity {
         }
         mBtnOk = findViewById(R.id.btnOk);
         mEtId = findViewById(R.id.etId);
+        mEtId.setFilters(new InputFilter[] {new InputFilter.LengthFilter(20)});
         mRlRoot = findViewById(R.id.rlRoot);
         mBtnOk.setOnClickListener(v -> {
             mStrId = mEtId.getText().toString();

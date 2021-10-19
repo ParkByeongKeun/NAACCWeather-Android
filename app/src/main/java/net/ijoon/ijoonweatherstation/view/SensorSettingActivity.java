@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Html;
+import android.text.InputFilter;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,6 +156,7 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
         et.setHint(R.string.text_new_sensor_name);
         et.setSingleLine(true);
         et.setLines(1);
+        et.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
         alertDialog.setView(et);
         alertDialog.setTitle(R.string.text_changing_sensor_name);
         alertDialog.setMessage(R.string.text_subtitle_changing_sensor_name);

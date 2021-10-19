@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.InputFilter;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -63,6 +64,7 @@ public class EmailConfirmActivity extends SCNetAppCompatActivity {
         mBtnOk = findViewById(R.id.btnOk);
         mEtId = findViewById(R.id.etId);
         mRlRoot = findViewById(R.id.rlRoot);
+        mEtId.setFilters(new InputFilter[] {new InputFilter.LengthFilter(20)});
         mBtnOk.setOnClickListener(v -> {
             mStrId = mEtId.getText().toString();
             checkUserId(mStrId);
