@@ -473,6 +473,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                         if (response.getSensorCount() == 0) {
                             LatLng firstGPS = new LatLng(saveLat, saveLong);
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom((firstGPS),saveZoom));
+                            mCustomApplication.setEnvSensor(null);
                             return;
                         } else {
                             envsensor.StreamingStartAllRequest request = envsensor.StreamingStartAllRequest.newBuilder().setAccessToken(mToken).build();

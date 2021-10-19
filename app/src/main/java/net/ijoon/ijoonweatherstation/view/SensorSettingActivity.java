@@ -208,6 +208,16 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
                 break;
             }
             case 6: {
+                try {
+                    final envsensor.GetSensorListResponse response = envsensor.GetSensorListResponse.parseFrom(bodyBuf);
+                    if(response.getSensorCount() == 0) {
+                        mCustomApplication.setEnvSensor(null);
+                    }else {
+                        mCustomApplication.setEnvSensor(response.getSensor(0));
+                    }
+                } catch (InvalidProtocolBufferException e) {
+                    e.printStackTrace();
+                }
                 break;
             }
             case 7 : {
@@ -249,6 +259,8 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
                 try {
                     final envsensor.UnregistSensorResponse response = envsensor.UnregistSensorResponse.parseFrom(bodyBuf);
                     if(response.getResult() == envsensor.UnregistSensorResponse.Result.success) {
+                        envsensor.GetSensorListRequest stationRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+                        mCustomApplication.mServerSession.request(stationRequest);
                         runOnUiThread(() -> {
                             Toast.makeText(getApplicationContext(),getResources().getString(R.string.textDelete),Toast.LENGTH_SHORT).show();
                             finish();

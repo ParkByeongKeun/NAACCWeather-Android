@@ -150,6 +150,9 @@ public class SensorAddActivity extends SCNetAppCompatActivity {
                     ArrayList<envsensor.Sensor> tempArr1 = new ArrayList<>();
                     ArrayList<envsensor.Sensor> tempArr2 = new ArrayList<>();
                     for(int i = 0 ; i < response.getSensorCount() ; i ++) {
+                        if(response.getSensor(i).getSerial().equals(mEtSerial.getText().toString())) {
+                            mCustomApplication.setEnvSensor(response.getSensor(i));
+                        }
                         if(response.getSensor(i).getPing() < MAXPING) {
                             tempArr1.add(response.getSensor(i));
                         }else {

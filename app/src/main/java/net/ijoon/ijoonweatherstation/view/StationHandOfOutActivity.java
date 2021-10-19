@@ -249,11 +249,26 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity {
             return;
         }
         switch (packetType) {
+            case getSensorListRes: {
+                try {
+                    final envsensor.GetSensorListResponse response = envsensor.GetSensorListResponse.parseFrom(bodyBuf);
+                    if(response.getSensorCount() == 0) {
+                        mCustomApplication.setEnvSensor(null);
+                    }else {
+                        mCustomApplication.setEnvSensor(response.getSensor(0));
+                    }
+                } catch (InvalidProtocolBufferException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
             case handoverSensorRes: {
                 try {
                     final envsensor.HandoverSensorResponse response = envsensor.HandoverSensorResponse.parseFrom(bodyBuf);
                     if(response.getResult() == envsensor.HandoverSensorResponse.Result.success) {
                         showAlertDialog(getResources().getString(R.string.textTransferSucceeded));
+                        envsensor.GetSensorListRequest stationRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+                        mCustomApplication.mServerSession.request(stationRequest);
                     }else if(response.getResult() == envsensor.HandoverSensorResponse.Result.unauthorized) {
                         showAlertDialog(getResources().getString(R.string.textNotPermi));
                     }else if(response.getResult() == envsensor.HandoverSensorResponse.Result.expiredToken) {

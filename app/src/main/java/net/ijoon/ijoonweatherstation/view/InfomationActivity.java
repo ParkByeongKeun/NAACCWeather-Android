@@ -188,6 +188,7 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
         @Override
         protected void onResume() {
                 super.onResume();
+                mEnvSensor = mCustomApplication.getEnvSensor();
                 SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
                 mToken = preferences.getString("token","");
                 mId = preferences.getString("id","");
