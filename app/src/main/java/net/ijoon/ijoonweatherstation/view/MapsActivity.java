@@ -700,8 +700,12 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         alertDialog.setMessage(R.string.text_subtitle_changing_sensor_name);
         alertDialog.setPositiveButton(R.string.text_ok,
                 (dialog, which) -> {
-                    envsensor.SetSensorNameRequest request = envsensor.SetSensorNameRequest.newBuilder().setSerial(mCustomApplication.getEnvSensor().getSerial()).setName(et.getText().toString()).setAccessToken(mToken).build();
-                    mCustomApplication.mServerSession.request(request);
+                    if(!et.getText().toString().equals("")) {
+                        envsensor.SetSensorNameRequest request = envsensor.SetSensorNameRequest.newBuilder().setSerial(mCustomApplication.getEnvSensor().getSerial()).setName(et.getText().toString()).setAccessToken(mToken).build();
+                        mCustomApplication.mServerSession.request(request);
+                    }else {
+                        Toast.makeText(getApplicationContext(),"센서 이름을 입력해주세요.",Toast.LENGTH_SHORT).show();
+                    }
                 });
         runOnUiThread(() -> alertDialog.show());
         FrameLayout.LayoutParams params = new  FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
