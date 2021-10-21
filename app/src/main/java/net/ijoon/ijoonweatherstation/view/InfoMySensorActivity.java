@@ -10,24 +10,26 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ListView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.protobuf.InvalidProtocolBufferException;
 import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
-import net.ijoon.ijoonweatherstation.util.ParallaxScollListView;
 import net.ijoon.ijoonweatherstation.util.SensorListViewAdapter;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InfoMySensorActivity extends SCNetAppCompatActivity {
+public class InfoMySensorActivity extends SCNetAppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     CustomApplication mCustomApplication;
     ActionBar actionBar;
-    private ParallaxScollListView mListView;
+    SwipeRefreshLayout swipeRefreshLayout;
+    private ListView mListView;
     String mToken;
     List<envsensor.Sensor> mSensor;
     int MAXPING = 15;
@@ -36,6 +38,8 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mysensor);
+        swipeRefreshLayout = findViewById(R.id.swipe_layout);
+        swipeRefreshLayout.setOnRefreshListener(this);
         mCustomApplication = (CustomApplication) getApplicationContext();
         actionBar = this.getSupportActionBar();
         if (actionBar != null) {
@@ -49,13 +53,18 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
         mListView = findViewById(R.id.layout_listview);
-        mListView.setZoomRatio(ParallaxScollListView.ZOOM_X2);
         mListView.setOnItemClickListener((parent, view, position, id) -> {
             mCustomApplication.setEnvSensor(mSensor.get(position));
             Intent intent = new Intent(InfoMySensorActivity.this, SensorSettingActivity.class);
             intent.putExtra("nickname",mSensor.get(position).getName());
             startActivity(intent);
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCustomApplication.setEnvSensor(mSensor.get(0));
     }
 
     @Override
@@ -128,5 +137,20 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity {
                 return true;
             }
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        envsensor.GetSensorListRequest getSensorRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+        mCustomApplication.mServerSession.request(getSensorRequest);
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(1400);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            runOnUiThread(() -> swipeRefreshLayout.setRefreshing(false));
+        });
+        thread.start();
     }
 }

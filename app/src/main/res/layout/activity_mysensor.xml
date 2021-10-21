@@ -3,16 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    <net.ijoon.ijoonweatherstation.util.ParallaxScollListView
-        android:id="@+id/layout_listview"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:cacheColorHint="@null"
-        android:duplicateParentState="true"
-        android:scrollingCache="false"
-        android:headerDividersEnabled="false"
-        android:footerDividersEnabled="false"
-        android:overScrollMode="never"
-        android:scrollbars="none"
-        />
+        android:id="@+id/swipe_layout">
+        <ListView
+            android:id="@+id/layout_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@null"
+            android:duplicateParentState="true"
+            android:scrollingCache="false"
+            android:headerDividersEnabled="false"
+            android:footerDividersEnabled="false"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+        </ListView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </RelativeLayout>

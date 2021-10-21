@@ -210,40 +210,15 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
             return;
         }
         switch (messageHeader.mPacketType) {
-            case 0: {
-                break;
-            }
             case 6: {
                 try {
                     final envsensor.GetSensorListResponse response = envsensor.GetSensorListResponse.parseFrom(bodyBuf);
                     if(response.getSensorCount() == 0) {
                         mCustomApplication.setEnvSensor(null);
-                    }else {
-                        mCustomApplication.setEnvSensor(response.getSensor(0));
                     }
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                 }
-                break;
-            }
-            case 7 : {
-                break;
-            }
-            case 8 : {
-                //SetSensorPosition
-                runOnUiThread(() -> {
-                    try {
-                        final envsensor.SetSensorPositionResponse response = envsensor.SetSensorPositionResponse.parseFrom(bodyBuf);
-                        if(response.getResult() == envsensor.SetSensorPositionResponse.Result.success) {
-                            envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
-                            mCustomApplication.mServerSession.request(request);
-                            showSuccessAlertDialog(getResources().getString(R.string.text_changed_sensor_position_success));
-                        }else {//set sensor position failed
-                        }
-                    } catch (InvalidProtocolBufferException e) {
-                        e.printStackTrace();
-                    }
-                });
                 break;
             }
             case 11 : {//SetSensorNameRes
