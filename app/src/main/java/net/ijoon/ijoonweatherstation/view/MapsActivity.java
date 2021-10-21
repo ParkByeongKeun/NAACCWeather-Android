@@ -133,6 +133,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         handler = new Handler();
         connCheckRunnable = () -> {
             isMarkerClicked = true;
+            mSweetSheet.setBackgroundClickEnable(true);
         };
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId  = getString(R.string.default_notification_channel_id);
@@ -370,7 +371,11 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 showPositionAlertDialog(getResources().getString(R.string.text_notifycation),(getResources().getString(R.string.text_current_location) + mSensor.get(mPosition).getId() + getResources().getString(R.string.text_move_sensor)) ,getResources().getString(R.string.text_ok),"");
             }
             if(mSweetSheet.isShow()) {
-                mSweetSheet.dismiss();
+                if(isMarkerClicked) {
+                    mSweetSheet.dismiss();
+                    changConnectingUI(true);
+                    isMarkerClicked = false;
+                }
             }
         });
     }
@@ -648,6 +653,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             changConnectingUI(true);
             setupCustomView();
             mCustomApplication.setEnvSensor(mSensor.get(mPosition));
+            mSweetSheet.setBackgroundClickEnable(false);
             if(!mSweetSheet.isShow()) {
                 mSweetSheet.show();
             }else {
@@ -666,6 +672,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     }
 
     public void changConnectingUI(boolean isConnecting) {
+        handler.removeCallbacksAndMessages(null);
         if (isConnecting) {
             handler.postDelayed(connCheckRunnable, 800);
         }
