@@ -95,10 +95,11 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
         envsensor.GetSensorListRequest getSensorRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
         mCustomApplication.mServerSession.request(getSensorRequest);
         mCustomDialog.setOnDismissListener(dialog -> {
+            clearCalendar();
             mComputableDate.setDateFormat("yyyy");
-            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + mCustomApplication.getEnvSensor().getName() + "</font>"));
+            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + mSensor.get(mCustomDialog.getPosition()).getName() + "</font>"));
             envsensor.StatisticalDataOfYearRequest request = envsensor.StatisticalDataOfYearRequest.newBuilder().setYear(mComputableDate.getYear()).setAccessToken(mToken)
-                    .setSerial(mCustomApplication.getEnvSensor().getSerial()).setIsIntervalDay(true).build();
+                    .setSerial(mSensor.get(mCustomDialog.getPosition()).getSerial()).setIsIntervalDay(true).build();
             mCustomApplication.mServerSession.request(request);
             position = mCustomDialog.getPosition();
             mCustomApplication.setEnvSensor(mSensor.get(position));
@@ -155,6 +156,14 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.menu_list: {
+                if(!caldroidFragment.isHidden()) {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    updateCalendar(); // update when open calendar
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                            .hide(caldroidFragment)
+                            .commit();
+                }
                 mCustomDialog.show();//sensor list call
                 return true;
             }
@@ -163,6 +172,12 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
                 return true;
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCustomApplication.setEnvSensor(mSensor.get(0));
     }
 
     @Override
@@ -296,6 +311,13 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
             }else {
                 caldroidFragment.setBackgroundDrawableForDate(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_normal, null), mCalendarComputableDate.setDate(sensorVelocityList.get(i).getUtc()).getDate());
             }
+        }
+        caldroidFragment.refreshView();
+    }
+
+    private void clearCalendar() {
+        for(int i = 0 ; i < sensorVelocityList.size() ; i ++) {
+            caldroidFragment.setBackgroundDrawableForDate(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_disable, null), mCalendarComputableDate.setDate(sensorVelocityList.get(i).getUtc()).getDate());
         }
         caldroidFragment.refreshView();
     }
