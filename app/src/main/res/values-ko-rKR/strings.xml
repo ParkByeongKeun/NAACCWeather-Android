@@ -189,7 +189,7 @@
     <string name= "textRealTime">실시간 발전량</string>
     <string name= "textAll">총 발전량</string>
     <string name= "textChart">일간차트</string>
-    <string name= "textAnalysis">월간차트</string>
+    <string name= "textAnalysis">연간차트</string>
     <string name= "textNoPowerGenerationdata">발전량 정보가 없습니다.</string>
     <string name= "textStation">스테이션</string>
     <string name= "textMore">더보기</string>
