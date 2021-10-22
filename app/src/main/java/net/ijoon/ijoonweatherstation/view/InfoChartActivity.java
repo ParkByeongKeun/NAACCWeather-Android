@@ -136,7 +136,9 @@ public class InfoChartActivity extends ChartBase {
                         .show(caldroidFragment)
                         .commit();
             } else {
-                updateCalendar(); // update when open calendar
+                runOnUiThread(() -> {
+                    updateCalendar(); // update when open calendar
+                });
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                         .hide(caldroidFragment)
@@ -147,7 +149,9 @@ public class InfoChartActivity extends ChartBase {
         rootView.setOnClickListener(v -> {
             if(!caldroidFragment.isHidden()) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                updateCalendar(); // update when open calendar
+                runOnUiThread(() -> {
+                    updateCalendar(); // update when open calendar
+                });
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                         .hide(caldroidFragment)
@@ -163,7 +167,9 @@ public class InfoChartActivity extends ChartBase {
             case R.id.menu_list: {
                 if(!caldroidFragment.isHidden()) {
                     FragmentManager fragmentManager = getSupportFragmentManager();
-                    updateCalendar(); // update when open calendar
+                    runOnUiThread(() -> {
+                        updateCalendar(); // update when open calendar
+                    });
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                             .hide(caldroidFragment)
@@ -332,7 +338,9 @@ public class InfoChartActivity extends ChartBase {
                 try {
                     final envsensor.StatisticalDataOfYearResponse response = envsensor.StatisticalDataOfYearResponse.parseFrom(bodyBuf);
                     yearSensorVelocityList = response.getItemsList();
-                    updateCalendar();
+                    runOnUiThread(() -> {
+                        updateCalendar(); // update when open calendar
+                    });
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                 }

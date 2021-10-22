@@ -128,7 +128,10 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
                         .show(caldroidFragment)
                         .commit();
             } else {
-                updateCalendar(); // update when open calendar
+                runOnUiThread(() -> {
+                    updateCalendar(); // update when open calendar
+                });
+
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                         .hide(caldroidFragment)
@@ -138,7 +141,9 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
         rootView.setOnClickListener(v -> {
             if(!caldroidFragment.isHidden()) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                updateCalendar(); // update when open calendar
+                runOnUiThread(() -> {
+                    updateCalendar(); // update when open calendar
+                });
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                         .hide(caldroidFragment)
@@ -158,7 +163,9 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
             case R.id.menu_list: {
                 if(!caldroidFragment.isHidden()) {
                     FragmentManager fragmentManager = getSupportFragmentManager();
-                    updateCalendar(); // update when open calendar
+                    runOnUiThread(() -> {
+                        updateCalendar(); // update when open calendar
+                    });
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                             .hide(caldroidFragment)
@@ -271,7 +278,9 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
                         chart.setData(data);
                         chart.invalidate();
                     });
-                    updateCalendar();
+                    runOnUiThread(() -> {
+                        updateCalendar(); // update when open calendar
+                    });
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                 }
