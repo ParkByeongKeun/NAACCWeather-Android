@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import com.google.protobuf.InvalidProtocolBufferException;
 import net.ijoon.envsensor;
@@ -32,6 +33,9 @@ import net.ijoon.scnet_android.Connection;
 import net.ijoon.scnet_android.MessageHeader;
 import net.ijoon.scnet_android.RendezvousSession;
 import net.ijoon.scnet_android.SCNetAppCompatActivity;
+import org.json.JSONObject;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -104,7 +108,13 @@ public class LoginActivity extends SCNetAppCompatActivity {
     }
 
     void login(String id, String pw) {
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(chain -> {
+            Request request = chain.request().newBuilder().addHeader("Content-Type", "application/json").build();
+            return chain.proceed(request);
+        });
         Retrofit retrofit = new Retrofit.Builder()
+                .client(httpClient.build())
                 .baseUrl("http://1.246.219.189:20217")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -115,7 +125,35 @@ public class LoginActivity extends SCNetAppCompatActivity {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 LoginResponse body = response.body();
                 if(body == null) {// Todo: 로그인인증서버에서 HTTP Status Code에 따라 body가 null이 되는지 확인
-                    showAlertDialog(getResources().getString(R.string.textLoginFailed));
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        switch (jObjError.getString("errno")) {
+                            case "-1" : {
+                                showAlertDialog(getResources().getString(R.string.textLoginFailed));
+                                break;
+                            }
+                            case "0" : {
+                                break;
+                            }
+                            case "1" : {
+                                Intent intent = new Intent(LoginActivity.this,JoinEmailActivity.class);
+                                startActivity(intent);
+                                finish();
+                                overridePendingTransition(0,0);
+                                break;
+                            }
+                            case "2" : {//비밀번호 실패
+                                showAlertDialog(getResources().getString(R.string.textLoginFailed));
+                                break;
+                            }
+                            case "3" : {
+                                showAlertDialog(getResources().getString(R.string.textLoginFailed));
+                                break;
+                            }
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
                     return;
                 }
                 if(body.getSuccess()) {
@@ -132,27 +170,6 @@ public class LoginActivity extends SCNetAppCompatActivity {
                     mCustomApplication.mServerSession.request(sensorListRequest);
                 }else {
                     showAlertDialog(getResources().getString(R.string.textLoginFailed));
-                }
-                switch (body.getErrNo()) {
-                    case -1 : {
-                        break;
-                    }
-                    case 0 : {
-                        break;
-                    }
-                    case 1 : {
-                        Intent intent = new Intent(LoginActivity.this,JoinEmailActivity.class);
-                        startActivity(intent);
-                        finish();
-                        overridePendingTransition(0,0);
-                        break;
-                    }
-                    case 2 : {
-                        break;
-                    }
-                    case 3 : {
-                        break;
-                    }
                 }
             }
 
