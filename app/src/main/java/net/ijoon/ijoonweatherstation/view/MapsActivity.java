@@ -52,6 +52,7 @@ import com.mingle.sweetpick.CustomDelegate;
 import com.mingle.sweetpick.SweetSheet;
 import net.ijoon.envsensor;
 import net.ijoon.ijoonweatherstation.login.AuthService;
+import net.ijoon.ijoonweatherstation.login.UpdateDispNameResponse;
 import net.ijoon.ijoonweatherstation.login.UpdateTokenRequest;
 import net.ijoon.ijoonweatherstation.login.UpdateTokenResponse;
 import net.ijoon.ijoonweatherstation.util.BackPressCloseHandler;
@@ -738,6 +739,10 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         ResponseCall.enqueue(new Callback<UpdateTokenResponse>() {
             @Override
             public void onResponse(Call<UpdateTokenResponse> call, Response<UpdateTokenResponse> response) {
+                UpdateTokenResponse body = response.body();
+                if(body == null) {
+                    return;
+                }
                 if(response.body().getSuccess()) {
                     String accessToken = response.body().getAccessToken();
                     if(accessToken == null) {

@@ -14,6 +14,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +25,9 @@ import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.ijoonweatherstation.login.AuthService;
 import net.ijoon.ijoonweatherstation.login.JoinRequest;
 import net.ijoon.ijoonweatherstation.login.JoinResponse;
+
+import org.json.JSONObject;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
@@ -132,7 +137,33 @@ public class JoinActivity extends AppCompatActivity {
             public void onResponse(Call<JoinResponse> call, Response<JoinResponse> response) {
                 JoinResponse body = response.body();
                 if(body == null) {
-                    showAlertDialog(getResources().getString(R.string.textRegistered));
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            switch (jObjError.getString("errno")) {
+                                case "-1" : {
+                                    showAlertDialog(getResources().getString(R.string.textJoinFailed));
+                                    break;
+                                }
+                                case "0" : {
+                                    showAlertDialog(getResources().getString(R.string.textJoinFailed));
+                                    break;
+                                }
+                                case "1" : {
+                                    showAlertDialog(getResources().getString(R.string.textCheckInformation));
+                                    break;
+                                }
+                                case "2" : {
+                                    showAlertDialog(getResources().getString(R.string.textRegistered));
+                                    break;
+                                }
+                                case "3" : {
+                                    showAlertDialog(getResources().getString(R.string.textJoinFailed));
+                                    break;
+                                }
+                            }
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
                     return;
                 }
                 if(body.getSuccess()) {

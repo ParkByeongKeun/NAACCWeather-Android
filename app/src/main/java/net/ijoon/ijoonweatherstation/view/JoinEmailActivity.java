@@ -14,6 +14,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +25,7 @@ import net.ijoon.ijoonweatherstation.R;
 import net.ijoon.ijoonweatherstation.login.AuthService;
 import net.ijoon.ijoonweatherstation.login.ResendRequest;
 import net.ijoon.ijoonweatherstation.login.ResendResponse;
+import net.ijoon.ijoonweatherstation.login.UpdateDispNameResponse;
 import net.ijoon.ijoonweatherstation.login.VerifyJoinRequest;
 import net.ijoon.ijoonweatherstation.login.VerifyJoinResponse;
 import okhttp3.OkHttpClient;
@@ -115,6 +118,11 @@ public class JoinEmailActivity extends AppCompatActivity {
         resendResponseCall.enqueue(new Callback<ResendResponse>() {
             @Override
             public void onResponse(Call<ResendResponse> call, Response<ResendResponse> response) {
+                ResendResponse body = response.body();
+                if(body == null) {
+                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.textCheckInformation),Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if(response.body().getSuccess()) {
                     showAlertDialog(getResources().getString(R.string.textEmailResent));
                 }else {

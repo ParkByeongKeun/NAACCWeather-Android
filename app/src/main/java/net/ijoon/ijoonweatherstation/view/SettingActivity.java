@@ -21,6 +21,8 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -33,6 +35,7 @@ import net.ijoon.ijoonweatherstation.RestApi.UnRegPushTokenResponse;
 import net.ijoon.ijoonweatherstation.login.AuthService;
 import net.ijoon.ijoonweatherstation.login.DeleteRequest;
 import net.ijoon.ijoonweatherstation.login.DeleteResponse;
+import net.ijoon.ijoonweatherstation.login.LoginResponse;
 import net.ijoon.ijoonweatherstation.login.UpdateDispNameRequest;
 import net.ijoon.ijoonweatherstation.login.UpdateDispNameResponse;
 import net.ijoon.ijoonweatherstation.login.UpdatePasswordRequest;
@@ -327,6 +330,11 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         loginResponseCall.enqueue(new Callback<UpdateDispNameResponse>() {
             @Override
             public void onResponse(Call<UpdateDispNameResponse> call, Response<UpdateDispNameResponse> response) {
+                UpdateDispNameResponse body = response.body();
+                if(body == null) {
+                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.textCheckInformation),Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if(response.body().getSuccess()) {
                     String accessToken = response.body().getAccessToken();
                     showAlertDialog(getResources().getString(R.string.textNicknameChangedSuccess)+ "\" " + id + "\"");

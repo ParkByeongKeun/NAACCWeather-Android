@@ -64,7 +64,8 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity implements Swip
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mCustomApplication.setEnvSensor(mSensor.get(0));
+        if(!mSensor.isEmpty())
+            mCustomApplication.setEnvSensor(mSensor.get(0));
     }
 
     @Override
