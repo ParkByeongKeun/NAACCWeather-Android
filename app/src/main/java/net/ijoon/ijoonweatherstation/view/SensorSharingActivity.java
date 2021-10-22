@@ -86,7 +86,7 @@ public class SensorSharingActivity extends SCNetAppCompatActivity {
         getNameRunnable = () -> userList(mEtName.getText().toString());
         mBtnSuccess = findViewById(R.id.btnSuccess);
         mEtName = findViewById(R.id.etId);
-        mEtName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(30)});
+        mEtName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(64)});
         mUserListView = findViewById(R.id.list);
         mRlRoot = findViewById(R.id.rlRoot);
         tvSharing = findViewById(R.id.tvSharing);

@@ -74,7 +74,7 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity {
         getNameRunnable = () -> userList(mEtName.getText().toString());
         mBtnSuccess = findViewById(R.id.btnSuccess);
         mEtName = findViewById(R.id.etStationName);
-        mEtName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(20)});
+        mEtName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(64)});
         mUserListView = findViewById(R.id.list);
         mRlRoot = findViewById(R.id.rlRoot);
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);

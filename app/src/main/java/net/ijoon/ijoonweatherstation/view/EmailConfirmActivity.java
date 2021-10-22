@@ -64,7 +64,7 @@ public class EmailConfirmActivity extends SCNetAppCompatActivity {
         mBtnOk = findViewById(R.id.btnOk);
         mEtId = findViewById(R.id.etId);
         mRlRoot = findViewById(R.id.rlRoot);
-        mEtId.setFilters(new InputFilter[] {new InputFilter.LengthFilter(20)});
+        mEtId.setFilters(new InputFilter[] {new InputFilter.LengthFilter(64)});
         mBtnOk.setOnClickListener(v -> {
             mStrId = mEtId.getText().toString();
             checkUserId(mStrId);

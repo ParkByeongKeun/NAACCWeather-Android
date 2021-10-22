@@ -81,7 +81,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
         mTvForgotEmail = findViewById(R.id.tvEmailForgot);
         mBtnLogin = findViewById(R.id.btnLogin);
         mEtId = findViewById(R.id.etId);
-        mEtId.setFilters(new InputFilter[] {new InputFilter.LengthFilter(30)});
+        mEtId.setFilters(new InputFilter[] {new InputFilter.LengthFilter(64)});
 
         mEtPassword = findViewById(R.id.etPassword);
         mEtPassword.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});

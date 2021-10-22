@@ -75,7 +75,7 @@ public class JoinActivity extends AppCompatActivity {
             }
             return false;
         });
-        mEtId.setFilters(new InputFilter[] {new InputFilter.LengthFilter(20)});
+        mEtId.setFilters(new InputFilter[] {new InputFilter.LengthFilter(64)});
         mEtPassword.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
         mEtNickName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
         mEtRePassword.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});

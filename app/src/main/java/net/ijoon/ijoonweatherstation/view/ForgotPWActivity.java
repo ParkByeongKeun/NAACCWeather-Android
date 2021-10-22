@@ -62,7 +62,7 @@ public class ForgotPWActivity extends AppCompatActivity {
         }
         mBtnOk = findViewById(R.id.btnOk);
         mEtId = findViewById(R.id.etId);
-        mEtId.setFilters(new InputFilter[] {new InputFilter.LengthFilter(20)});
+        mEtId.setFilters(new InputFilter[] {new InputFilter.LengthFilter(64)});
         mRlRoot = findViewById(R.id.rlRoot);
         mBtnOk.setOnClickListener(v -> {
             mStrId = mEtId.getText().toString();
