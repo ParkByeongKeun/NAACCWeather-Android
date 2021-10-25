@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -27,6 +28,8 @@ import net.ijoon.ijoonweatherstation.login.JoinRequest;
 import net.ijoon.ijoonweatherstation.login.JoinResponse;
 
 import org.json.JSONObject;
+
+import java.util.regex.Pattern;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -73,6 +76,7 @@ public class JoinActivity extends AppCompatActivity {
         mEtRePassword = findViewById(R.id.etRePassword);
         mRlRoot = findViewById(R.id.rlRoot);
         mBtnJoin = findViewById(R.id.btnJoin);
+        mEtNickName.setFilters(new InputFilter[] { filterKoEnNum });
         mEtNickName.setOnKeyListener((v, keyCode, event) -> {
             if(keyCode == event.KEYCODE_ENTER) {
                 hideKeyboard();
@@ -206,4 +210,16 @@ public class JoinActivity extends AppCompatActivity {
                 (dialog, which) -> dialog.cancel());
         runOnUiThread(() -> alertDialog.show());
     }
+
+    //한글, 숫자, 영어 허용
+    protected InputFilter filterKoEnNum = new InputFilter() {
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            Pattern ps = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]+$");
+
+            if (!ps.matcher(source).matches()) {
+                return "";
+            }
+            return null;
+        }
+    };
 }
