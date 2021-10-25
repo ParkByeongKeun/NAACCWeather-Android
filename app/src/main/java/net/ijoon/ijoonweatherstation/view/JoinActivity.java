@@ -140,20 +140,15 @@ public class JoinActivity extends AppCompatActivity {
                         try {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
                             switch (jObjError.getString("errno")) {
-                                case "-1" : {
-                                    showAlertDialog(getResources().getString(R.string.textJoinFailed));
-                                    break;
-                                }
                                 case "0" : {
-                                    showAlertDialog(getResources().getString(R.string.textJoinFailed));
                                     break;
                                 }
                                 case "1" : {
-                                    showAlertDialog(getResources().getString(R.string.textCheckInformation));
+                                    showAlertDialog(getResources().getString(R.string.textRegistered));
                                     break;
                                 }
                                 case "2" : {
-                                    showAlertDialog(getResources().getString(R.string.textRegistered));
+                                    showAlertDialog(getResources().getString(R.string.textJoinFailed));
                                     break;
                                 }
                                 case "3" : {

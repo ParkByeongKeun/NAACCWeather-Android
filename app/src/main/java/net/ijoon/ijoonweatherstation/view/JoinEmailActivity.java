@@ -83,6 +83,7 @@ public class JoinEmailActivity extends AppCompatActivity {
         });
         Gson gson = new GsonBuilder().setLenient().create();
         Retrofit retrofit = new Retrofit.Builder()
+                .client(httpClient.build())
                 .baseUrl("http://1.246.219.189:20217")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
@@ -93,13 +94,13 @@ public class JoinEmailActivity extends AppCompatActivity {
             public void onResponse(Call<VerifyJoinResponse> call, Response<VerifyJoinResponse> response) {
                 VerifyJoinResponse body = response.body();
                 if(body == null) {// Todo: 로그인인증서버에서 HTTP Status Code에 따라 body가 null이 되는지 확인
-                    showAlertDialog("인증 실패\n 인증번호를 확인해주세요");
+                    showAlertDialog("인증 실패\n인증번호를 확인해주세요");
                     return;
                 }
                 if(body.getSuccess()) {
-                    showAuthAlertDialog("인증 성공\n 로그인 후 사용해주세요.");
+                    showAuthAlertDialog("인증 성공\n로그인 후 사용해주세요.");
                 }else {
-                    showAlertDialog("인증 실패\n 인증번호를 확인해주세요");
+                    showAlertDialog("인증 실패\n인증번호를 확인해주세요");
                 }
             }
             @Override
@@ -109,7 +110,13 @@ public class JoinEmailActivity extends AppCompatActivity {
     }
 
     void resend(String id) {
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(chain -> {
+            Request request = chain.request().newBuilder().addHeader("Content-Type", "application/json").build();
+            return chain.proceed(request);
+        });
         Retrofit retrofit = new Retrofit.Builder()
+                .client(httpClient.build())
                 .baseUrl("http://1.246.219.189:20217")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

@@ -137,6 +137,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
                             }
                             case "1" : {
                                 Intent intent = new Intent(LoginActivity.this,JoinEmailActivity.class);
+                                intent.putExtra("id", id);
                                 startActivity(intent);
                                 finish();
                                 overridePendingTransition(0,0);
