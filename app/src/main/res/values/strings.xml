@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CIMON</string>
+    <string name="app_name">cimon</string>
 
 
     <string name="action_settings">Settings</string>
@@ -274,8 +274,8 @@
     <string name="textChangedPassword">Changed Password.</string>
     <string name="textChangePassword">Change Password</string>
     <string name="textUnKnown">Unknown</string>
-    <string name="textRegistered">ID registered with CIMON</string>
-    <string name="textUnRegistered">This is not an ID registered on CIMON.</string>
+    <string name="textRegistered">ID registered with cimon</string>
+    <string name="textUnRegistered">This is not an ID registered on cimon.</string>
     <string name="textAverageDailyVelocity">Average daily Velocity</string>
     <string name="textAppInfomation">App Infomation</string>
     <string name="textAverageVelocity">Average Velocity</string>
@@ -292,7 +292,7 @@
     <string name="textEmailAuth">We sent a confirmation number to the email you entered</string>
     <string name="textForgotEmail">Forgot Email?</string>
     <string name="textNoInformation">No Information</string>
-    <string name="textWelcome">Welcome to CIMON.</string>
+    <string name="textWelcome">Welcome to cimon.</string>
     <string name="textRealtimeMonitoring">Real-time environmental monitoring system</string>
 
     <string name="textFirmware">Firmware</string>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CIMON</string>
+    <string name="app_name">cimon</string>
 
 
     <string name="action_settings">Settings</string>
@@ -308,7 +308,7 @@
     <string name="textEmailAuth">입력하신 이메일로 인증 번호를 보냈습니다. 인증 번호를 확인 후 서비스를 이용하실 수 있습니다.</string>
     <string name="textForgotEmail">이메일이 기억나지 않으세요?</string>
     <string name="textNoInformation">정보가 없습니다.</string>
-    <string name="textWelcome">CIMON 가입을 환영합니다.</string>
+    <string name="textWelcome">cimon 가입을 환영합니다.</string>
     <string name="textRealtimeMonitoring">실시간 환경 모니터링 시스템</string>
 
     <string name="textFirmware">펌웨어 정보</string>
