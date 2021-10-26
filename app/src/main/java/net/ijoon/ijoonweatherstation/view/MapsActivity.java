@@ -233,25 +233,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             editor.putString("fixSensorName",mSensor.get(mPosition).getName());
             editor.apply();
         });
-        Thread thread = new Thread(() -> {
-            try {
-                Thread.sleep(300);
-                if(isFix) {
-                    if(mSensor != null && mSensor.size() > 0) {
-                        for(int i = 0 ; i < mSensor.size() ; i ++) {
-                            if(mSensor.get(i).getName().equals(fixSensorName)) {
-                                mCustomApplication.setEnvSensor(mSensor.get(i));
-                                Intent intent = new Intent(MapsActivity.this, MonitorActivity.class);
-                                startActivity(intent);
-                            }
-                        }
-                    }
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        thread.start();
     }
 
     @Override
@@ -513,6 +494,26 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom((firstGPS),saveZoom));
                                 isRefresh = false;
                             }
+                            Thread thread = new Thread(() -> {
+                                try {
+                                    Thread.sleep(300);
+                                    if(isFix) {
+                                        if(mSensor != null && mSensor.size() > 0) {
+                                            for(int i = 0 ; i < mSensor.size() ; i ++) {
+                                                if(mSensor.get(i).getName().equals(fixSensorName)) {
+                                                    isFix = false;
+                                                    mCustomApplication.setEnvSensor(mSensor.get(i));
+                                                    Intent intent = new Intent(MapsActivity.this, MonitorActivity.class);
+                                                    startActivity(intent);
+                                                }
+                                            }
+                                        }
+                                    }
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                            thread.start();
                         }
                     } catch (InvalidProtocolBufferException e) {
                         e.printStackTrace();
@@ -643,11 +644,10 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 mPosition = i;
             }
         }
-        if(isFix) {
+        SharedPreferences sharedPreferences = getSharedPreferences("preferences",MODE_PRIVATE);
+        if(sharedPreferences.getBoolean("fix",false)) {
             if(fixSensorName.equals(mSensor.get(mPosition).getName())) {
                 mSwitch.setChecked(true);
-            }else {
-                mSwitch.setChecked(false);
             }
         }
         if(isMarkerClicked) {
