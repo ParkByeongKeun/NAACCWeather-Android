@@ -180,12 +180,6 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mCustomApplication.setEnvSensor(mSensor.get(0));
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_list,menu);

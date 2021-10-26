@@ -184,12 +184,6 @@ public class InfoChartActivity extends ChartBase {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mCustomApplication.setEnvSensor(mSensor.get(0));
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Intent intent = getIntent();
         if(intent.getBooleanExtra("monitor",false)) {
