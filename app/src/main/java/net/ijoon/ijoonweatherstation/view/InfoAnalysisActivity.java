@@ -54,7 +54,6 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
     TextView mTvCalendal;
     ImageView mIvleft;
     ImageView mIvRight;
-    int position = 0;
     CustomDialog mCustomDialog;
     int MAXPING = 15;
     ImageView mIvCalendar;
@@ -101,8 +100,7 @@ public class InfoAnalysisActivity extends ChartAnalysisBase {
             envsensor.StatisticalDataOfYearRequest request = envsensor.StatisticalDataOfYearRequest.newBuilder().setYear(mComputableDate.getYear()).setAccessToken(mToken)
                     .setSerial(mSensor.get(mCustomDialog.getPosition()).getSerial()).setIsIntervalDay(true).build();
             mCustomApplication.mServerSession.request(request);
-            position = mCustomDialog.getPosition();
-            mCustomApplication.setEnvSensor(mSensor.get(position));
+            mCustomApplication.setEnvSensor(mSensor.get(mCustomDialog.getPosition()));
         });
         mIvleft.setOnClickListener(v -> {
             mComputableDate.addYear(-1);

@@ -4,22 +4,18 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import com.google.android.material.snackbar.Snackbar;
-
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
+import java.util.ArrayList;
 
 public class CustomDialog extends Dialog implements SwipeRefreshLayout.OnRefreshListener {
+    
     CustomApplication mCustomApplication;
-
     SwipeRefreshLayout mSwipeRefreshLayout;
     private Button mCloseBtn;
     private Activity mActivity;
@@ -27,13 +23,14 @@ public class CustomDialog extends Dialog implements SwipeRefreshLayout.OnRefresh
     private ListViewAdapter mListViewAdapter;
     private TextView mTvDialogTitle;
     private int mPosition;
-    private String mId;
+    ArrayList<String> arrayList;
 
     public CustomDialog(Activity activity) {
         super(activity);
         mActivity = activity;
+        arrayList = new ArrayList();
         mCustomApplication = (CustomApplication) activity.getApplicationContext();
-
+        this.setCancelable(false);
         requestWindowFeature(Window.FEATURE_NO_TITLE);   //다이얼로그의 타이틀바를 없애주는 옵션
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));  //다이얼로그의 배경을 투명
         setContentView(R.layout.custom_dialog);     //다이얼로그에서 사용할 레이아웃
@@ -43,33 +40,30 @@ public class CustomDialog extends Dialog implements SwipeRefreshLayout.OnRefresh
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mListViewAdapter = new ListViewAdapter();
         mListView.setAdapter(mListViewAdapter);
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mPosition = position;
-                dismiss();
-            }
+        mListView.setOnItemClickListener((parent, view, position, id) -> {
+            mPosition = position;
+            dismiss();
         });
 
         mCloseBtn = findViewById(R.id.btnCancel);
-        mCloseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
+        mCloseBtn.setOnClickListener(view -> {
+            for(int i = 0 ; i < arrayList.size() ; i++) {
+                if (arrayList.get(i).equals(mCustomApplication.getEnvSensor().getName())) {
+                    mPosition = i;
+                }
             }
+            dismiss();
         });
-
     }
 
     public void addItem(String title, boolean isOn, String owner) {
+        arrayList.add(title);
         if (isOn) {
             mListViewAdapter.addItem(R.drawable.logo_weather, title, true);
         }else {
             mListViewAdapter.addItem(R.drawable.logo_weather_gray, title, false);
         }
         mActivity.runOnUiThread(() -> mListViewAdapter.notifyDataSetChanged());
-
     }
 
     public void clear() {
@@ -90,22 +84,13 @@ public class CustomDialog extends Dialog implements SwipeRefreshLayout.OnRefresh
 
     @Override
     public void onRefresh() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-//                mCustomApplication.refreshStationList();
-                try {
-                    Thread.sleep(1400);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                });
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(1400);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            mActivity.runOnUiThread(() -> mSwipeRefreshLayout.setRefreshing(false));
         });
         thread.start();
     }

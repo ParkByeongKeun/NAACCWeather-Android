@@ -60,7 +60,6 @@ public class InfoChartActivity extends ChartBase {
     ImageView mIvleft;
     ImageView mIvRight;
     ImageView mIvCalendar;
-    int position = 0;
     ActionBar actionBar;
     int MAXPING = 15;
     int MAXVELOCITY = 10;
@@ -108,10 +107,9 @@ public class InfoChartActivity extends ChartBase {
             envsensor.StatisticalDataOfDayRequest request1 = envsensor.StatisticalDataOfDayRequest.newBuilder().setAccessToken(mToken).setDate(mComputableDate.getCurrentTimeText())
                     .setSerial(mSensor.get(mCustomDialog.getPosition()).getSerial()).setIntervalMin(INTERVAL).build();
             mCustomApplication.mServerSession.request(request1);
-            position = mCustomDialog.getPosition();
-            mCustomApplication.setEnvSensor(mSensor.get(position));
+            mCustomApplication.setEnvSensor(mSensor.get(mCustomDialog.getPosition()));
             envsensor.StatisticalDataOfYearRequest yearRequest1 = envsensor.StatisticalDataOfYearRequest.newBuilder().setYear(mComputableDate.getYear()).setAccessToken(mToken)
-                    .setSerial(mSensor.get(position).getSerial()).setIsIntervalDay(true).build();
+                    .setSerial(mSensor.get(mCustomDialog.getPosition()).getSerial()).setIsIntervalDay(true).build();
             mCustomApplication.mServerSession.request(yearRequest1);
         });
         mIvleft.setOnClickListener(v -> {
