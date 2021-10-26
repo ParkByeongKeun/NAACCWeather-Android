@@ -86,7 +86,7 @@ public class JoinActivity extends AppCompatActivity {
         });
         mEtId.setFilters(new InputFilter[] {new InputFilter.LengthFilter(64)});
         mEtPassword.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
-        mEtNickName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
+        mEtNickName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(30)});
         mEtRePassword.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
 
         mRlRoot.setOnClickListener(v -> imm.hideSoftInputFromWindow(mEtId.getWindowToken(), 0));

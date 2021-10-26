@@ -42,6 +42,7 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
     String mNickname;
     String mId;
     private long mLastClickTime = 0;
+    ActionBar actionBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
             getWindow().setStatusBarColor(Color.parseColor("#56CBF2"));//statusBar
         }
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF56CBF2));//title
-        ActionBar actionBar = this.getSupportActionBar();
+        actionBar = this.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
@@ -156,7 +157,7 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
         et.setHint(R.string.text_new_sensor_name);
         et.setSingleLine(true);
         et.setLines(1);
-        et.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
+        et.setFilters(new InputFilter[] {new InputFilter.LengthFilter(30)});
         alertDialog.setView(et);
         alertDialog.setTitle(R.string.text_changing_sensor_name);
         alertDialog.setMessage(R.string.text_subtitle_changing_sensor_name);
@@ -228,6 +229,7 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
                         if(response.getResult() == envsensor.SetSensorNameResponse.Result.success) {
                             envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
                             mCustomApplication.mServerSession.request(request);
+                            actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + response.getName() + "</font>"));
                             showSuccessAlertDialog(getResources().getString(R.string.text_changed_sensor_name_success));
                         }
                     } catch (InvalidProtocolBufferException e) {
