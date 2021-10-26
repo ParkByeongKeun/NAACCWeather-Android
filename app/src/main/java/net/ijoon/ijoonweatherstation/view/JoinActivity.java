@@ -86,7 +86,7 @@ public class JoinActivity extends AppCompatActivity {
         });
         mEtId.setFilters(new InputFilter[] {new InputFilter.LengthFilter(64)});
         mEtPassword.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
-        mEtNickName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(30)});
+        mEtNickName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
         mEtRePassword.setFilters(new InputFilter[] {new InputFilter.LengthFilter(15)});
 
         mRlRoot.setOnClickListener(v -> imm.hideSoftInputFromWindow(mEtId.getWindowToken(), 0));
@@ -98,11 +98,15 @@ public class JoinActivity extends AppCompatActivity {
             if(android.util.Patterns.EMAIL_ADDRESS.matcher(mStrId).matches()) {
                 if(mStrPassword.equals(mStrRePassword)) {
                     if (mStrPassword.length() >= 6 && mStrPassword.length() <= 15) {
-                        if(!mEtNickName.equals("")) {
-                            SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
-                            preferences.edit().putString("nickname","");
-                            preferences.edit().apply();
-                            join(mStrId,mStrPassword, mStrRePassword, mStrName);
+                        if(!mEtNickName.getText().toString().equals("")) {
+                            if(mEtNickName.getText().toString().length() > 15) {
+                                showAlertDialog("닉네임은 최대 15자 까지 사용 가능합니다.");
+                            }else {//성공
+                                SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+                                preferences.edit().putString("nickname","");
+                                preferences.edit().apply();
+                                join(mStrId,mStrPassword, mStrRePassword, mStrName);
+                            }
                         }else {
                             showAlertDialog(getResources().getString(R.string.textNicknameEmpty));
                         }

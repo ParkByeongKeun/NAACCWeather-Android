@@ -319,6 +319,10 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
     }
 
     void updateNickName(final String id) {
+        if(id.length() > 15) {
+            showAlertDialog("닉네임은 최대 15자 까지 사용 가능합니다.");
+            return;
+        }
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(chain -> {
             Request request = chain.request().newBuilder().addHeader("x-access-token", mToken).build();
