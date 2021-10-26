@@ -90,7 +90,7 @@ public class ForgotPWActivity extends AppCompatActivity {
             public void onResponse(Call<ResetPasswordResponse> call, Response<ResetPasswordResponse> response) {
                 ResetPasswordResponse body = response.body();
                 if(body == null) {
-                    showAlertDialog(getResources().getString(R.string.textFailed));
+                    showAlertDialog(getResources().getString(R.string.textCheckInfomation));
                     return;
                 }
                 if(body.getSuccess()) {
