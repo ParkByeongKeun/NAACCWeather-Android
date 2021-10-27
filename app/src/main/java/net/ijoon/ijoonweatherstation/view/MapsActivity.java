@@ -287,6 +287,9 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             envsensor.StreamingStopAllRequest request = envsensor.StreamingStopAllRequest.newBuilder().setAccessToken(mToken).build();
             mCustomApplication.mServerSession.request(request);
         }
+        if(mSweetSheet.isShow()) {
+            runOnUiThread(() -> mSweetSheet.dismiss());
+        }
     }
 
     @Override
