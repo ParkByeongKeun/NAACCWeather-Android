@@ -163,7 +163,7 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
         alertDialog.setMessage(R.string.text_subtitle_changing_sensor_name);
         alertDialog.setPositiveButton(R.string.text_ok,
                 (dialog, which) -> {
-                    if(!et.getText().toString().equals("")) {
+                    if(!et.getText().toString().replace(" ", "").equals("")) {
                         envsensor.SetSensorNameRequest request = envsensor.SetSensorNameRequest.newBuilder().setSerial(mCustomApplication.getEnvSensor().getSerial()).setName(et.getText().toString()).setAccessToken(mToken).build();
                         mCustomApplication.mServerSession.request(request);
                     }else {
