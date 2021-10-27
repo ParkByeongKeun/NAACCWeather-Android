@@ -226,12 +226,20 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             showUnRegistDialog(mSensor.get(mPosition).getName() + getResources().getString(R.string.textDeleteSensor));
         });
         mSwitch = view.findViewById(R.id.checkBox);
-        mSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SharedPreferences sharedPreferences = getSharedPreferences("preferences",MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("fix",isChecked);
-            editor.putString("fixSensorName",mSensor.get(mPosition).getName());
-            editor.apply();
+        mSwitch.setOnClickListener(v -> {
+            if(mSwitch.isChecked()) {
+                SharedPreferences sharedPreferences = getSharedPreferences("preferences",MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("fix",true);
+                editor.putString("fixSensorName",mSensor.get(mPosition).getName());
+                editor.apply();
+            }else {
+                SharedPreferences sharedPreferences = getSharedPreferences("preferences",MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("fix",false);
+                editor.putString("fixSensorName","");
+                editor.apply();
+            }
         });
     }
 
@@ -648,6 +656,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         if(sharedPreferences.getBoolean("fix",false)) {
             if(fixSensorName.equals(mSensor.get(mPosition).getName())) {
                 mSwitch.setChecked(true);
+            }else {
+                mSwitch.setChecked(false);
             }
         }
         if(isMarkerClicked) {
