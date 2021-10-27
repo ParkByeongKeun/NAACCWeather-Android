@@ -117,7 +117,7 @@ public class ForgotPWConfirmActivity extends AppCompatActivity {
                             break;
                         }
                         case 0 : {
-                            showAlertDialog(getResources().getString(R.string.textChangedPassword));
+                            showAlertFinishDialog(getResources().getString(R.string.textChangedPassword));
                             break;
                         }
                         case 1 : {
@@ -162,6 +162,20 @@ public class ForgotPWConfirmActivity extends AppCompatActivity {
                 .setMessage(message);
         alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
                 (dialog, which) -> dialog.cancel());
+        runOnUiThread(() -> alertDialog.show());
+    }
+
+    public void showAlertFinishDialog(String message) {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                this);
+        alertDialog.setTitle(getResources().getString(R.string.textNotification));
+        alertDialog
+                .setMessage(message);
+        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
+                (dialog, which) -> {
+                    dialog.cancel();
+                    finish();
+                });
         runOnUiThread(() -> alertDialog.show());
     }
 }
