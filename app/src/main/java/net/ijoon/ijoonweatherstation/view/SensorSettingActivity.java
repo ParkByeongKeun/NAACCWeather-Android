@@ -246,8 +246,16 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
                         mCustomApplication.mServerSession.request(stationRequest);
                         runOnUiThread(() -> {
                             Toast.makeText(getApplicationContext(),getResources().getString(R.string.textDelete),Toast.LENGTH_SHORT).show();
-                            finish();
                         });
+                        Thread thread = new Thread(() -> {
+                            try {
+                                Thread.sleep(200);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                        thread.start();
                     }else {
                         runOnUiThread(() -> {
                             showDialog(getResources().getString(R.string.textServerError));
