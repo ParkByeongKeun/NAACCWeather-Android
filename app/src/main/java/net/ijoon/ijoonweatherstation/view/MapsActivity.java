@@ -251,23 +251,25 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             mCustomApplication.mServerSession.request(request);
         }
         if(mCustomApplication.pushSerial != null) {
-            for (int i = 0 ; i < mSensor.size() ; i ++) {
-                if(String.valueOf(mSensor.get(i).getSerial()).equals(mCustomApplication.pushSerial)) {
-                    mPosition = i;
+            if(mSensor != null) {
+                for (int i = 0 ; i < mSensor.size() ; i ++) {
+                    if(String.valueOf(mSensor.get(i).getSerial()).equals(mCustomApplication.pushSerial)) {
+                        mPosition = i;
+                    }
                 }
-            }
-            if(isMarkerClicked) {
-                changConnectingUI(true);
-                setupCustomView();
-                mCustomApplication.setEnvSensor(mSensor.get(mPosition));
-                if(!mSweetSheet.isShow()) {
-                    mSweetSheet.show();
-                }else {
-                    tvName.setText(mSensor.get(mPosition).getName());
+                if(isMarkerClicked) {
+                    changConnectingUI(true);
+                    setupCustomView();
+                    mCustomApplication.setEnvSensor(mSensor.get(mPosition));
+                    if(!mSweetSheet.isShow()) {
+                        mSweetSheet.show();
+                    }else {
+                        tvName.setText(mSensor.get(mPosition).getName());
+                    }
+                    isMarkerClicked = false;
                 }
-                isMarkerClicked = false;
+                prevPosition = mPosition;
             }
-            prevPosition = mPosition;
         }
         displayMarker.clear();
         overlayMarker.clear();
