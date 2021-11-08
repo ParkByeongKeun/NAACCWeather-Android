@@ -1,7 +1,6 @@
 
 package net.ijoon.ijoonweatherstation.view;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -28,6 +27,9 @@ import net.ijoon.ijoonweatherstation.login.ResendResponse;
 import net.ijoon.ijoonweatherstation.login.UpdateDispNameResponse;
 import net.ijoon.ijoonweatherstation.login.VerifyJoinRequest;
 import net.ijoon.ijoonweatherstation.login.VerifyJoinResponse;
+
+import org.json.JSONObject;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
@@ -94,13 +96,43 @@ public class JoinEmailActivity extends AppCompatActivity {
             public void onResponse(Call<VerifyJoinResponse> call, Response<VerifyJoinResponse> response) {
                 VerifyJoinResponse body = response.body();
                 if(body == null) {// Todo: 로그인인증서버에서 HTTP Status Code에 따라 body가 null이 되는지 확인
-                    showAlertDialog("인증 실패\n인증번호를 확인해주세요");
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        switch (jObjError.getString("errno")) {
+                            case "0" : {
+                                Toast.makeText(getApplicationContext(), "인증번호를 확인해주세요.", Toast.LENGTH_LONG).show();
+                                break;
+                            }
+                            case "1" : {
+                                Toast.makeText(getApplicationContext(), "인증번호를 확인해주세요.", Toast.LENGTH_LONG).show();
+                                break;
+                            }
+                            case "2" : {
+                                Toast.makeText(getApplicationContext(), "인증번호를 확인해주세요.", Toast.LENGTH_LONG).show();
+                                break;
+                            }
+                            case "3" : {
+                                Toast.makeText(getApplicationContext(), "잘못된 정보를 입력하셨습니다. 회원가입을 다시 진행해주세요.", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(JoinEmailActivity.this,DefaultActivity.class);
+                                startActivity(intent);
+                                finish();
+                                overridePendingTransition(0,0);
+                                break;
+                            }
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
                     return;
                 }
                 if(body.getSuccess()) {
-                    showAuthAlertDialog("인증 성공\n로그인 후 사용해주세요.");
+                    Toast.makeText(getApplicationContext(), "인증되었습니다.\n로그인 후 사용해주세요.", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(JoinEmailActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                    overridePendingTransition(0,0);
                 }else {
-                    showAlertDialog("인증 실패\n인증번호를 확인해주세요");
+                    Toast.makeText(getApplicationContext(), "인증번호를 확인해주세요.", Toast.LENGTH_LONG).show();
                 }
             }
             @Override
@@ -131,43 +163,15 @@ public class JoinEmailActivity extends AppCompatActivity {
                     return;
                 }
                 if(response.body().getSuccess()) {
-                    showAlertDialog(getResources().getString(R.string.textEmailResent));
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.textEmailResent), Toast.LENGTH_LONG).show();
                 }else {
-                    showAlertDialog(getResources().getString(R.string.textResentFailed));
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.textResentFailed), Toast.LENGTH_LONG).show();
                 }
             }
             @Override
             public void onFailure(Call<ResendResponse> call, Throwable t) {
             }
         });
-    }
-
-    public void showAlertDialog(String message) {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-                this);
-        alertDialog.setTitle(getResources().getString(R.string.textNotification));
-        alertDialog
-                .setMessage(message);
-        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                (dialog, which) -> dialog.cancel());
-        runOnUiThread(() -> alertDialog.show());
-    }
-
-    public void showAuthAlertDialog(String message) {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-                this);
-        alertDialog.setTitle(getResources().getString(R.string.textNotification));
-        alertDialog
-                .setMessage(message);
-        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                (dialog, which) -> {
-                    Intent intent = new Intent(JoinEmailActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                    overridePendingTransition(0,0);
-                    dialog.cancel();
-                });
-        runOnUiThread(() -> alertDialog.show());
     }
 
     @Override

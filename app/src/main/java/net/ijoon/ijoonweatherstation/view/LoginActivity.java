@@ -1,6 +1,5 @@
 package net.ijoon.ijoonweatherstation.view;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -79,7 +78,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
         }
         checkToken = getIntent().getIntExtra("tokenCheck",0);
         if(checkToken == 1) {
-            showAlertDialog(getResources().getString(R.string.textExpiredToken));
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.textExpiredToken), Toast.LENGTH_SHORT).show();
         }
         mTvForgot = findViewById(R.id.tvForgot);
         mTvForgotEmail = findViewById(R.id.tvEmailForgot);
@@ -129,7 +128,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         switch (jObjError.getString("errno")) {
                             case "-1" : {
-                                showAlertDialog(getResources().getString(R.string.textLoginFailed));
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.textLoginFailed), Toast.LENGTH_SHORT).show();
                                 break;
                             }
                             case "0" : {
@@ -144,11 +143,11 @@ public class LoginActivity extends SCNetAppCompatActivity {
                                 break;
                             }
                             case "2" : {//비밀번호 실패
-                                showAlertDialog(getResources().getString(R.string.textLoginFailed));
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.textLoginFailed), Toast.LENGTH_SHORT).show();
                                 break;
                             }
                             case "3" : {
-                                showAlertDialog(getResources().getString(R.string.textLoginFailed));
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.textLoginFailed), Toast.LENGTH_SHORT).show();
                                 break;
                             }
                         }
@@ -170,7 +169,7 @@ public class LoginActivity extends SCNetAppCompatActivity {
                     envsensor.GetSensorListRequest sensorListRequest = envsensor.GetSensorListRequest.newBuilder().setAccessToken(token).build();
                     mCustomApplication.mServerSession.request(sensorListRequest);
                 }else {
-                    showAlertDialog(getResources().getString(R.string.textLoginFailed));
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.textLoginFailed), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -203,14 +202,6 @@ public class LoginActivity extends SCNetAppCompatActivity {
         finish();
         overridePendingTransition(0,0);
         return super.onOptionsItemSelected(item);
-    }
-
-    public void showAlertDialog(String message) {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle(getResources().getString(R.string.textNotification));
-        alertDialog.setMessage(message);
-        alertDialog.setPositiveButton(getResources().getString(R.string.textOk), (dialog, which) -> dialog.cancel());
-        runOnUiThread(() -> alertDialog.show());
     }
 
     @Override

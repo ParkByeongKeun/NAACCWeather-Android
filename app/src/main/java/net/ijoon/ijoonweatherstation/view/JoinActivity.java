@@ -1,6 +1,5 @@
 package net.ijoon.ijoonweatherstation.view;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -100,7 +99,7 @@ public class JoinActivity extends AppCompatActivity {
                     if (mStrPassword.length() >= 6 && mStrPassword.length() <= 15) {
                         if(!mEtNickName.getText().toString().equals("")) {
                             if(mEtNickName.getText().toString().length() > 15) {
-                                showAlertDialog("닉네임은 최대 15자 까지 사용 가능합니다.");
+                                Toast.makeText(getApplicationContext(), "닉네임은 최대 15자 까지 사용 가능합니다.", Toast.LENGTH_SHORT).show();
                             }else {//성공
                                 SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
                                 preferences.edit().putString("nickname","");
@@ -108,16 +107,16 @@ public class JoinActivity extends AppCompatActivity {
                                 join(mStrId,mStrPassword, mStrRePassword, mStrName);
                             }
                         }else {
-                            showAlertDialog(getResources().getString(R.string.textNicknameEmpty));
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.textNicknameEmpty), Toast.LENGTH_SHORT).show();
                         }
                     }else {
-                        showAlertDialog(getResources().getString(R.string.text_characters_count));
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.text_characters_count), Toast.LENGTH_SHORT).show();
                     }
                 }else {
-                    showAlertDialog(getResources().getString(R.string.textPasswordNotMatch));
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.textPasswordNotMatch), Toast.LENGTH_SHORT).show();
                 }
             }else {
-                showAlertDialog(getResources().getString(R.string.textNotEmailFormat));
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.textNotEmailFormat), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -152,15 +151,15 @@ public class JoinActivity extends AppCompatActivity {
                                     break;
                                 }
                                 case "1" : {
-                                    showAlertDialog(getResources().getString(R.string.textRegistered));
+                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.textRegistered), Toast.LENGTH_SHORT).show();
                                     break;
                                 }
                                 case "2" : {
-                                    showAlertDialog(getResources().getString(R.string.textJoinFailed));
+                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.textJoinFailed), Toast.LENGTH_SHORT).show();
                                     break;
                                 }
                                 case "3" : {
-                                    showAlertDialog(getResources().getString(R.string.textJoinFailed));
+                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.textJoinFailed), Toast.LENGTH_SHORT).show();
                                     break;
                                 }
                             }
@@ -176,12 +175,12 @@ public class JoinActivity extends AppCompatActivity {
                     finish();
                     overridePendingTransition(0,0);
                 } else {
-                    showAlertDialog(getResources().getString(R.string.textFailed));
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.textFailed), Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onFailure(Call<JoinResponse> call, Throwable t) {
-                showAlertDialog(getResources().getString(R.string.textJoinFailed));
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.textJoinFailed), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -202,17 +201,6 @@ public class JoinActivity extends AppCompatActivity {
         finish();
         overridePendingTransition(0,0);
         return super.onOptionsItemSelected(item);
-    }
-
-    public void showAlertDialog(String message) {
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-                this);
-        alertDialog.setTitle(getResources().getString(R.string.textNotification));
-        alertDialog
-                .setMessage(message);
-        alertDialog.setPositiveButton(getResources().getString(R.string.textOk),
-                (dialog, which) -> dialog.cancel());
-        runOnUiThread(() -> alertDialog.show());
     }
 
     //한글, 숫자, 영어 허용
