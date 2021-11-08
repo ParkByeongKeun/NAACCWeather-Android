@@ -306,7 +306,6 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
         et.setHint(getResources().getString(R.string.textNickname));
         et.setSingleLine(true);
         et.setLines(1);
-        et.setFilters(new InputFilter[] { filterKoEnNum });
         alertDialog.setView(et);
         alertDialog.setTitle(getResources().getString(R.string.textChangeNickname));
         alertDialog.setMessage(getResources().getString(R.string.textEditNicknamechange));
@@ -446,16 +445,4 @@ public class SettingActivity extends SCNetAppCompatActivity implements SwipeRefr
             });
         }).start();
     }
-
-    //한글, 숫자, 영어 허용
-    protected InputFilter filterKoEnNum = new InputFilter() {
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-            Pattern ps = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]+$");
-
-            if (!ps.matcher(source).matches()) {
-                return "";
-            }
-            return null;
-        }
-    };
 }

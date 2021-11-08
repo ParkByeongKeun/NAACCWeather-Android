@@ -75,7 +75,6 @@ public class JoinActivity extends AppCompatActivity {
         mEtRePassword = findViewById(R.id.etRePassword);
         mRlRoot = findViewById(R.id.rlRoot);
         mBtnJoin = findViewById(R.id.btnJoin);
-        mEtNickName.setFilters(new InputFilter[] { filterKoEnNum });
         mEtNickName.setOnKeyListener((v, keyCode, event) -> {
             if(keyCode == event.KEYCODE_ENTER) {
                 hideKeyboard();
@@ -202,16 +201,4 @@ public class JoinActivity extends AppCompatActivity {
         overridePendingTransition(0,0);
         return super.onOptionsItemSelected(item);
     }
-
-    //한글, 숫자, 영어 허용
-    protected InputFilter filterKoEnNum = new InputFilter() {
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-            Pattern ps = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]+$");
-
-            if (!ps.matcher(source).matches()) {
-                return "";
-            }
-            return null;
-        }
-    };
 }
