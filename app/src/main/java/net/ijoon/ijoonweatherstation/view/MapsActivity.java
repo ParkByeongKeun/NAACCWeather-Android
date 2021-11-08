@@ -361,7 +361,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             if(isSetGPS) {
                 sensorLng =  String.valueOf(latLng.latitude);
                 sensorLong = String.valueOf(latLng.longitude);
-                showPositionAlertDialog(getResources().getString(R.string.text_notifycation),(getResources().getString(R.string.text_current_location) + mSensor.get(mPosition).getId() + getResources().getString(R.string.text_move_sensor)) ,getResources().getString(R.string.text_ok),"");
+                showPositionAlertDialog(getResources().getString(R.string.text_notifycation),(getResources().getString(R.string.text_current_location) + mSensor.get(mPosition).getName() + getResources().getString(R.string.text_move_sensor)) ,getResources().getString(R.string.text_ok),"");
             }
             if(mSweetSheet.isShow()) {
                 if(isMarkerClicked) {
