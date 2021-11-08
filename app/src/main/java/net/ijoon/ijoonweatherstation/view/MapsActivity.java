@@ -888,43 +888,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String maxVelocity = intent.getStringExtra("maxVelocity");
-            String maxVelocityTime = intent.getStringExtra("maxVelocityTime");
-            String serial = intent.getStringExtra("serial");
-            mMap.clear();
-            for(int i = 0 ; i < mSensor.size() ; i ++) {
-                int finalI = i;
-                runOnUiThread(() -> {
-                    if (serial.equals(mSensor.get(finalI).getSerial())) {
-                        if (Float.valueOf(maxVelocity) >= 10.0) {
-                            rl_message.setBackgroundResource(R.drawable.round_danger);
-                        } else {
-                            rl_message.setBackgroundResource(R.drawable.round_default);
-                        }
-                        tv_marker.setText(mSensor.get(finalI).getName());
-                        tvMarkerSubTitle.setText(maxVelocity + "m/s (" + maxVelocityTime + ")");
-                    }else {
-                        if (mSensor.get(finalI).getPing() >= ALIVEPING) {
-                            rl_message.setBackgroundResource(R.drawable.round_disconnect);
-                        }else {
-                            if (mSensor.get(finalI).getMaxVelocity() >= 10.0) {
-                                rl_message.setBackgroundResource(R.drawable.round_danger);
-                            }else {
-                                rl_message.setBackgroundResource(R.drawable.round_default);
-                            }
-                        }
-                        tv_marker.setText(mSensor.get(finalI).getName());
-                        tvMarkerSubTitle.setText(String.format("%.1f", mSensor.get(finalI).getMaxVelocity()) + "m/s" + " ("+maxVelocityTime + ")");
-                    }
-                    LatLng position = new LatLng(mSensor.get(finalI).getLatitude(),mSensor.get(finalI).getLongitude());
-                    markerOptions.position(position);
-                    markerOptions.title(mSensor.get(finalI).getName());
-                    markerOptions.snippet(String.valueOf(mSensor.get(finalI).getSerial()));
-                    mArrMarkerOptions.add(markerOptions);
-                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getApplicationContext(), marker_root_view)));
-                    Marker marker = mMap.addMarker(mArrMarkerOptions.get(finalI));
-                });
-            }
+            envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+            mCustomApplication.mServerSession.request(request);
         }
     };
 
