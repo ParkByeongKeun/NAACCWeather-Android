@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -47,6 +49,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class StationHandOfOutActivity extends SCNetAppCompatActivity {
 
+    String mId;
     String mSerial;
     String mToken;
     View view;
@@ -79,6 +82,7 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity {
         mRlRoot = findViewById(R.id.rlRoot);
         SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
         mToken = preferences.getString("token","");
+        mId = preferences.getString("id","");
         mSerial = mCustomApplication.getEnvSensor().getSerial();
         mArrUserList = new ArrayList<>();
         mData = new ArrayList<>();
@@ -100,6 +104,10 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity {
             actionBar.setTitle(Html.fromHtml("<font color='#ffffff'>" + mCustomApplication.getEnvSensor().getName() + "</font>"));
         }
         mBtnSuccess.setOnClickListener(v -> {
+            if(mCustomApplication.getEnvSensor().getOwner().equals(mId)) {
+                Toast.makeText(getApplicationContext(),"센서 소유자입니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             envsensor.HandoverSensorRequest handoverRequest = envsensor.HandoverSensorRequest.newBuilder().setAccessToken(mToken).setSerial(mSerial).setAssigneeId(mEtName.getText().toString()).build();
             mCustomApplication.mServerSession.request(handoverRequest);
         });
