@@ -464,6 +464,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                         mSensor = new ArrayList<>();
                         mMap.clear();
                         mArrMarkerOptions.clear();
+                        displayMarker.clear();
+                        overlayMarker.clear();
                         final envsensor.GetSensorListResponse response = envsensor.GetSensorListResponse.parseFrom(bodyBuf);
                         for (int i = 0; i < response.getSensorCount(); i++) {
                             mSensor.add(response.getSensor(i));
