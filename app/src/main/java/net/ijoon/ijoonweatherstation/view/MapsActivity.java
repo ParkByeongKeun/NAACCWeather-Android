@@ -658,6 +658,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
             }
         }
         SharedPreferences sharedPreferences = getSharedPreferences("preferences",MODE_PRIVATE);
+        fixSensorName = sharedPreferences.getString("fixSensorName","");
         if(sharedPreferences.getBoolean("fix",false)) {
             if(fixSensorName.equals(mSensor.get(mPosition).getName())) {
                 mSwitch.setChecked(true);
