@@ -268,7 +268,6 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 isMarkerClicked = false;
             }
             prevPosition = mPosition;
-            mSweetSheet.toggle();
         }
         displayMarker.clear();
         overlayMarker.clear();
