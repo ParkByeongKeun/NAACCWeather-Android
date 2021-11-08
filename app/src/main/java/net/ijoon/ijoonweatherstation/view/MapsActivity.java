@@ -650,6 +650,8 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        if(isSetGPS)
+            return true;
         for (int i = 0 ; i < mSensor.size() ; i ++) {
             if(String.valueOf(mSensor.get(i).getSerial()).equals(marker.getSnippet())) {
                 mPosition = i;
