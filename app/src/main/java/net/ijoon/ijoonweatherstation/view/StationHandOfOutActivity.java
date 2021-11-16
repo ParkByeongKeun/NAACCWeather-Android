@@ -105,11 +105,15 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity {
         }
         mBtnSuccess.setOnClickListener(v -> {
             if(mCustomApplication.getEnvSensor().getOwner().equals(mId)) {
-                Toast.makeText(getApplicationContext(),"센서 소유자입니다.", Toast.LENGTH_SHORT).show();
-                return;
+                if(mCustomApplication.getEnvSensor().getOwner().equals(mEtName.getText().toString())) {
+                    Toast.makeText(getApplicationContext(),"센서 소유자입니다.",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                envsensor.HandoverSensorRequest handoverRequest = envsensor.HandoverSensorRequest.newBuilder().setAccessToken(mToken).setSerial(mSerial).setAssigneeId(mEtName.getText().toString()).build();
+                mCustomApplication.mServerSession.request(handoverRequest);
+            }else {
+                showAlertDialog(getResources().getString(R.string.textNotPermi));
             }
-            envsensor.HandoverSensorRequest handoverRequest = envsensor.HandoverSensorRequest.newBuilder().setAccessToken(mToken).setSerial(mSerial).setAssigneeId(mEtName.getText().toString()).build();
-            mCustomApplication.mServerSession.request(handoverRequest);
         });
         mEtName.setOnClickListener(v -> {
             isBlockSearch = true;
