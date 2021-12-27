@@ -262,7 +262,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                     setupCustomView();
                     mCustomApplication.setEnvSensor(mSensor.get(mPosition));
                     if(!mSweetSheet.isShow()) {
-                        mSweetSheet.show();
+//                        mSweetSheet.show();
                     }else {
                         tvName.setText(mSensor.get(mPosition).getName());
                     }
