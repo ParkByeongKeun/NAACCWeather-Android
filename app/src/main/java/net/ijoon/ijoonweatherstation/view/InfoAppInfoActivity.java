@@ -1,5 +1,10 @@
 package net.ijoon.ijoonweatherstation.view;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -13,8 +18,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
+import net.ijoon.scnet_android.SCNetAppCompatActivity;
 
-public class InfoAppInfoActivity extends AppCompatActivity {
+public class InfoAppInfoActivity extends SCNetAppCompatActivity {
 
     TextView tvVersion;
     CustomApplication mCustomApplication;
@@ -24,6 +30,7 @@ public class InfoAppInfoActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_info);
+        brManager();
         tvVersion = findViewById(R.id.tvVersion);
         tvVersion.setText("App version\n " + getAppVersionName());
         mCustomApplication = (CustomApplication) getApplicationContext();
@@ -60,5 +67,31 @@ public class InfoAppInfoActivity extends AppCompatActivity {
             return "";
         }
         return packageInfo.versionName;
+    }
+
+    public void brManager() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("delete");
+        registerReceiver(mBroadcastReceiver, filter);
+    }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+            preferences.edit().clear().apply();
+            preferences.edit().putString("id","");
+            preferences.edit().putString("token","");
+            preferences.edit().apply();
+            InfoAppInfoActivity.super.activityFinish();
+            Intent intent1 = new Intent(InfoAppInfoActivity.this, DeleteActivity.class);
+            startActivity(intent1);
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
     }
 }

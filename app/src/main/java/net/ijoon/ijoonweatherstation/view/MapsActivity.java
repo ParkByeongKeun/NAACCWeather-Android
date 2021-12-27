@@ -298,6 +298,7 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
         unregisterReceiver(mActivatedBroadcastReceiver);
+        unregisterReceiver(mDeleteBroadcastReceiver);
         if (serviceIntent!=null) {
             stopService(serviceIntent);
             serviceIntent = null;
@@ -844,6 +845,9 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
         filterDeactivated.addAction("sensor_deactivated");
         registerReceiver(mActivatedBroadcastReceiver, filterDeactivated);
 
+        IntentFilter filterDelete= new IntentFilter();
+        filterDelete.addAction("delete");
+        registerReceiver(mDeleteBroadcastReceiver, filterDelete);
     }
 
     private Bitmap createDrawableFromView(Context context, View view) {    // View를 Bitmap으로 변환
@@ -903,6 +907,20 @@ public class MapsActivity extends SCNetAppCompatActivity implements OnMapReadyCa
                 envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
                 mCustomApplication.mServerSession.request(request);
             });
+        }
+    };
+
+    private BroadcastReceiver mDeleteBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+            preferences.edit().clear().apply();
+            preferences.edit().putString("id","");
+            preferences.edit().putString("token","");
+            preferences.edit().apply();
+            MapsActivity.super.activityFinish();
+            Intent intent1 = new Intent(MapsActivity.this, DeleteActivity.class);
+            startActivity(intent1);
         }
     };
 }

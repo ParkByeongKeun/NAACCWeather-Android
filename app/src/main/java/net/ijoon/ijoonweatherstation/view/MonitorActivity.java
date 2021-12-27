@@ -102,6 +102,7 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitor);
+        brManager();
         mSwipeRefreshLayout = findViewById(R.id.swipe_layout);
         mCustomApplication = (CustomApplication) getApplicationContext();
         mEnvSensor = mCustomApplication.getEnvSensor();
@@ -206,6 +207,7 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
+        unregisterReceiver(mDeleteBroadcastReceiver);
     }
 
     @Override
@@ -1007,4 +1009,24 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void brManager() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("delete");
+        registerReceiver(mDeleteBroadcastReceiver, filter);
+    }
+
+    private BroadcastReceiver mDeleteBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+            preferences.edit().clear().apply();
+            preferences.edit().putString("id","");
+            preferences.edit().putString("token","");
+            preferences.edit().apply();
+            MonitorActivity.super.activityFinish();
+            Intent intent1 = new Intent(MonitorActivity.this, DeleteActivity.class);
+            startActivity(intent1);
+        }
+    };
 }

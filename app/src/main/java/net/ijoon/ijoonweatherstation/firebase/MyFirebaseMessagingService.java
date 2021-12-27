@@ -114,6 +114,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     sendBroadcast(intent);
                 }else if(remoteMessage.getData().get("type").equals("sensor_public")) {
 
+                }else if(remoteMessage.getData().get("type").equals("delete")) {
+                    Intent intent = new Intent("delete");
+                    sendBroadcast(intent);
                 } else {
                     Intent mainIntent = new Intent("sensor_activated");
                     if(remoteMessage.getData().get("type").equals("sensor_activated")) {

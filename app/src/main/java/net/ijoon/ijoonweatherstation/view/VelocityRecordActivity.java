@@ -1,7 +1,10 @@
 package net.ijoon.ijoonweatherstation.view;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -60,6 +63,7 @@ public class VelocityRecordActivity extends SCNetAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_velocity_record);
         mCustomApplication = (CustomApplication) getApplicationContext();
+        brManager();
         Intent intent = getIntent();
         serial = intent.getStringExtra("serial");
         actionBar = this.getSupportActionBar();
@@ -248,5 +252,31 @@ public class VelocityRecordActivity extends SCNetAppCompatActivity {
                     delVelocityLogList(serial, id);
                 });
         runOnUiThread(() -> alertDialog.show());
+    }
+
+    public void brManager() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("delete");
+        registerReceiver(mBroadcastReceiver, filter);
+    }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+            preferences.edit().clear().apply();
+            preferences.edit().putString("id","");
+            preferences.edit().putString("token","");
+            preferences.edit().apply();
+            VelocityRecordActivity.super.activityFinish();
+            Intent intent1 = new Intent(VelocityRecordActivity.this, DeleteActivity.class);
+            startActivity(intent1);
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
     }
 }

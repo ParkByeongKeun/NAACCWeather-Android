@@ -1,6 +1,9 @@
 package net.ijoon.ijoonweatherstation.view;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -71,6 +74,7 @@ public class InfoChartActivity extends ChartBase {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
         mCustomApplication = (CustomApplication) getApplicationContext();
+        brManager();
         actionBar = this.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -387,5 +391,31 @@ public class InfoChartActivity extends ChartBase {
                 mCustomApplication.mServerSession.request(requestLeft);
             }
         });
+    }
+
+    public void brManager() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("delete");
+        registerReceiver(mBroadcastReceiver, filter);
+    }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+            preferences.edit().clear().apply();
+            preferences.edit().putString("id","");
+            preferences.edit().putString("token","");
+            preferences.edit().apply();
+            InfoChartActivity.super.activityFinish();
+            Intent intent1 = new Intent(InfoChartActivity.this, DeleteActivity.class);
+            startActivity(intent1);
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
     }
 }

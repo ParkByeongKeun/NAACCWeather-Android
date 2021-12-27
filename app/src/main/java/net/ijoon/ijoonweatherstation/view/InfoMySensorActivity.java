@@ -1,6 +1,9 @@
 package net.ijoon.ijoonweatherstation.view;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -38,6 +41,7 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity implements Swip
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mysensor);
+        brManager();
         swipeRefreshLayout = findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
         mCustomApplication = (CustomApplication) getApplicationContext();
@@ -66,6 +70,7 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity implements Swip
         super.onDestroy();
         if(!mSensor.isEmpty())
             mCustomApplication.setEnvSensor(mSensor.get(0));
+        unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override
@@ -154,4 +159,24 @@ public class InfoMySensorActivity extends SCNetAppCompatActivity implements Swip
         });
         thread.start();
     }
+
+    public void brManager() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("delete");
+        registerReceiver(mBroadcastReceiver, filter);
+    }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+            preferences.edit().clear().apply();
+            preferences.edit().putString("id","");
+            preferences.edit().putString("token","");
+            preferences.edit().apply();
+            InfoMySensorActivity.super.activityFinish();
+            Intent intent1 = new Intent(InfoMySensorActivity.this, DeleteActivity.class);
+            startActivity(intent1);
+        }
+    };
 }

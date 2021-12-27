@@ -1,5 +1,10 @@
 package net.ijoon.ijoonweatherstation.view;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,8 +15,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import net.ijoon.ijoonweatherstation.CustomApplication;
 import net.ijoon.ijoonweatherstation.R;
+import net.ijoon.scnet_android.SCNetAppCompatActivity;
 
-public class InfoMoreActivity extends AppCompatActivity {
+public class InfoMoreActivity extends SCNetAppCompatActivity {
 
     CustomApplication mCustomApplication;
     ActionBar actionBar;
@@ -20,6 +26,7 @@ public class InfoMoreActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_more);
+        brManager();
         mCustomApplication = (CustomApplication) getApplicationContext();
         actionBar = this.getSupportActionBar();
         if (actionBar != null) {
@@ -43,5 +50,31 @@ public class InfoMoreActivity extends AppCompatActivity {
                 return true;
             }
         }
+    }
+
+    public void brManager() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("delete");
+        registerReceiver(mBroadcastReceiver, filter);
+    }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+            preferences.edit().clear().apply();
+            preferences.edit().putString("id","");
+            preferences.edit().putString("token","");
+            preferences.edit().apply();
+            InfoMoreActivity.super.activityFinish();
+            Intent intent1 = new Intent(InfoMoreActivity.this, DeleteActivity.class);
+            startActivity(intent1);
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
     }
 }

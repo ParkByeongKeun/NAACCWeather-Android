@@ -1,7 +1,10 @@
 package net.ijoon.ijoonweatherstation.view;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -73,6 +76,7 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_handofout);
         mCustomApplication = (CustomApplication)getApplication();
+        brManager();
         handler = new Handler();
         getNameRunnable = () -> userList(mEtName.getText().toString());
         mBtnSuccess = findViewById(R.id.btnSuccess);
@@ -305,5 +309,31 @@ public class StationHandOfOutActivity extends SCNetAppCompatActivity {
                 break;
             }
         }
+    }
+
+    public void brManager() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("delete");
+        registerReceiver(mBroadcastReceiver, filter);
+    }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+            preferences.edit().clear().apply();
+            preferences.edit().putString("id","");
+            preferences.edit().putString("token","");
+            preferences.edit().apply();
+            StationHandOfOutActivity.super.activityFinish();
+            Intent intent1 = new Intent(StationHandOfOutActivity.this, DeleteActivity.class);
+            startActivity(intent1);
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
     }
 }

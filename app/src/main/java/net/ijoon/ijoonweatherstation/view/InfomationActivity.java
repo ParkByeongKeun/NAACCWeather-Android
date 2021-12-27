@@ -1,7 +1,10 @@
 package net.ijoon.ijoonweatherstation.view;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -56,6 +59,7 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
         protected void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.activity_infomation);
+                brManager();
                 mLlMySensor = findViewById(R.id.llMySensor);
                 mLlAnalysis = findViewById(R.id.llAnalysis);
                 mLlChart = findViewById(R.id.llChart);
@@ -225,5 +229,31 @@ public class InfomationActivity extends SCNetAppCompatActivity implements Rendez
                                 startActivity(intent);
                         });
                 runOnUiThread(() -> alertDialog.show());
+        }
+
+        public void brManager() {
+                IntentFilter filter = new IntentFilter();
+                filter.addAction("delete");
+                registerReceiver(mBroadcastReceiver, filter);
+        }
+
+        private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                        SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+                        preferences.edit().clear().apply();
+                        preferences.edit().putString("id","");
+                        preferences.edit().putString("token","");
+                        preferences.edit().apply();
+                        InfomationActivity.super.activityFinish();
+                        Intent intent1 = new Intent(InfomationActivity.this, DeleteActivity.class);
+                        startActivity(intent1);
+                }
+        };
+
+        @Override
+        protected void onDestroy() {
+                super.onDestroy();
+                unregisterReceiver(mBroadcastReceiver);
         }
 }

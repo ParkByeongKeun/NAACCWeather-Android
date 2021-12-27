@@ -93,7 +93,15 @@ public class LoadingActivity extends Activity {
             public void onResponse(Call<CheckResponse> call, Response<CheckResponse> response) {
                 CheckResponse body = response.body();
                 if(body == null) {
-                    showFailedLoginDialog();
+                    SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+                    preferences.edit().clear().apply();
+                    preferences.edit().putString("id","");
+                    preferences.edit().putString("token","");
+                    preferences.edit().apply();
+                    Intent intent = new Intent(LoadingActivity.this, DefaultActivity.class);
+                    intent.putExtra("tokenCheck",1);
+                    startActivity(intent);
+                    finish();
                     return;
                 }
                 if(body.getSuccess()) {
@@ -102,7 +110,15 @@ public class LoadingActivity extends Activity {
                     finish();// 로그인 상태
                 }
                 else {// 토큰 만료
-                    showExpirationDialog();
+                    SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+                    preferences.edit().clear().apply();
+                    preferences.edit().putString("id","");
+                    preferences.edit().putString("token","");
+                    preferences.edit().apply();
+                    Intent intent = new Intent(LoadingActivity.this, DefaultActivity.class);
+                    intent.putExtra("tokenCheck",1);
+                    startActivity(intent);
+                    finish();
                 }
             }
             @Override

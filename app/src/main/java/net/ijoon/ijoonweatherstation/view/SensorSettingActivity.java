@@ -1,7 +1,10 @@
 package net.ijoon.ijoonweatherstation.view;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -49,6 +52,7 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor_setting);
         mCustomApplication = (CustomApplication) getApplicationContext();
+        brManager();
         Intent intent = getIntent();
         mNickname = intent.getStringExtra("nickname");
         mSwipeRefreshLayout = findViewById(R.id.swipe_layout);
@@ -267,5 +271,31 @@ public class SensorSettingActivity extends SCNetAppCompatActivity implements Swi
                 break;
             }
         }
+    }
+
+    public void brManager() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("delete");
+        registerReceiver(mBroadcastReceiver, filter);
+    }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+            preferences.edit().clear().apply();
+            preferences.edit().putString("id","");
+            preferences.edit().putString("token","");
+            preferences.edit().apply();
+            SensorSettingActivity.super.activityFinish();
+            Intent intent1 = new Intent(SensorSettingActivity.this, DeleteActivity.class);
+            startActivity(intent1);
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
     }
 }
