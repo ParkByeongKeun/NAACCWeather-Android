@@ -170,6 +170,10 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
             }
         });
         mSwipeRefreshLayout.setRefreshing(true);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+            mCustomApplication.mServerSession.request(request);
+        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
 //        mSweetSheet = new SweetSheet(rl);
@@ -199,8 +203,18 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
     @Override
     protected void onResume() {
         super.onResume();
-        envsensor.StreamingStartRequest request = envsensor.StreamingStartRequest.newBuilder().setAccessToken(mToken).setSerial(mEnvSensor.getSerial()).setClearPrevious(true).build();
-        mCustomApplication.mServerSession.request(request);
+        Thread thread = new Thread(() -> {
+            try {
+                envsensor.StreamingStartRequest request = envsensor.StreamingStartRequest.newBuilder().setAccessToken(mToken).setSerial(mEnvSensor.getSerial()).setClearPrevious(true).build();
+                mCustomApplication.mServerSession.request(request);
+                Thread.sleep(200);
+                envsensor.GetSensorListRequest request1 = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+                mCustomApplication.mServerSession.request(request1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
     }
 
     @Override
@@ -212,8 +226,6 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
 
     @Override
     public void onRefresh() {
-        envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
-        mCustomApplication.mServerSession.request(request);
     }
 
     public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.MyViewHolder> {
@@ -987,8 +999,6 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
                 runOnUiThread(() -> {
                     envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
                     mCustomApplication.mServerSession.request(request);
-                    mTvMaxVelocity.setText(maxVelocity + "m/s");
-                    mTvMaxVelocityTime.setText(maxVelocityTime);
                 });
             }
         }
