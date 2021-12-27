@@ -212,6 +212,8 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
 
     @Override
     public void onRefresh() {
+        envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+        mCustomApplication.mServerSession.request(request);
     }
 
     public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.MyViewHolder> {
@@ -893,6 +895,24 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
                 }
                 break;
             }
+            case 6: {
+                runOnUiThread(() -> {
+                    try {
+                        final envsensor.GetSensorListResponse response = envsensor.GetSensorListResponse.parseFrom(bodyBuf);
+                        mCustomApplication.setEnvSensor(null);
+                        for(int i = 0 ; i < response.getSensorCount() ; i++) {
+                            if(response.getSensor(i).getSerial().equals(mEnvSensor.getSerial())) {
+                                mCustomApplication.setEnvSensor(response.getSensor(i));
+                                mEnvSensor = response.getSensor(i);
+                            }
+                        }
+
+                    } catch (InvalidProtocolBufferException e) {
+                        e.printStackTrace();
+                    }
+                });
+                break;
+            }
             default: {
                 Log.d("yot132","[onMessage] Unknown PacketType");
                 break;
@@ -965,6 +985,8 @@ public class MonitorActivity extends SCNetAppCompatActivity implements  SwipeRef
             String serial = intent.getStringExtra("serial");
             if(mEnvSensor.getSerial().equals(serial)) {
                 runOnUiThread(() -> {
+                    envsensor.GetSensorListRequest request = envsensor.GetSensorListRequest.newBuilder().setAccessToken(mToken).build();
+                    mCustomApplication.mServerSession.request(request);
                     mTvMaxVelocity.setText(maxVelocity + "m/s");
                     mTvMaxVelocityTime.setText(maxVelocityTime);
                 });
